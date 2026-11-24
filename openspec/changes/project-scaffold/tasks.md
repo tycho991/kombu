@@ -51,7 +51,7 @@
 ## 8. Continuous integration
 
 - [x] 8.1 Add `.github/workflows/ci.yml` per design D10 (push and pull_request, `contents: read`, wrapper validation, Temurin 21, setup-gradle, `./gradlew build`, Dokka, coverage reports and API docs uploaded per run, test/lint/detekt reports uploaded on failure, all actions pinned to commit SHAs), and verify a push runs green on GitHub and offers coverage reports and API docs for download
-- [ ] 8.2 Verify the failure path by pushing a throwaway branch with a failing unit test and a detekt finding: the run must fail and offer the test and detekt reports for download; delete the branch afterwards
+- [x] 8.2 Verify the failure path by pushing a throwaway branch with a failing unit test and a detekt finding: the run must fail and offer the test and detekt reports for download; delete the branch afterwards
 
 ## 9. Documentation
 
