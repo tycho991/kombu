@@ -15,6 +15,7 @@ context: |
 
   ## Fixed decisions (do not revisit in proposals without saying so explicitly)
   - Platform: Android only. Kotlin + Jetpack Compose. No iOS or web version.
+  - minSdk 29 (Android 10).
   - Package / applicationId: io.github.tycho991.kombu. License: GPL-3.0-or-later.
   - No own backend. All data lives in the user's Nextcloud:
     - Recipes: Nextcloud Cookbook REST API (schema.org Recipe JSON).
@@ -77,6 +78,10 @@ context: |
   - Code, comments, commit messages, docs and specs in English. UI German first,
     prepared for more languages.
   - Every larger feature is an OpenSpec change (propose -> apply -> archive).
+  - High code quality is a fixed goal: enforced coverage thresholds per module, static
+    analysis and formatting with zero findings, warnings as errors, KDoc for public API.
+    The gates are specified in the code-quality capability (introduced by the
+    project-scaffold change).
 
 rules:
   proposal:
@@ -84,8 +89,18 @@ rules:
     - Reference the fixed decisions and design rules (R1-R7) the change relies on.
     - Call out any new dependency together with its license and confirm it is
       compatible with GPL-3.0-or-later and works without Google Play Services.
+    - Never loosen a quality gate (coverage threshold, static analysis rule, warnings
+      as errors) silently; a change that loosens one must say so and modify the
+      code-quality spec.
   design:
     - Describe offline behaviour and failure modes for anything that talks to the server.
+    - State the test strategy - what is tested on the JVM, what needs a device or
+      emulator - and how the change meets the coverage thresholds.
   tasks:
     - Include tests for every parser or sync behaviour that is added or changed.
     - Include string resources (en + de) for every new user-visible text.
+    - Keep every quality gate green in each task group - coverage thresholds, static
+      analysis, formatting, Android Lint, compiler warnings - with no new baseline and
+      no suppression without a justifying comment.
+    - Include KDoc for every new or changed public declaration in pure Kotlin modules,
+      and update README or CONTRIBUTING.md when commands or setup change.
