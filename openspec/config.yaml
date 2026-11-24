@@ -1,0 +1,91 @@
+schema: spec-driven
+
+context: |
+  Language: English
+  All artifacts must be written in English.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  ## Product
+  Kombu is an Android household app built around Nextcloud Cookbook. Its core is the
+  household's recipe collection in Cookbook; around it the app adds a meal plan, shared
+  shopping lists and a needs-based chore planner, used together by all household members.
+  It replaces a proprietary shopping-list app and a proprietary chore app. Kombu is
+  designed from day one to be published as free software. It is not affiliated with
+  Nextcloud GmbH and must not use "Nextcloud" in its name.
+
+  ## Fixed decisions (do not revisit in proposals without saying so explicitly)
+  - Platform: Android only. Kotlin + Jetpack Compose. No iOS or web version.
+  - Package / applicationId: io.github.tycho991.kombu. License: GPL-3.0-or-later.
+  - No own backend. All data lives in the user's Nextcloud:
+    - Recipes: Nextcloud Cookbook REST API (schema.org Recipe JSON).
+    - Meal plan: shared CalDAV calendar (VEVENT).
+    - Shopping lists and chores: shared CalDAV task lists (VTODO).
+    - CalDAV via dav4jvm (MPL-2.0) and ical4j.
+  - Multi-user: every household member has their own Nextcloud account; sharing uses
+    Nextcloud's own sharing.
+  - The server URL is always user-configurable; nothing is tied to a specific instance.
+  - Distribution: first as a directly installed APK for the household; store choice
+    (F-Droid, Google Play) comes later. The code must not depend on Google Play Services.
+  - Roadmap: v1 = recipes + cooking mode. Shopping list, meal plan and chores follow
+    after v1 (order still open).
+
+  ## v1 scope (recipes + cooking mode)
+  - Login to any Nextcloud instance.
+  - Offline-first: all recipes incl. images are stored locally (Room) and synced in the
+    background; reading and cooking always work without network.
+  - Full editing incl. offline create/edit/delete; offline changes are uploaded on the
+    next sync.
+  - Conflict handling: before uploading, detect whether the server copy changed since the
+    last sync; on conflict show both versions and let the user choose. Never overwrite
+    silently.
+  - Cooking mode: step by step, large type, screen stays on, timers from steps, ticking
+    off ingredients, scaling servings (scaling is a view, it never changes the stored
+    recipe).
+  - Ingredient parser: a Kotlin port of an MIT-licensed JS ingredient parser with German
+    support (candidates: @magrinj/parse-ingredients, recipe-ingredient-parser-v3), as a
+    pure Kotlin module without Android dependencies.
+  - Recipe import via Android share sheet (plain text). Primary source: the Claude Android
+    app's recipe card, which is shared as structured text (title, description,
+    ingredient/step/notes sections, "• <qty> <unit> <name>" ingredient lines, numbered
+    steps, timers marked with "⏱", units as English codes like tsp/tbsp). An optional
+    metadata line in square brackets at the start of the description carries servings,
+    category, keywords and times. The notes section is dropped. Import always opens the
+    editor for review. Text from other apps falls back to best-effort parsing.
+
+  ## Design rules
+  - R1 Standard formats stay readable: whatever Kombu writes to CalDAV must still make
+    sense in Nextcloud Calendar/Tasks and other clients (e.g. Tasks.org).
+  - R2 No change is ever lost silently (sync conflicts, bulk edits).
+  - R3 Chores are needs-based, not deadline-based: urgency = time since last done
+    relative to the interval.
+  - R4 Nothing personal in the repository: no server URLs, names, stores, credentials.
+  - R5 No user-visible text in code: all strings, units and date/number formats go
+    through Android resources / locale. English is the default (values/), German the
+    first translation (values-de/). Parser tables and starter catalogs are per language.
+  - R6 Own identity: other apps are functional references only; no names, texts,
+    graphics or characters are copied.
+  - R7 Import degrades gracefully: with the metadata line all fields, without it the
+    core fields (title, ingredients, steps, timers), free text as far as possible; the
+    editor asks for anything missing.
+
+  ## Proposed module layout (not final)
+  - ingredient-parser, duration-parser, recipe-import, cookbook-client, caldav-client:
+    pure Kotlin/JVM, no Android dependency, unit-tested with fixtures.
+  - sync (WorkManager), data (Room, image store), app (Compose UI): Android.
+
+  ## Conventions
+  - Code, comments, commit messages, docs and specs in English. UI German first,
+    prepared for more languages.
+  - Every larger feature is an OpenSpec change (propose -> apply -> archive).
+
+rules:
+  proposal:
+    - State explicitly what is out of scope.
+    - Reference the fixed decisions and design rules (R1-R7) the change relies on.
+    - Call out any new dependency together with its license and confirm it is
+      compatible with GPL-3.0-or-later and works without Google Play Services.
+  design:
+    - Describe offline behaviour and failure modes for anything that talks to the server.
+  tasks:
+    - Include tests for every parser or sync behaviour that is added or changed.
+    - Include string resources (en + de) for every new user-visible text.
