@@ -1,0 +1,13 @@
+# Loaded on top of detekt.yml for the pure Kotlin modules only (spec code-quality,
+# "Documented public API in pure modules"): every public declaration needs KDoc.
+
+comments:
+  UndocumentedPublicClass:
+    active: true
+    excludes: ['**/test/**']
+  UndocumentedPublicFunction:
+    active: true
+    excludes: ['**/test/**']
+  UndocumentedPublicProperty:
+    active: true
+    excludes: ['**/test/**']

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Lets the debug build be told apart from the release build in the launcher. -->
+    <string name="app_name" translatable="false">Kombu Debug</string>
+</resources>

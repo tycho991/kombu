@@ -58,7 +58,7 @@ Kotlin source and Gradle Kotlin scripts SHALL follow one formatting standard. Th
 Kotlin compiler warnings and Android Lint warnings SHALL fail the build.
 
 #### Scenario: Compiler warning
-- **WHEN** code that produces a Kotlin compiler warning, for example an unused variable or a deprecated call, is compiled
+- **WHEN** code that produces a Kotlin compiler warning, for example a call to a deprecated function, is compiled
 - **THEN** the build fails
 
 #### Scenario: Lint warning

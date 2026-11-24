@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The product name is not translated. -->
+    <string name="app_name" translatable="false">Kombu</string>
+    <string name="start_title">Your recipes</string>
+    <string name="start_placeholder">Kombu is being set up. Your recipes and the cooking mode will appear here soon.</string>
+</resources>

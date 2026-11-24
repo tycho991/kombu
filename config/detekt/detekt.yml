@@ -1,0 +1,21 @@
+# detekt configuration for Kombu (design D13 of the project-scaffold change).
+# Builds on detekt's default configuration; only deviations are listed here.
+# There is no baseline: every finding must be fixed or suppressed with a reason.
+
+config:
+  validation: true
+
+ktlint:
+  active: true
+  autoCorrect: true
+
+naming:
+  FunctionNaming:
+    # Composable functions are nouns in PascalCase by Compose convention.
+    ignoreAnnotated: ['Composable']
+
+# Kombu's own rules (module :detekt-rules)
+kombu:
+  active: true
+  UnjustifiedSuppression:
+    active: true

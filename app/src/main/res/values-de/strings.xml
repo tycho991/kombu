@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_title">Deine Rezepte</string>
+    <string name="start_placeholder">Kombu wird gerade eingerichtet. Deine Rezepte und der Kochmodus erscheinen bald hier.</string>
+</resources>

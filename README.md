@@ -12,14 +12,59 @@ Kombu has no server of its own. Everything is stored in your Nextcloud and share
 
 ## Status
 
-Early planning. There is no app code yet. Development is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec); the project context lives in [`openspec/config.yaml`](openspec/config.yaml) and changes will appear under [`openspec/changes/`](openspec/changes/).
+Early development. The project scaffold is in place: a buildable Android project with its module layout, quality gates and CI, and a placeholder first screen. No recipe features yet.
+
+Development is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec). The project context lives in [`openspec/config.yaml`](openspec/config.yaml), and changes appear under [`openspec/changes/`](openspec/changes/).
 
 The first milestone (v1) covers recipes and the cooking mode. Shopping lists, meal plan and chores follow afterwards.
 
-## Requirements (planned)
+## Requirements
 
-- Android
+- Android 10 (API level 29) or later. Google Play Services are not needed.
 - A Nextcloud instance with the Cookbook app (and Calendar/Tasks for the later features)
+
+## Building
+
+You need a JDK 21 and the Android SDK. No IDE is required.
+
+1. **JDK.** With [mise](https://mise.jdx.dev/), run `mise install` in the repository; it installs the pinned Temurin JDK 21 and the OpenSpec CLI from [`mise.toml`](mise.toml). Any other JDK 21 works as well.
+2. **Android SDK.** Install the [command-line tools](https://developer.android.com/studio#command-line-tools-only) outside the repository, then accept the licenses and install the platform tools:
+
+   ```sh
+   sdkmanager --licenses
+   sdkmanager "platform-tools" "platforms;android-37.0"
+   ```
+
+   Point the build to the SDK with the `ANDROID_HOME` environment variable or a `local.properties` file containing `sdk.dir=/path/to/sdk`. `local.properties` is git-ignored.
+3. **Build and check.**
+
+   ```sh
+   ./gradlew build
+   ```
+
+   This compiles everything, runs all tests and all quality gates, and produces a debug APK under `app/build/outputs/apk/debug/`. [`CONTRIBUTING.md`](CONTRIBUTING.md) explains the gates and the other commands.
+
+### Signed release APK
+
+The release build is signed only if a `keystore.properties` file exists in the repository root. Without it, `./gradlew :app:assembleRelease` produces an unsigned APK and says so.
+
+Create a keystore once and keep it **outside** the repository, together with a backup. An app can only be updated with the key it was first signed with.
+
+```sh
+keytool -genkeypair -keystore ~/keys/kombu-release.jks -storetype PKCS12 \
+  -alias kombu -keyalg RSA -keysize 4096 -validity 10000
+```
+
+Then create `keystore.properties` in the repository root:
+
+```properties
+storeFile=/home/you/keys/kombu-release.jks
+storePassword=...
+keyAlias=kombu
+keyPassword=...
+```
+
+`keystore.properties`, `*.jks` and `*.keystore` are git-ignored. Never commit them. The signed APK is written to `app/build/outputs/apk/release/app-release.apk`.
 
 ## Language
 

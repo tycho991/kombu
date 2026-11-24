@@ -1,0 +1,72 @@
+# Versions chosen per design D2 of the project-scaffold change: the newest stable
+# release that was published at least two weeks before it was adopted.
+
+[versions]
+# SDK levels (minSdk is a fixed project decision, see openspec/config.yaml)
+minSdk = "29"
+compileSdk = "37"
+targetSdk = "37"
+
+# Build tooling
+agp = "9.5.1"
+kotlin = "2.4.21"
+lint = "32.5.1" # always AGP version + 23
+kover = "0.9.11"
+detekt = "2.0.0-alpha.6" # deliberate exception to the stable-only rule, see design D13
+dokka = "2.3.0"
+
+# AndroidX
+androidxActivity = "1.13.0"
+androidxCore = "1.19.1"
+composeBom = "2026.09.00"
+
+# Testing
+junit4 = "4.13.2"
+junitBom = "6.1.3"
+robolectric = "4.17"
+
+[libraries]
+# AndroidX and Compose
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# Testing
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+# Android Lint (custom checks in :lint-rules)
+lint-api = { module = "com.android.tools.lint:lint-api", version.ref = "lint" }
+lint-checks = { module = "com.android.tools.lint:lint-checks", version.ref = "lint" }
+lint-tests = { module = "com.android.tools.lint:lint-tests", version.ref = "lint" }
+
+# detekt (ktlint formatting rules and the API for custom rules in :detekt-rules)
+detekt-api = { module = "dev.detekt:detekt-api", version.ref = "detekt" }
+detekt-rules-ktlint-wrapper = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+detekt-test = { module = "dev.detekt:detekt-test", version.ref = "detekt" }
+
+# Gradle plugins as libraries, used by the convention plugins in build-logic
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kover-gradle-plugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+detekt-gradle-plugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
