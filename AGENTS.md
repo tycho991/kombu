@@ -2,6 +2,8 @@
 
 Kombu is developed spec-first with OpenSpec. The project context (product, fixed decisions, design rules R1–R7, module layout) is in `openspec/config.yaml`; read it before proposing or implementing anything.
 
+If a `private/` folder exists locally, it holds the maintainer's German planning documents (for example `private/SPEC.de.md`). Use them as background context, but never commit them, never quote personal details from them in code, specs or commit messages, and never move content from them into tracked files without translating and anonymizing it. The folder is git-ignored.
+
 ## Ground rules
 
 - Plan every larger feature as an OpenSpec change (`/openspec-propose`, then apply, then archive). Do not start implementation without an approved change.
