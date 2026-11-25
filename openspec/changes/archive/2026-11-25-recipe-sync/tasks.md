@@ -34,6 +34,7 @@
 
   Map `409` to `NameTaken` and `422` to `NameMissing` (new `NextcloudError` kinds), `406` to "no image", and `404` to `NotFound`. Verify with `MockWebServer` tests per endpoint for: success, `401`, `404`, `409`, `422`, `406`, `500`, broken JSON, connection loss, and the paths, methods and `Authorization` header sent.
 - [ ] 2.4 Confirm the excluded-field list against the household server. Fetch two recipes twice, with a manual script or test that is not committed and uses the developer's own credentials, and compare the raw answers. Commit anonymised copies (invented names and texts, real field shapes) as fixtures, with a test that asserts equal hashes for each pair. Adjust the constant in 2.2 if needed. Verify that the fixtures contain no server URL, account or real recipe text (R4).
+  - Deferred by the maintainer when the change was archived; the fetch script is ready in the git-ignored `private/` folder. Until then the list rests on the Cookbook source code (design D3).
 - [x] 2.5 Add the version fallback to the OCS capabilities and `CookbookVersion.isSupported` (design D9). Verify with `MockWebServer` tests:
   - `/api/version` answers;
   - `404` there, then capabilities with a version;
@@ -120,7 +121,11 @@
   - revoking the app password in the Nextcloud security settings shows "sign in again", and re-login keeps the recipes.
 
   Record the result in the commit message without server details.
-- [ ] 7.3 Push and confirm that CI is green. Verify that `openspec validate recipe-sync --strict` passes.
+  - Partly done on a Pixel 8 against the household server (Cookbook 0.11.12): the first sync showed the same recipe count as the web interface, with no conflict or upload error. A second sync sent only the version check, the stub list and image requests, no full recipe (temporary request log, not committed). Logout left no recipe row, no image file and no sync status on the device.
+  - The test found a bug: Cookbook labels every image `image/jpeg` but serves WebP or PNG bytes for some recipes, and the JPEG-only check dropped them. Fixed in a353c58 (design D8); afterwards every recipe whose image the server serves had both files on the device.
+  - Open: a recipe edited in the web interface arrives on the next sync; flight mode shows the offline problem; revoking the app password shows "sign in again", and re-login keeps the recipes.
+  - Deferred by the maintainer when the change was archived, together with 2.4; to be done before the first release to the household.
+- [x] 7.3 Push and confirm that CI is green. Verify that `openspec validate recipe-sync --strict` passes.
 
 ## Workflow follow-up
 
