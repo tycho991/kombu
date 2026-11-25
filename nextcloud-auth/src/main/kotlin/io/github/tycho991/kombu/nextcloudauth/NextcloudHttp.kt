@@ -36,9 +36,33 @@ public suspend fun <T> OkHttpClient.fetch(
     NextcloudResult.Failure(e.toNextcloudError())
 }
 
-internal fun IOException.toNextcloudError(): NextcloudError = when (this) {
-    is SSLHandshakeException, is SSLPeerUnverifiedException -> NextcloudError.CertificateRejected
-    else -> NextcloudError.Unreachable
+/**
+ * A TLS failure counts even when it is only the cause or a suppressed exception: OkHttp tries every address of a
+ * host and throws the failure of one route with the others attached, for example a refused IPv6 connection with
+ * the certificate error of the IPv4 route.
+ */
+internal fun IOException.toNextcloudError(): NextcloudError =
+    if (related().any { it is SSLHandshakeException || it is SSLPeerUnverifiedException }) {
+        NextcloudError.CertificateRejected
+    } else {
+        NextcloudError.Unreachable
+    }
+
+/** This exception, its causes and its suppressed exceptions, each visited once. */
+private fun Throwable.related(): Sequence<Throwable> {
+    val seen = mutableSetOf<Throwable>()
+    val pending = ArrayDeque(listOf(this))
+    return generateSequence {
+        while (pending.isNotEmpty()) {
+            val next = pending.removeFirst()
+            if (seen.add(next)) {
+                next.cause?.let(pending::addLast)
+                pending.addAll(next.suppressed)
+                return@generateSequence next
+            }
+        }
+        null
+    }
 }
 
 /** Decodes the body as JSON into [T], or returns `null` when it is not valid JSON of that shape. */
