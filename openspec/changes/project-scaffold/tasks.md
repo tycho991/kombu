@@ -32,7 +32,8 @@
 - [x] 5.1 Create the `app` module with application ID `io.github.tycho991.kombu`, debug suffix `.debug`, `MainActivity` (ComponentActivity, edge-to-edge, Material 3 Scaffold with dynamic color on Android 12+), and verify `./gradlew :app:assembleDebug` produces an APK
 - [x] 5.2 Add string resources for the app name, the first-screen title and the placeholder text in `values/strings.xml` (en) and `values-de/strings.xml` (de), plus the non-translatable "Kombu Debug" app name in `src/debug/res/values/`, and verify the launcher label and first screen use them
 - [x] 5.3 Add `res/resources.properties` with `unqualifiedResLocale=en`, enable `generateLocaleConfig`, set Android Lint `warningsAsErrors` and `MissingTranslation` to error, and verify a string added only to `values/` makes `./gradlew :app:lint` fail; revert afterwards
-- [ ] 5.4 Add an original adaptive vector launcher icon with a monochrome layer (R6) and verify it renders in the launcher on an emulator, including with themed icons enabled on Android 13+
+- [x] 5.4 Add an original adaptive vector launcher icon with a monochrome layer (R6) and verify it renders in the launcher on an emulator, including with themed icons enabled on Android 13+
+  - Verified on AOSP emulators: API 29 shows the adaptive icon; API 36 with themed icons enabled shows the tinted monochrome layer on the home screen (the AOSP launcher themes only home-screen icons, not the app drawer).
 - [x] 5.5 Add Robolectric Compose UI tests that render the first screen with the `en` and `de` qualifiers and assert the resource texts (design D11), and verify `./gradlew :app:testDebugUnitTest` passes and `app` meets its 70 % line threshold
 
 ## 6. Lint check for hard-coded UI text
@@ -62,6 +63,7 @@
 
 - [x] 10.1 From a fresh clone, run `./gradlew build` and verify it succeeds with no network credentials and no files outside the repository, and that coverage, detekt, lint and Dokka reports are produced
 - [ ] 10.2 Install the debug and the signed release APK side by side on an Android 10 (API 29) emulator and on a current household device, and verify both start, show the first screen in the device language, and that Android 13+ offers English and German in the per-app language setting
+  - Done on emulators, with the release APK signed by a throwaway test key: on API 29 both apps install side by side, start, and follow the system language (English, then German); on API 36 the per-app language setting lists Deutsch and English (plus the current system locale, which Android adds itself), and choosing Deutsch switches only the release app to German. Open: the check on a household device with the real release key.
 
 ## Workflow follow-up
 
