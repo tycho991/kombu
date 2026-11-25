@@ -24,17 +24,33 @@ enum class LogoutResult {
     LOCAL_ONLY,
 }
 
+/** Signing in and out, as the app uses it; [AccountRepository] is the implementation. */
+interface AccountService {
+    /** The signed-in account, or `null`. */
+    val account: Flow<NextcloudCredentials?>
+
+    /** Parses [input], checks the server and starts Login Flow v2. */
+    suspend fun startLogin(input: String): NextcloudResult<LoginSession>
+
+    /** Waits for the approval of [session], checks the account and stores the credentials. */
+    suspend fun completeLogin(
+        session: LoginSession,
+        wakeUps: ReceiveChannel<Unit>,
+    ): NextcloudResult<NextcloudCredentials>
+
+    /** Signs out; returns `null` when nobody was signed in. */
+    suspend fun logout(): LogoutResult?
+}
+
 /** Signs the user in and out and exposes the current account. */
 class AccountRepository(
     private val api: AccountApi,
     private val store: CredentialStore,
     private val revokeTimeout: Duration = REVOKE_TIMEOUT,
-) {
-    /** The signed-in account, or `null`. */
-    val account: Flow<NextcloudCredentials?> = store.credentials
+) : AccountService {
+    override val account: Flow<NextcloudCredentials?> = store.credentials
 
-    /** Parses [input], checks the server and starts Login Flow v2. */
-    suspend fun startLogin(input: String): NextcloudResult<LoginSession> =
+    override suspend fun startLogin(input: String): NextcloudResult<LoginSession> =
         when (val parsed = ServerAddress.parse(input)) {
             is ParsedAddress.Rejected -> NextcloudResult.Failure(NextcloudError.InvalidAddress(parsed.reason))
 
@@ -49,7 +65,7 @@ class AccountRepository(
      * Waits for the approval of [session], checks the account and the Cookbook app, and stores the credentials
      * only when both checks pass. When a check fails, the new app password is revoked again if possible.
      */
-    suspend fun completeLogin(
+    override suspend fun completeLogin(
         session: LoginSession,
         wakeUps: ReceiveChannel<Unit>,
     ): NextcloudResult<NextcloudCredentials> {
@@ -70,7 +86,7 @@ class AccountRepository(
      * Deletes the stored credentials, then asks the server to revoke the app password (design D12). Returns
      * `null` when nobody was signed in.
      */
-    suspend fun logout(): LogoutResult? {
+    override suspend fun logout(): LogoutResult? {
         val credentials = store.credentials.first() ?: return null
         store.clear()
         val revoked = withTimeoutOrNull(revokeTimeout) { api.revokeAppPassword(credentials) }

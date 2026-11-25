@@ -2,4 +2,42 @@
 <resources>
     <string name="start_title">Deine Rezepte</string>
     <string name="start_placeholder">Kombu wird gerade eingerichtet. Deine Rezepte und der Kochmodus erscheinen bald hier.</string>
+    <string name="start_account">Konto</string>
+
+    <!-- Anmeldung -->
+    <string name="login_title">Anmelden</string>
+    <string name="login_intro">Gib die Adresse deiner Nextcloud ein. Kombu öffnet ihre Anmeldeseite in deinem Browser.</string>
+    <string name="login_address_label">Nextcloud-Adresse</string>
+    <string name="login_sign_in">Anmelden</string>
+    <string name="login_checking">Server wird geprüft …</string>
+    <string name="login_waiting">Melde dich im Browser auf der Nextcloud-Seite an und erlaube Kombu den Zugriff. Kombu macht danach automatisch weiter.</string>
+    <string name="login_reopen">Anmeldeseite erneut öffnen</string>
+    <string name="login_cancel">Abbrechen</string>
+    <string name="login_no_browser">Es wurde keine App gefunden, die die Anmeldeseite öffnen kann. Installiere oder aktiviere einen Webbrowser.</string>
+    <string name="login_signed_out_offline">Du bist abgemeldet. Kombu konnte den Server nicht erreichen, deshalb steht sein App-Passwort noch in den Sicherheitseinstellungen deiner Nextcloud. Du kannst es dort entfernen.</string>
+    <string name="login_notice_dismiss">OK</string>
+
+    <!-- Fehler bei der Anmeldung -->
+    <string name="error_address_empty">Gib die Adresse deiner Nextcloud ein.</string>
+    <string name="error_address_cleartext">Kombu verbindet sich nur über HTTPS. Verwende eine Adresse, die mit https:// beginnt.</string>
+    <string name="error_address_invalid">Das ist keine gültige Webadresse.</string>
+    <string name="error_unreachable">Der Server ist nicht erreichbar. Prüfe die Adresse und deine Internetverbindung.</string>
+    <string name="error_certificate">Dieses Gerät vertraut dem Zertifikat des Servers nicht, deshalb verbindet sich Kombu nicht.</string>
+    <string name="error_not_nextcloud">Unter dieser Adresse wurde keine Nextcloud gefunden.</string>
+    <string name="error_maintenance">Der Server ist im Wartungsmodus. Bitte versuche es später noch einmal.</string>
+    <string name="error_login_expired">Die Anmeldung ist abgelaufen. Bitte starte sie neu.</string>
+    <string name="error_unauthorized">Die Anmeldung ist fehlgeschlagen. Bitte versuche es noch einmal.</string>
+    <string name="error_cookbook_missing">Kombu braucht die App Cookbook in Nextcloud. Bitte die Administration deiner Nextcloud, sie zu installieren und zu aktivieren.</string>
+    <string name="error_server">Der Server hat einen Fehler gemeldet (HTTP %1$d).</string>
+
+    <!-- Konto -->
+    <string name="account_title">Konto</string>
+    <string name="account_back">Zurück</string>
+    <string name="account_server">Server</string>
+    <string name="account_login_name">Benutzer</string>
+    <string name="account_sign_out">Abmelden</string>
+    <string name="logout_confirm_title">Abmelden?</string>
+    <string name="logout_confirm_text">Kombu löscht die gespeicherte Anmeldung auf diesem Gerät und entfernt sein App-Passwort aus deiner Nextcloud.</string>
+    <string name="logout_confirm">Abmelden</string>
+    <string name="logout_dismiss">Abbrechen</string>
 </resources>

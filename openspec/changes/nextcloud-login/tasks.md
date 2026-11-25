@@ -8,7 +8,7 @@
   - kotlinx.coroutines core and test;
   - AndroidX DataStore Preferences;
   - AndroidX Browser;
-  - AndroidX Lifecycle ViewModel Compose.
+  - AndroidX Lifecycle ViewModel Compose and runtime Compose.
 
   Verify that `./gradlew help` succeeds and that `checkForbiddenDependencies` passes.
 - [x] 1.2 Add the convention plugin `kombu.kotlin.serialization` to `build-logic` (design D2). Verify that a module applying it compiles a `@Serializable` class.
@@ -55,8 +55,8 @@
 
 ## 5. App: login, account and entry point
 
-- [ ] 5.1 Add the `INTERNET` permission, `network_security_config.xml` (design D10), `KombuApplication` and the `AppContainer` with the shared `OkHttpClient` (design D2, D11). Verify that the merged manifest contains the permission and the config, and that the existing tests still pass.
-- [ ] 5.2 Implement `LoginViewModel` with the polling and `SavedStateHandle` restore from design D5. Verify with `kotlinx-coroutines-test` tests for:
+- [x] 5.1 Add the `INTERNET` permission, `network_security_config.xml` (design D10), `KombuApplication` and the `AppContainer` with the shared `OkHttpClient` (design D2, D11). Verify that the merged manifest contains the permission and the config, and that the existing tests still pass.
+- [x] 5.2 Implement `LoginViewModel` with the polling and `SavedStateHandle` restore from design D5. Verify with `kotlinx-coroutines-test` tests for:
   - address error;
   - each server-check error;
   - waiting, then success;
@@ -64,9 +64,9 @@
   - timeout;
   - Cookbook missing;
   - restore after process death, which keeps polling with the saved token.
-- [ ] 5.3 Implement the login screen: address field, sign-in button, waiting state with "open login page again" and "cancel", and one message for each error kind. Open the login page through a Custom Tab with a fallback (design D6). Add all texts to `values/` and `values-de/`. Verify with Robolectric Compose tests that each state and error message is shown in English and German, and that the Lint check `HardcodedComposeText` passes.
-- [ ] 5.4 Implement the entry point (loading, then the login screen or the start screen), the account action on the start screen, and the account screen with server, login name, logout confirmation and the offline-logout notice. Add the texts in English and German. Verify with Robolectric tests for both account states, a cancelled logout, an online logout, and an offline logout with the notice.
-- [ ] 5.5 Verify that `./gradlew build` passes with `app` at 70 % lines or higher, and that detekt, Lint and the compiler report no warnings.
+- [x] 5.3 Implement the login screen: address field, sign-in button, waiting state with "open login page again" and "cancel", and one message for each error kind. Open the login page through a Custom Tab with a fallback (design D6). Add all texts to `values/` and `values-de/`. Verify with Robolectric Compose tests that each state and error message is shown in English and German, and that the Lint check `HardcodedComposeText` passes.
+- [x] 5.4 Implement the entry point (loading, then the login screen or the start screen), the account action on the start screen, and the account screen with server, login name, logout confirmation and the offline-logout notice. Add the texts in English and German. Verify with Robolectric tests for both account states, a cancelled logout, an online logout, and an offline logout with the notice.
+- [x] 5.5 Verify that `./gradlew build` passes with `app` at 70 % lines or higher, and that detekt, Lint and the compiler report no warnings.
 
 ## 6. Documentation and integration check
 

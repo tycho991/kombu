@@ -2,11 +2,15 @@ package io.github.tycho991.kombu.ui.start
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,8 +24,18 @@ private val ItemSpacing = 12.dp
 
 /** First screen of the app until the recipe list exists. All texts come from string resources. */
 @Composable
-fun StartScreen(modifier: Modifier = Modifier) {
-    Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
+fun StartScreen(modifier: Modifier = Modifier, onOpenAccount: () -> Unit = {}) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            Row(
+                modifier = Modifier.fillMaxWidth().statusBarsPadding(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onOpenAccount) { Text(stringResource(R.string.start_account)) }
+            }
+        },
+    ) { innerPadding ->
         Column(
             modifier =
             Modifier

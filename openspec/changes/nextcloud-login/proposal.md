@@ -66,6 +66,6 @@ Out of scope:
   - kotlinx.coroutines, including the test artifact;
   - AndroidX DataStore (Preferences);
   - AndroidX Browser (Custom Tabs, which works with any browser that supports them, for example Firefox);
-  - AndroidX Lifecycle ViewModel for Compose.
+  - AndroidX Lifecycle ViewModel and runtime for Compose.
 - **Quality gates:** unchanged. The new module follows the thresholds for pure modules (90 % lines, 80 % branches). `data` and `app` keep theirs.
 - **Server side:** each login creates one app password, which appears under the device name "Kombu" in the user's Nextcloud security settings. Logout removes it again.

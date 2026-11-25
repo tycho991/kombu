@@ -4,4 +4,42 @@
     <string name="app_name" translatable="false">Kombu</string>
     <string name="start_title">Your recipes</string>
     <string name="start_placeholder">Kombu is being set up. Your recipes and the cooking mode will appear here soon.</string>
+    <string name="start_account">Account</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Sign in</string>
+    <string name="login_intro">Enter the address of your Nextcloud. Kombu opens its login page in your browser.</string>
+    <string name="login_address_label">Nextcloud address</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_checking">Checking the server…</string>
+    <string name="login_waiting">Sign in on the Nextcloud page in your browser and allow access for Kombu. Kombu continues automatically.</string>
+    <string name="login_reopen">Open login page again</string>
+    <string name="login_cancel">Cancel</string>
+    <string name="login_no_browser">No app was found that can open the login page. Install or enable a web browser.</string>
+    <string name="login_signed_out_offline">You are signed out. Kombu could not reach the server, so its app password is still listed in the security settings of your Nextcloud. You can remove it there.</string>
+    <string name="login_notice_dismiss">OK</string>
+
+    <!-- Errors while signing in -->
+    <string name="error_address_empty">Enter the address of your Nextcloud.</string>
+    <string name="error_address_cleartext">Kombu only connects over HTTPS. Use an address that starts with https://.</string>
+    <string name="error_address_invalid">This is not a valid web address.</string>
+    <string name="error_unreachable">The server cannot be reached. Check the address and your internet connection.</string>
+    <string name="error_certificate">This device does not trust the certificate of the server, so Kombu does not connect.</string>
+    <string name="error_not_nextcloud">No Nextcloud was found at this address.</string>
+    <string name="error_maintenance">The server is in maintenance mode. Please try again later.</string>
+    <string name="error_login_expired">The login timed out. Please start again.</string>
+    <string name="error_unauthorized">The login failed. Please try again.</string>
+    <string name="error_cookbook_missing">Kombu needs the Cookbook app in Nextcloud. Ask the administrator of your Nextcloud to install and enable it.</string>
+    <string name="error_server">The server reported an error (HTTP %1$d).</string>
+
+    <!-- Account screen -->
+    <string name="account_title">Account</string>
+    <string name="account_back">Back</string>
+    <string name="account_server">Server</string>
+    <string name="account_login_name">User</string>
+    <string name="account_sign_out">Sign out</string>
+    <string name="logout_confirm_title">Sign out?</string>
+    <string name="logout_confirm_text">Kombu deletes the stored login on this device and removes its app password from your Nextcloud.</string>
+    <string name="logout_confirm">Sign out</string>
+    <string name="logout_dismiss">Cancel</string>
 </resources>
