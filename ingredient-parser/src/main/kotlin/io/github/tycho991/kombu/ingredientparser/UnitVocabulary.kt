@@ -85,7 +85,7 @@ internal object GermanVocabulary {
             STALK to listOf("Stängel", "Stiel", "Stiele"),
             DASH to listOf("Spritzer", "Schuss"),
             BULB to listOf("Knolle", "Knollen"),
-            HANDFUL to listOf("Handvoll", "Hand voll"),
+            HANDFUL to listOf("Handvoll", "Hand voll", "Hand", "Hände"),
             TUB to listOf("Becher"),
             SCOOP to listOf("Kugel", "Kugeln"),
         )

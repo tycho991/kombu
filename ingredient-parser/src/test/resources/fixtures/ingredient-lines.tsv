@@ -1,0 +1,145 @@
+# Real ingredient lines from a household recipe collection, used as regression fixtures for the
+# ingredient parser (spec ingredient-parsing, "Regression against real lines"). Single lines only:
+# no recipe names, URLs, people or stores. Expected values follow the spec, not the parser output.
+# Columns (tab-separated): original, kind, min, max, unit, name (heading text for headings), notes
+# (separated by |). Empty cells mean "none".
+original	kind	min	max	unit	name	notes
+Für die Schokoladen-Schicht:	heading				Für die Schokoladen-Schicht	
+Für die Karamellschicht:	heading				Für die Karamellschicht	
+Für die Teigtaschen:	heading				Für die Teigtaschen	
+Für die Füllung:	heading				Für die Füllung	
+Für den Teig:	heading				Für den Teig	
+Zum Servieren: Limetten-Viertel (Zucker, Fisch oder Soja Sauce, geröstete Erdnüsse, Chili-Pulver)	unmeasured					
+Parmesan (optional)	unmeasured					
+Scheiben geschnitten), 2 Sternanis, 1	unmeasured					
+Pfeffer (frisch gemahlen)	unmeasured					
+Knoblauchzehe(n) , 2 - 3	unmeasured					
+poivre	unmeasured					
+1 jus de citron	measured	1	1		jus de citron	
+8-10 morceaux de poulet	measured	8	10		morceaux de poulet	
+Spaghetti	unmeasured					
+Fett für die Form	unmeasured					
+etwas Brühe , gekörnte	unmeasured					
+Petersilie (fein gehackt, zur Deko)	unmeasured					
+Zitronensaft	unmeasured					
+Salt , to taste	unmeasured					
+Grenadine Sirup	unmeasured					
+Pfeffer	unmeasured					
+getrocknete Orangenscheibe plus Zestenabrieb	unmeasured					
+Salz und Pfeffer	unmeasured					
+Mark einer Vanilleschote + Schote	unmeasured					
+Schwarzkümmel	unmeasured					
+Korianderpulver	unmeasured					
+fine salt to taste	unmeasured					
+400g gesüßte Kondensmilch	measured	400	400	GRAM	gesüßte Kondensmilch	
+250g Rohrohrzucker	measured	250	250	GRAM	Rohrohrzucker	
+50g weiche Butter	measured	50	50	GRAM	weiche Butter	
+200g Hähnchen	measured	200	200	GRAM	Hähnchen	
+2EL Mais	measured	2	2	TABLESPOON	Mais	
+1EL Agavendicksaft	measured	1	1	TABLESPOON	Agavendicksaft	
+500g Nudeln	measured	500	500	GRAM	Nudeln	
+50mL Karamell-Sirup (optional)	measured	50	50	MILLILITER	Karamell-Sirup	optional
+250g Rucola	measured	250	250	GRAM	Rucola	
+80g Zucker	measured	80	80	GRAM	Zucker	
+100g weiche Butter	measured	100	100	GRAM	weiche Butter	
+100g Frischkäse	measured	100	100	GRAM	Frischkäse	
+2-3 Tl Bockshornkleeblätter	measured	2	3	TEASPOON	Bockshornkleeblätter	
+2-3 Lorbeer-Blätter	measured	2	3		Lorbeer-Blätter	
+2-3 Sternanis	measured	2	3		Sternanis	
+60-80 g Rinderhack (Schweine, oder Geflügel, fein gehackt oder Tofu)	measured	60	80	GRAM	Rinderhack	Schweine, oder Geflügel, fein gehackt oder Tofu
+2-3 EL Öl (Kokosöl ist super)	measured	2	3	TABLESPOON	Öl	Kokosöl ist super
+5-6 pürierte Tomaten	measured	5	6		pürierte Tomaten	
+2-3 EL (rotes) Pesto	measured	2	3	TABLESPOON	Pesto	rotes
+3-4 Stängel frischer Koriander	measured	3	4	STALK	frischer Koriander	
+2-3 Stücke Zimtrinde	measured	2	3	PIECE	Zimtrinde	
+1-2 EL Meerrettich (Glas) - o(ptional)	measured	1	2	TABLESPOON	Meerrettich - o	Glas|ptional
+1 g Chiliflocken (ca. ½ TL), optional	measured	1	1	GRAM	Chiliflocken	ca. ½ TL|optional
+½ TL Rohrohrzucker	measured	1/2	1/2	TEASPOON	Rohrohrzucker	
+½ Bio-Zitrone (die Schale)	measured	1/2	1/2		Bio-Zitrone	die Schale
+½ weisse Zwiebel	measured	1/2	1/2		weisse Zwiebel	
+½ Teelöffel Smen	measured	1/2	1/2	TEASPOON	Smen	
+2 ½ EL Zucker	measured	5/2	5/2	TABLESPOON	Zucker	
+1/2 TL weißer Pfeffer	measured	1/2	1/2	TEASPOON	weißer Pfeffer	
+1/4 Teelöffel Salz	measured	1/4	1/4	TEASPOON	Salz	
+1/2 cup Yellow Moong Dal (Split)	measured	1/2	1/2	CUP	Yellow Moong Dal	Split
+1/2 TL geröstetes Sesamöl	measured	1/2	1/2	TEASPOON	geröstetes Sesamöl	
+1/2 Stängel Zitronengras (sehr fein gehackt)	measured	1/2	1/2	STALK	Zitronengras	sehr fein gehackt
+1/2 TL Weißer Pfeffer	measured	1/2	1/2	TEASPOON	Weißer Pfeffer	
+1/4 TL Salz	measured	1/4	1/4	TEASPOON	Salz	
+1/4 TL Fünf-Gewürze-Pulver	measured	1/4	1/4	TEASPOON	Fünf-Gewürze-Pulver	
+0.25 cup cornstarch	measured	1/4	1/4	CUP	cornstarch	
+1.5 EL Tomatenmark	measured	3/2	3/2	TABLESPOON	Tomatenmark	
+0.5 Eiweiß	measured	1/2	1/2		Eiweiß	
+0.5 Teelöffel Pfeffer	measured	1/2	1/2	TEASPOON	Pfeffer	
+0.5 Gurke	measured	1/2	1/2		Gurke	
+1,5 EL Speisestärke	measured	3/2	3/2	TABLESPOON	Speisestärke	
+0.25 TL Backpulver	measured	1/4	1/4	TEASPOON	Backpulver	
+0,33 Teelöffel gemahlener schwarzer Pfeffer (1,65 g)	measured	33/100	33/100	TEASPOON	gemahlener schwarzer Pfeffer	1,65 g
+1 Zwiebel(n) (35 g)	measured	1	1		Zwiebel(n)	35 g
+1 Knoblauchzehe(n)	measured	1	1		Knoblauchzehe(n)	
+40 g getrocknete Tomate(n)	measured	40	40	GRAM	getrocknete Tomate(n)	
+1 Ei(er)	measured	1	1		Ei(er)	
+2 mittelgroße(s) Schalotte(n)	measured	2	2		mittelgroße(s) Schalotte(n)	
+1 großes Ei(er) , leicht geschlagen	measured	1	1		großes Ei(er)	leicht geschlagen
+1 Mango(s) , frische	measured	1	1		Mango(s)	frische
+1 mittelgroße(s) Zitrone(n)	measured	1	1		mittelgroße(s) Zitrone(n)	
+2 Teelöffel getrocknete italienische Kräuter (4 g)	measured	2	2	TEASPOON	getrocknete italienische Kräuter	4 g
+6 Blätter Basilikum	measured	6	6	LEAF	Basilikum	
+1 Teelöffel Natron	measured	1	1	TEASPOON	Natron	
+1/2 Esslöffel Sesamöl	measured	1/2	1/2	TABLESPOON	Sesamöl	
+2 Esslöffel Limettensaft	measured	2	2	TABLESPOON	Limettensaft	
+1 Stück frischer Ingwer (ca. 1 cm)	measured	1	1	PIECE	frischer Ingwer	ca. 1 cm
+3 Esslöffel Kakaopulver	measured	3	3	TABLESPOON	Kakaopulver	
+2 Teelöffel Honig	measured	2	2	TEASPOON	Honig	
+1 Pck. Vanille-Puddingpulver (für 1/2l Milch)	measured	1	1	PACKET	Vanille-Puddingpulver	für 1/2l Milch
+1 Spritzer Angostura Bitter	measured	1	1	DASH	Angostura Bitter	
+4 Scheiben Mozzarella	measured	4	4	SLICE	Mozzarella	
+2 Dosen stückige Tomaten (= 800 ml)	measured	2	2	CAN	stückige Tomaten	= 800 ml
+1/2 Bund Thymian	measured	1/2	1/2	BUNCH	Thymian	
+5 cloves Garlic , finely chopped	measured	5	5	CLOVE	Garlic	finely chopped
+1 Dose weiße Bohnen	measured	1	1	CAN	weiße Bohnen	
+1 Stängel Oregano	measured	1	1	STALK	Oregano	
+2 Zehe(n) Knoblauch (4 g)	measured	2	2	CLOVE	Knoblauch	4 g
+1 Stange Staudensellerie	measured	1	1	STICK	Staudensellerie	
+1 Bund Lauchzwiebeln	measured	1	1	BUNCH	Lauchzwiebeln	
+1 Zehe Knoblauch	measured	1	1	CLOVE	Knoblauch	
+2 Prisen Muskatnuss	measured	2	2	PINCH	Muskatnuss	
+1 Prise(n) Salz	measured	1	1	PINCH	Salz	
+2 tablespoons dry potato flakes	measured	2	2	TABLESPOON	dry potato flakes	
+0.5 cup all-purpose flour	measured	1/2	1/2	CUP	all-purpose flour	
+150 grams Spinach Leaves (Palak) , finely chopped	measured	150	150	GRAM	Spinach Leaves	Palak|finely chopped
+2 cups panko bread crumbs, or as needed	measured	2	2	CUP	panko bread crumbs	or as needed
+1/2 teaspoon Red Chilli powder	measured	1/2	1/2	TEASPOON	Red Chilli powder	
+2 cups vegetable oil for frying	measured	2	2	CUP	vegetable oil for frying	
+1 teaspoon Oil	measured	1	1	TEASPOON	Oil	
+0.125 teaspoon cayenne pepper, or to taste	measured	1/8	1/8	TEASPOON	cayenne pepper	or to taste
+1 teaspoon Cumin powder (Jeera)	measured	1	1	TEASPOON	Cumin powder	Jeera
+1 teaspoon Ghee	measured	1	1	TEASPOON	Ghee	
+2 Schalotten (sehr fein gewürfelt)	measured	2	2		Schalotten	sehr fein gewürfelt
+3 rote Paprika oder Paprika aus dem Glas (ca. 350 g)	measured	3	3		rote Paprika oder Paprika aus dem Glas	ca. 350 g
+500 g Paneer (Hüttenkäse)	measured	500	500	GRAM	Paneer	Hüttenkäse
+5 EL neutrales Öl (Sonnenblume oder Raps)	measured	5	5	TABLESPOON	neutrales Öl	Sonnenblume oder Raps
+180 g Kürbis / Süßkartoffel (in 1 cm Würfel gewürfelt)	measured	180	180	GRAM	Kürbis / Süßkartoffel	in 1 cm Würfel gewürfelt
+2 TL vegane Butter (Zimmertemperatur)	measured	2	2	TEASPOON	vegane Butter	Zimmertemperatur
+200 Gramm Fleisch vom Rind,Lamm oder Huhn	measured	200	200	GRAM	Fleisch vom Rind	Lamm oder Huhn
+1 kleine Zwiebel oder 2 Schalotten (fein gewürfelt)	measured	1	1		kleine Zwiebel oder 2 Schalotten	fein gewürfelt
+1 TL Basilikum, getrocknet	measured	1	1	TEASPOON	Basilikum	getrocknet
+1 Bio-Zitrone (abrieb)	measured	1	1		Bio-Zitrone	abrieb
+400 g Aubergine (ca. 1 große)	measured	400	400	GRAM	Aubergine	ca. 1 große
+4 Lachsfilet ( (a 150 g))	measured	4	4		Lachsfilet	(a 150 g)
+1 rote Paprika	measured	1	1		rote Paprika	
+1-2 frische rote Chili	measured	1	2		frische rote Chili	
+1 mittlere Zwiebel (fein gehackt)	measured	1	1		mittlere Zwiebel	fein gehackt
+1 Fenchel-Knolle	measured	1	1		Fenchel-Knolle	
+8 Minzblätter	measured	8	8		Minzblätter	
+1 Knoblauchzehe (in feine Scheiben geschnitten)	measured	1	1		Knoblauchzehe	in feine Scheiben geschnitten
+3 Tomaten	measured	3	3		Tomaten	
+3-4 Knoblauchzehen (für 2 TL Knoblauchpaste)	measured	3	4		Knoblauchzehen	für 2 TL Knoblauchpaste
+1 weiße Zwiebel	measured	1	1		weiße Zwiebel	
+4 Knoblauchzehen	measured	4	4		Knoblauchzehen	
+4 Frühlingszwiebeln	measured	4	4		Frühlingszwiebeln	
+2 Paprika	measured	2	2		Paprika	
+ca. 400ml Rotwein	measured	400	400	MILLILITER	Rotwein	
+Cayennepfeffer	unmeasured					
+Etwas Salz	unmeasured					
+2 Hände Basilikum, ca 15g	measured	2	2	HANDFUL	Basilikum	ca 15g

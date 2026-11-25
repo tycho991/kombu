@@ -123,6 +123,14 @@ class UnitVocabularyTest {
         assertEquals(unit, UnitVocabulary.find(word))
     }
 
+    // Found by the real-line fixtures: "2 Hände Basilikum" means two handfuls.
+    @Test
+    fun `hand and hands are handfuls`() {
+        assertEquals(IngredientUnit.HANDFUL, UnitVocabulary.find("Hand"))
+        assertEquals(IngredientUnit.HANDFUL, UnitVocabulary.find("Hände"))
+        assertEquals(IngredientUnit.HANDFUL, UnitVocabulary.find("Haende"))
+    }
+
     @Test
     fun `knows units of two words`() {
         assertEquals(IngredientUnit.DOSING_CUP, UnitVocabulary.find("measuring cup"))

@@ -36,13 +36,13 @@
 
 ## 5. Real-line fixtures
 
-- [ ] 5.1 Select about 120 lines from the spike export in `private/spike/export.json` (design D8):
+- [x] 5.1 Select about 120 lines from the spike export in `private/spike/export.json` (design D8):
   - cover every form: units in both languages, glued units, ranges, fractions, decimal comma, plural markers, notes, headings, unmeasured lines and broken fragments;
   - remove duplicates;
   - drop lines with person names, store names or URLs.
 
   Write `src/test/resources/fixtures/ingredient-lines.tsv` with hand-written expected values. Verify that the file has at least 100 lines, and that a search finds no URL, no recipe name from the export and no store name.
-- [ ] 5.2 Add the parameterized fixture test with `@CsvFileSource`. Fix parser or vocabulary gaps it reveals; each fix gets a focused unit test of its own. Verify that every fixture passes.
+- [x] 5.2 Add the parameterized fixture test with `@CsvFileSource`. Fix parser or vocabulary gaps it reveals; each fix gets a focused unit test of its own. Verify that every fixture passes.
 
 ## 6. Quality gates and integration
 
