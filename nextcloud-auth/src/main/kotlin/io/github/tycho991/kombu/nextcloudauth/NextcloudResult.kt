@@ -44,6 +44,12 @@ public sealed interface NextcloudError {
     /** The Cookbook app is not installed or not enabled for the account. */
     public data object CookbookMissing : NextcloudError
 
+    /** The Cookbook app is older than Kombu supports; [version] is the version it reports, for example `0.10.2`. */
+    public data class CookbookTooOld(
+        /** The installed Cookbook version as text. */
+        val version: String,
+    ) : NextcloudError
+
     /** The requested object, for example a recipe, does not exist on the server (HTTP 404). */
     public data object NotFound : NextcloudError
 

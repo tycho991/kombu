@@ -126,6 +126,26 @@ class AccountRepositoryTest {
     }
 
     @Test
+    fun rejectsATooOldCookbookAndRevokesTheNewAppPassword() = runTest {
+        api.cookbook = NextcloudResult.Success(CookbookVersion(listOf(0, 10, 2)))
+
+        assertEquals(
+            NextcloudResult.Failure(NextcloudError.CookbookTooOld("0.10.2")),
+            repository.completeLogin(session, Channel()),
+        )
+        assertNull(repository.account.first())
+        assertEquals(listOf("awaitApproval", "verifyAccount", "checkCookbook", "revokeAppPassword"), api.calls)
+    }
+
+    @Test
+    fun acceptsTheOldestSupportedCookbook() = runTest {
+        api.cookbook = NextcloudResult.Success(CookbookVersion(listOf(0, 10, 3)))
+
+        assertEquals(NextcloudResult.Success(credentials), repository.completeLogin(session, Channel()))
+        assertEquals(credentials, repository.account.first())
+    }
+
+    @Test
     fun logoutRevokesTheAppPassword() = runTest {
         store.save(credentials)
 

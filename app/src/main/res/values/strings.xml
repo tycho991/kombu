@@ -30,6 +30,7 @@
     <string name="error_login_expired">The login timed out. Please start again.</string>
     <string name="error_unauthorized">The login failed. Please try again.</string>
     <string name="error_cookbook_missing">Kombu needs the Cookbook app in Nextcloud. Ask the administrator of your Nextcloud to install and enable it.</string>
+    <string name="error_cookbook_too_old">Kombu needs Cookbook %2$s or newer, but this Nextcloud has Cookbook %1$s. Ask the administrator of your Nextcloud to update it.</string>
     <string name="error_not_found">The recipe no longer exists on the server.</string>
     <string name="error_name_taken">Another recipe on the server already has this name.</string>
     <string name="error_name_missing">The recipe needs a name.</string>

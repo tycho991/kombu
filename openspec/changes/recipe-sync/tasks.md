@@ -45,7 +45,7 @@
 
 ## 3. Login version check and logout (`data`, `app`)
 
-- [ ] 3.1 Add `NextcloudError.CookbookTooOld(version)`. Make the login account check reject unsupported versions and revoke the new app password (spec `nextcloud-account`, "Account check after login"). Add the error message in English and German, naming the installed version and 0.10.3. Verify with `AccountRepository` tests (version too old: nothing stored, revocation called) and a login screen test in both languages.
+- [x] 3.1 Add `NextcloudError.CookbookTooOld(version)`. Make the login account check reject unsupported versions and revoke the new app password (spec `nextcloud-account`, "Account check after login"). Add the error message in English and German, naming the installed version and 0.10.3. Verify with `AccountRepository` tests (version too old: nothing stored, revocation called) and a login screen test in both languages.
 
 ## 4. Local store (`data`)
 

@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.tycho991.kombu.R
+import io.github.tycho991.kombu.cookbookclient.CookbookVersion
 import io.github.tycho991.kombu.nextcloudauth.AddressError
 import io.github.tycho991.kombu.nextcloudauth.NextcloudError
 
@@ -11,6 +12,10 @@ import io.github.tycho991.kombu.nextcloudauth.NextcloudError
 @Composable
 fun NextcloudError.message(): String = when (this) {
     is NextcloudError.ServerError -> stringResource(R.string.error_server, statusCode)
+
+    is NextcloudError.CookbookTooOld ->
+        stringResource(R.string.error_cookbook_too_old, version, CookbookVersion.MINIMUM.toString())
+
     else -> stringResource(messageResource())
 }
 
@@ -25,6 +30,7 @@ private fun NextcloudError.messageResource(): Int = when (this) {
     NextcloudError.LoginExpired -> R.string.error_login_expired
     NextcloudError.Unauthorized -> R.string.error_unauthorized
     NextcloudError.CookbookMissing -> R.string.error_cookbook_missing
+    is NextcloudError.CookbookTooOld -> R.string.error_cookbook_too_old
     NextcloudError.NotFound -> R.string.error_not_found
     NextcloudError.NameTaken -> R.string.error_name_taken
     NextcloudError.NameMissing -> R.string.error_name_missing

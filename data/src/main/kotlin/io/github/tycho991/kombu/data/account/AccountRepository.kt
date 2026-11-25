@@ -62,8 +62,9 @@ class AccountRepository(
         }
 
     /**
-     * Waits for the approval of [session], checks the account and the Cookbook app, and stores the credentials
-     * only when both checks pass. When a check fails, the new app password is revoked again if possible.
+     * Waits for the approval of [session], checks the account and the Cookbook app (0.10.3 or newer), and
+     * stores the credentials only when both checks pass. When a check fails, the new app password is revoked
+     * again if possible.
      */
     override suspend fun completeLogin(
         session: LoginSession,
@@ -99,7 +100,16 @@ class AccountRepository(
     private suspend fun checkAccount(credentials: NextcloudCredentials): NextcloudResult.Failure? {
         val account = api.verifyAccount(credentials)
         if (account is NextcloudResult.Failure) return account
-        return api.checkCookbook(credentials) as? NextcloudResult.Failure
+        return when (val cookbook = api.checkCookbook(credentials)) {
+            is NextcloudResult.Failure -> cookbook
+
+            is NextcloudResult.Success ->
+                if (cookbook.value.isSupported) {
+                    null
+                } else {
+                    NextcloudResult.Failure(NextcloudError.CookbookTooOld(cookbook.value.toString()))
+                }
+        }
     }
 
     private suspend fun revokeQuietly(credentials: NextcloudCredentials) {
