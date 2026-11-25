@@ -11,7 +11,7 @@
 
 ## 3. Units and vocabularies
 
-- [ ] 3.1 Implement `IngredientUnit`, the key normalisation (design D3) and the German and English vocabularies (design D4), with upstream words, the added kitchen units, and the spike spellings. Do not include size words. Verify with tests:
+- [x] 3.1 Implement `IngredientUnit`, the key normalisation (design D3) and the German and English vocabularies (design D4), with upstream words, the added kitchen units, and the spike spellings. Do not include size words. Verify with tests:
   - every German kitchen unit from the spec;
   - umlaut and ASCII forms;
   - case-insensitivity, plus the exact `T`/`t` rule;
