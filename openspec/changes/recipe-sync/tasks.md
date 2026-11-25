@@ -110,7 +110,7 @@
 
 ## 7. Documentation and verification
 
-- [ ] 7.1 Update `README.md` (what syncs and what does not, including image upload) and `CONTRIBUTING.md` (Room schema files and how to update them). Verify that `./gradlew build` passes locally with zero detekt and lint findings and no new baseline. Verify that the aggregated Dokka site lists the new public API of `cookbook-client`.
+- [x] 7.1 Update `README.md` (what syncs and what does not, including image upload) and `CONTRIBUTING.md` (Room schema files and how to update them). Verify that `./gradlew build` passes locally with zero detekt and lint findings and no new baseline. Verify that the aggregated Dokka site lists the new public API of `cookbook-client`.
 - [ ] 7.2 Test on a device against the household server (design D15, manual). Check that:
   - the first sync shows the same recipe count as the Cookbook web interface;
   - the image files exist for the recipes with images;

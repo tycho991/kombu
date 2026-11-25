@@ -12,7 +12,7 @@ Kombu has no server of its own. Everything is stored in your Nextcloud and share
 
 ## Status
 
-Early development. Kombu can sign in to a Nextcloud and sign out again; the start screen is still a placeholder. No recipe features yet.
+Early development. Kombu can sign in to a Nextcloud, keeps a complete offline copy of your Cookbook recipes and shows the sync status on its start screen. The recipe list, the recipe view and the editor come next.
 
 Development is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec). The project context lives in [`openspec/config.yaml`](openspec/config.yaml), and changes appear under [`openspec/changes/`](openspec/changes/).
 
@@ -32,6 +32,21 @@ The first milestone (v1) covers recipes and the cooking mode. Shopping lists, me
 3. Return to Kombu. It continues on its own once access is granted.
 
 Kombu never sees your Nextcloud password. Nextcloud creates an app password for Kombu instead, which you find under the name "Kombu" in the security settings of your Nextcloud. Kombu stores it encrypted on the device and leaves it out of backups. Signing out in Kombu removes the app password from your Nextcloud again; if the server cannot be reached at that moment, you can remove it in the security settings yourself.
+
+## Recipes on the device
+
+After signing in, Kombu downloads every recipe of your Cookbook, including its image (full size and thumbnail), and keeps the copy up to date: when the app starts, shortly after a change in Kombu, when you tap "Sync now", and about every hour while a network is available. Reading a recipe never needs the network.
+
+- **What syncs:** every recipe with all its fields, also the ones Kombu does not show yet. Kombu changes only the fields you edit and keeps every other field as it is.
+- **Offline changes:** recipes created, changed or deleted in Kombu are stored at once and uploaded on the next sync.
+- **Conflicts:** before Kombu uploads a change, it checks whether the recipe changed in your Nextcloud since the last sync. If it did, Kombu uploads nothing and keeps both versions until you decide. Kombu never overwrites a change silently.
+- **Images are download-only.** The Cookbook API cannot receive image files, so an image you want for a recipe must be set in the Cookbook web interface (or as an image URL in the recipe).
+- **Not synced:** categories and keywords as separate objects (renaming a category), and anything outside the Cookbook app.
+- **Signing out** deletes the recipe copy on the device, after telling you how many changes are not uploaded yet. Your recipes stay in your Nextcloud.
+
+If Nextcloud stops accepting Kombu's app password (for example because you removed it in the security settings), the start screen asks you to sign in again. Signing in again to the same account keeps all recipes and changes on the device.
+
+Kombu supports Cookbook 0.10.3 or newer. The recipe copy is stored in the app's private storage and is left out of backups and device transfers; after a restore, Kombu downloads the recipes again.
 
 ## Building
 

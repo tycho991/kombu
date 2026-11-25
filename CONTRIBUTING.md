@@ -52,6 +52,19 @@ The gates are specified in the `code-quality`, `build-system` and `localization`
 - Compose UI is tested on the JVM with Robolectric (`app/src/test/`). Check texts per language with `@Config(qualifiers = "de")`.
 - Behaviour that needs a real device or emulator is named in the change's design as part of its test strategy.
 
+## Database schema
+
+The recipe database (`data`, Room) exports its schema to [`data/schemas/`](data/schemas/), and the files are checked in. A schema test (`RecipeDatabaseTest`) compares the database with the exported version.
+
+To change the schema:
+
+1. Change the entities and raise the `version` in `KombuDatabase`.
+2. Build once (`./gradlew :data:assembleDebug`); Room writes the new `<version>.json` next to the old ones.
+3. Add a migration and a test with `MigrationTestHelper` that migrates a database from the previous version and checks that pending local changes survive.
+4. Commit the new schema file together with the change.
+
+Never add a destructive migration fallback: the database holds changes that are not on the server yet.
+
 ## Suppressing a finding
 
 Fix the finding if you can. If a suppression is the right call, put the reason directly above it:
