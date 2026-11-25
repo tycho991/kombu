@@ -56,6 +56,8 @@ HTTP runs on OkHttp 5. Suspending calls use `okhttp-coroutines`, and JSON is par
 
 Every module that uses kotlinx.serialization gets the Kotlin serialization compiler plugin through a new convention plugin `kombu.kotlin.serialization` in `build-logic`. Its version comes from the Kotlin version in the catalog.
 
+Classes annotated with `@Serializable` are data transfer types without own logic. Their constructors and serializers are generated, so Kover excludes them like other generated code (spec `code-quality`, "Generated code excluded"); `CONTRIBUTING.md` states the rule.
+
 The clients receive an `OkHttpClient` from outside, which keeps them testable with `MockWebServer`. The app builds one shared client with these settings:
 
 - connect timeout 15 s, read timeout 30 s;

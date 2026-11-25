@@ -2,7 +2,7 @@
 
 ## 1. Build setup
 
-- [ ] 1.1 Add the new libraries to `gradle/libs.versions.toml`. Each must be a stable release at least two weeks old, and its license (Apache-2.0) and freedom from Google Play Services must be confirmed:
+- [x] 1.1 Add the new libraries to `gradle/libs.versions.toml`. Each must be a stable release at least two weeks old, and its license (Apache-2.0) and freedom from Google Play Services must be confirmed:
   - OkHttp with `okhttp-coroutines`, `mockwebserver3` and `okhttp-tls`;
   - kotlinx.serialization JSON;
   - kotlinx.coroutines core and test;
@@ -11,12 +11,12 @@
   - AndroidX Lifecycle ViewModel Compose.
 
   Verify that `./gradlew help` succeeds and that `checkForbiddenDependencies` passes.
-- [ ] 1.2 Add the convention plugin `kombu.kotlin.serialization` to `build-logic` (design D2). Verify that a module applying it compiles a `@Serializable` class.
-- [ ] 1.3 Create the pure module `nextcloud-auth` with `Module.md`, register it as PURE in `ModuleLayer.kt`, and include it in `settings.gradle.kts` and the Dokka aggregation. Update the `cookbook-client` `Module.md` (design D1). Verify that `./gradlew :nextcloud-auth:check` runs, and that the aggregated Dokka site lists the module.
+- [x] 1.2 Add the convention plugin `kombu.kotlin.serialization` to `build-logic` (design D2). Verify that a module applying it compiles a `@Serializable` class.
+- [x] 1.3 Create the pure module `nextcloud-auth` with `Module.md`, register it as PURE in `ModuleLayer.kt`, and include it in `settings.gradle.kts` and the Dokka aggregation. Update the `cookbook-client` `Module.md` (design D1). Verify that `./gradlew :nextcloud-auth:check` runs, and that the aggregated Dokka site lists the module.
 
 ## 2. Nextcloud client (`nextcloud-auth`)
 
-- [ ] 2.1 Implement `NextcloudCredentials` with a `toString()` that hides the password. Implement `ServerAddress.parse` with the rules from design D3. Add table tests for:
+- [x] 2.1 Implement `NextcloudCredentials` with a `toString()` that hides the password. Implement `ServerAddress.parse` with the rules from design D3. Add table tests for:
   - scheme added;
   - `http://` rejected;
   - trailing slashes;
@@ -26,15 +26,15 @@
   - invalid input and empty input.
 
   Verify the tests pass.
-- [ ] 2.2 Implement the error kinds from design D7 and the mapping of connection and TLS failures to them. Verify with `MockWebServer` tests: a closed port gives `Unreachable`, and an untrusted `okhttp-tls` certificate gives `CertificateRejected`.
-- [ ] 2.3 Implement the server check through `status.php`. Verify with `MockWebServer` tests for: installed; `maintenance`; `needsDbUpgrade`; not JSON; JSON without `installed`; and `500`.
-- [ ] 2.4 Implement the Login Flow v2 start and polling:
+- [x] 2.2 Implement the error kinds from design D7 and the mapping of connection and TLS failures to them. Verify with `MockWebServer` tests: a closed port gives `Unreachable`, and an untrusted `okhttp-tls` certificate gives `CertificateRejected`.
+- [x] 2.3 Implement the server check through `status.php`. Verify with `MockWebServer` tests for: installed; `maintenance`; `needsDbUpgrade`; not JSON; JSON without `installed`; and `500`.
+- [x] 2.4 Implement the Login Flow v2 start and polling:
   - poll interval, immediate poll on request, and the 20-minute limit using an injectable clock;
   - the host check from design D4.
 
   Verify with `MockWebServer` tests for: start; 404 then 200; expiry; a poll endpoint on another host; a login URL without `https`; and that the stored address is the verified one, not the `server` field.
-- [ ] 2.5 Implement the account check (OCS user endpoint) and the revocation of the app password. Verify with `MockWebServer` tests: the `OCS-APIRequest` header and Basic auth are sent, `401` gives `Unauthorized`, and revocation succeeds and fails as expected.
-- [ ] 2.6 Write KDoc for every public declaration. Verify that `./gradlew :nextcloud-auth:check` passes, with Kover at 90 % lines and 80 % branches or higher.
+- [x] 2.5 Implement the account check (OCS user endpoint) and the revocation of the app password. Verify with `MockWebServer` tests: the `OCS-APIRequest` header and Basic auth are sent, `401` gives `Unauthorized`, and revocation succeeds and fails as expected.
+- [x] 2.6 Write KDoc for every public declaration. Verify that `./gradlew :nextcloud-auth:check` passes, with Kover at 90 % lines and 80 % branches or higher.
 
 ## 3. Cookbook check (`cookbook-client`)
 
