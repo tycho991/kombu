@@ -20,7 +20,7 @@
 
 ## 4. Parsing
 
-- [ ] 4.1 Implement `IngredientParser.parse` and the `IngredientLine` result types (design D1, D5):
+- [x] 4.1 Implement `IngredientParser.parse` and the `IngredientLine` result types (design D1, D5):
   - quantity only at the start, with approximation prefixes;
   - ranges with `-`, `–`, `bis` and `to`, with or without spaces;
   - glued units and longest unit match;
@@ -31,8 +31,8 @@
   - `quantityRange`.
 
   Verify with tests for every scenario of the spec requirements from "Every line yields a result" to "Section headings". Include empty, blank and odd input, and check that nothing throws.
-- [ ] 4.2 Implement `IngredientLine.scaledBy` and `Measured.displayText(factor, locale)`, which replace only the quantity text. Verify with tests for the spec requirement "Scaled line text", plus `ca.` prefixes, glued units and ranges being kept.
-- [ ] 4.3 Port the upstream parse tests from `src/__tests__/index.test.ts` (design D7). Adapt tests that check behaviour Kombu changes on purpose, and give each adapted test a comment with the reason. Add the source header comment to the ported files. Verify that all ported tests pass.
+- [x] 4.2 Implement `IngredientLine.scaledBy` and `Measured.displayText(factor, locale)`, which replace only the quantity text. Verify with tests for the spec requirement "Scaled line text", plus `ca.` prefixes, glued units and ranges being kept.
+- [x] 4.3 Port the upstream parse tests from `src/__tests__/index.test.ts` (design D7). Adapt tests that check behaviour Kombu changes on purpose, and give each adapted test a comment with the reason. Add the source header comment to the ported files. Verify that all ported tests pass.
 
 ## 5. Real-line fixtures
 
