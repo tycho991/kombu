@@ -44,6 +44,15 @@ public sealed interface NextcloudError {
     /** The Cookbook app is not installed or not enabled for the account. */
     public data object CookbookMissing : NextcloudError
 
+    /** The requested object, for example a recipe, does not exist on the server (HTTP 404). */
+    public data object NotFound : NextcloudError
+
+    /** The server refused to save a recipe because another recipe already has its name (HTTP 409). */
+    public data object NameTaken : NextcloudError
+
+    /** The server refused to save a recipe because it has no name (HTTP 422). */
+    public data object NameMissing : NextcloudError
+
     /** The server answered with an unexpected HTTP status or an unreadable body. */
     public data class ServerError(
         /** The HTTP status code of the answer. */

@@ -71,6 +71,9 @@ class LoginScreenTest {
                 NextcloudError.LoginExpired to "timed out",
                 NextcloudError.Unauthorized to "login failed",
                 NextcloudError.CookbookMissing to "needs the Cookbook app",
+                NextcloudError.NotFound to "no longer exists",
+                NextcloudError.NameTaken to "already has this name",
+                NextcloudError.NameMissing to "needs a name",
                 NextcloudError.ServerError(502) to "(HTTP 502)",
             ),
         )
@@ -92,6 +95,9 @@ class LoginScreenTest {
                 NextcloudError.LoginExpired to "abgelaufen",
                 NextcloudError.Unauthorized to "fehlgeschlagen",
                 NextcloudError.CookbookMissing to "braucht die App Cookbook",
+                NextcloudError.NotFound to "nicht mehr",
+                NextcloudError.NameTaken to "schon diesen Namen",
+                NextcloudError.NameMissing to "braucht einen Namen",
                 NextcloudError.ServerError(502) to "(HTTP 502)",
             ),
         )

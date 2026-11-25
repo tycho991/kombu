@@ -66,7 +66,7 @@ Alternative considered: a typed `@Serializable` recipe with `ignoreUnknownKeys`.
 - strings escaped as in RFC 8259;
 - numbers written as their JSON literal.
 
-Before hashing, the top-level fields the server sets itself are removed. The initial list is `id`, `dateModified`, `imageUrl` and `imagePlaceholderUrl`. Task 2.4 confirms it against the household server. `dateCreated` and `printImage` stay in the hash: one is set once, and the other is a user setting.
+Before hashing, the top-level fields the server sets itself are removed: `id`, `dateModified`, `imageUrl`, `imagePlaceholderUrl` and `printImage`. The Cookbook source shows that `show()` adds `printImage` (a per-user app setting, not recipe content) and `imageUrl` to every recipe it returns, so a changed setting would otherwise look like a changed recipe. Task 2.4 confirms the list against the household server. `dateCreated` stays in the hash, because the server sets it only once.
 
 A pure Kotlin canonicaliser is enough (`MessageDigest` is in the JVM). No extra library is needed.
 
@@ -105,7 +105,7 @@ A run has three steps, in this order:
    - Otherwise it checks the version (D9). An unsupported or unknown version ends the run with that problem.
 2. **Pull.** The run fetches the stub list once.
    - **Stub not known locally:** download the recipe and insert it as `SYNCED`, then fetch its images.
-   - **Local row `SYNCED`, stub `dateModified` differs from `baseModified` or is missing:** download the recipe and hash it.
+   - **Local row `SYNCED`, stub `dateModified` differs from `baseModified` or is missing:** download the recipe and hash it. `baseModified` always holds the *stub's* `dateModified`: the server normalises dates in the list (it adds the `T` separator and a time zone) but not in the full recipe, so only list values are comparable. After a push the stub value is not known yet; the next pull downloads the recipe once, finds an equal hash and stores the stub value.
      - Hash differs from `baseHash`: replace the base and mark the image for refresh.
      - Hash equal: only `baseModified` is updated.
    - **Local row in `CONFLICT`, server version may have moved:** download it and refresh `serverJson` (spec "Conflicts keep both versions").
@@ -116,7 +116,7 @@ A run has three steps, in this order:
      - `CONFLICT`: set `serverJson` to `null`.
    - **Rows in `CREATED`, `CHANGED` or `DELETED` that are in the list:** pull leaves them to push.
 3. **Push.** Every row in `CREATED`, `CHANGED` or `DELETED` is handled in `localChangeAt` order.
-   - **`CREATED`:** `POST` with `localJson`.
+   - **`CREATED`:** `POST` with `localJson` without its `id` field (Cookbook treats a body with `id` as an update of that recipe; `PUT` likewise reads the id from the body, so the client sets it there).
      - Success: `GET` the new recipe and store it as base, with `remoteId` set and the row `SYNCED`.
      - `409`: see D6.
      - `422`: `NAME_MISSING`.

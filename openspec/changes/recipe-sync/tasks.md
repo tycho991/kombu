@@ -12,19 +12,19 @@
 
 ## 2. Recipe API (`cookbook-client`)
 
-- [ ] 2.1 Implement `RemoteRecipe` (a `JsonObject` wrapper with `id`, `name`, `dateModified`, `image`, `category`, `keywords` accessors and a `with` copy) and `RecipeStub` (design D2). Verify with JUnit 5 tests on fixtures of invented recipes that use the real field shapes:
+- [x] 2.1 Implement `RemoteRecipe` (a `JsonObject` wrapper with `id`, `name`, `dateModified`, `image`, `category`, `keywords` accessors and a `with` copy) and `RecipeStub` (design D2). Verify with JUnit 5 tests on fixtures of invented recipes that use the real field shapes:
   - `id` as a number and as a string;
   - `nutrition` as an object and as a list;
   - `author` as a string, an object and a list;
   - `dateModified` `null` and missing;
   - unknown fields kept unchanged by `with`.
-- [ ] 2.2 Implement `RecipeHash` (design D3), with canonical JSON and the excluded server fields as one constant. Verify with tests that the hash:
+- [x] 2.2 Implement `RecipeHash` (design D3), with canonical JSON and the excluded server fields as one constant. Verify with tests that the hash:
   - is independent of key order (also nested);
   - is equal across whitespace differences;
   - ignores the excluded fields;
   - changes when any other field changes, including inside arrays and when a type changes (for example `1` versus `"1"`);
   - matches known SHA-256 values for two fixtures.
-- [ ] 2.3 Implement the recipe endpoints (design D1, D5):
+- [x] 2.3 Implement the recipe endpoints (design D1, D5):
   - list stubs;
   - get;
   - create, returning the new id;
@@ -34,14 +34,14 @@
 
   Map `409` to `NameTaken` and `422` to `NameMissing` (new `NextcloudError` kinds), `406` to "no image", and `404` to `NotFound`. Verify with `MockWebServer` tests per endpoint for: success, `401`, `404`, `409`, `422`, `406`, `500`, broken JSON, connection loss, and the paths, methods and `Authorization` header sent.
 - [ ] 2.4 Confirm the excluded-field list against the household server. Fetch two recipes twice, with a manual script or test that is not committed and uses the developer's own credentials, and compare the raw answers. Commit anonymised copies (invented names and texts, real field shapes) as fixtures, with a test that asserts equal hashes for each pair. Adjust the constant in 2.2 if needed. Verify that the fixtures contain no server URL, account or real recipe text (R4).
-- [ ] 2.5 Add the version fallback to the OCS capabilities and `CookbookVersion.isSupported` (design D9). Verify with `MockWebServer` tests:
+- [x] 2.5 Add the version fallback to the OCS capabilities and `CookbookVersion.isSupported` (design D9). Verify with `MockWebServer` tests:
   - `/api/version` answers;
   - `404` there, then capabilities with a version;
   - `404` there, then capabilities without the `cookbook` key, giving `CookbookMissing`;
   - the `OCS-APIRequest` header is sent.
 
   Verify with table tests for `isSupported`: 0.10.2, 0.10.3, 0.11.12, 1.0, 0.10, empty.
-- [ ] 2.6 Write KDoc for every new public declaration and update `cookbook-client/Module.md`. Verify that `./gradlew :cookbook-client:check` passes, with Kover at 90 % lines and 80 % branches or higher.
+- [x] 2.6 Write KDoc for every new public declaration and update `cookbook-client/Module.md`. Verify that `./gradlew :cookbook-client:check` passes, with Kover at 90 % lines and 80 % branches or higher.
 
 ## 3. Login version check and logout (`data`, `app`)
 

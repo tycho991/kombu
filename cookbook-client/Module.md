@@ -1,5 +1,16 @@
 # Module cookbook-client
 
-Client for the Nextcloud Cookbook REST API: checking that the Cookbook app is available, and reading and writing recipes as schema.org `Recipe` JSON. It signs requests with the credentials from `nextcloud-auth`.
+Client for the Nextcloud Cookbook REST API of one account. It signs requests with the credentials from `nextcloud-auth` and returns every outcome as a `NextcloudResult`.
+
+- `CookbookClient.checkAvailable` reads the Cookbook version from the app's version route, or from the Nextcloud capabilities when that route is gone. `CookbookVersion.isSupported` tells whether Kombu supports it (0.10.3 or newer).
+- `listRecipes`, `getRecipe`, `createRecipe`, `updateRecipe` and `deleteRecipe` handle recipes; `downloadImage` fetches a recipe image as JPEG.
+- `RemoteRecipe` keeps a recipe as raw schema.org `Recipe` JSON, so fields Kombu does not know survive a round trip. `RecipeStub` is one entry of the recipe list.
+- `RecipeHash` hashes a canonical form of a recipe without the fields the server sets itself, so two server versions can be compared.
+
+Server behaviour the client relies on (Cookbook 0.11):
+
+- An update reads the recipe id from the JSON body, not from the URL, so `updateRecipe` sets the `id` field. A create with an `id` field would update that recipe, so `createRecipe` removes it.
+- The recipe list normalises `dateModified` (it adds the `T` separator and a time zone). Compare list dates only with list dates.
+- The server adds `imageUrl` and the per-user `printImage` setting to every recipe it returns.
 
 This module is pure Kotlin/JVM and has no Android dependency.
