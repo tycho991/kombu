@@ -14,6 +14,7 @@ lint = "32.5.1" # always AGP version + 23
 kover = "0.9.11"
 detekt = "2.0.0-alpha.6" # deliberate exception to the stable-only rule, see design D13
 dokka = "2.3.0"
+ksp = "2.3.13" # KSP2: independent of the Kotlin compiler version
 
 # AndroidX
 androidxActivity = "1.13.0"
@@ -22,6 +23,8 @@ composeBom = "2026.09.00"
 androidxBrowser = "1.10.0"
 androidxDatastore = "1.3.0"
 androidxLifecycle = "2.11.0"
+androidxRoom = "2.8.5"
+androidxWork = "2.12.0"
 
 # Kotlin libraries and networking
 kotlinxCoroutines = "1.11.0"
@@ -48,6 +51,12 @@ androidx-browser = { module = "androidx.browser:browser", version.ref = "android
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "androidxRoom" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWork" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "androidxWork" }
 
 # Kotlin libraries and networking (all Apache-2.0)
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -92,3 +101,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidx-room = { id = "androidx.room", version.ref = "androidxRoom" }

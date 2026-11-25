@@ -14,6 +14,7 @@ private val GENERATED_CLASSES =
         "*.ComposableSingletons*",
         "*_Factory",
         "*_Impl",
+        "*_Impl\$*",
         "*\$\$serializer",
     )
 

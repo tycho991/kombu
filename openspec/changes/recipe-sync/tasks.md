@@ -2,13 +2,13 @@
 
 ## 1. Build setup
 
-- [ ] 1.1 Add Room (`room-runtime`, `room-ktx`, `room-compiler`, `room-testing`), the KSP Gradle plugin, and WorkManager (`work-runtime-ktx`, `work-testing`) to `gradle/libs.versions.toml` (design D14). Each must be:
+- [x] 1.1 Add Room (`room-runtime`, `room-ktx`, `room-compiler`, `room-testing`), the KSP Gradle plugin, and WorkManager (`work-runtime-ktx`, `work-testing`) to `gradle/libs.versions.toml` (design D14). Each must be:
   - the newest stable release at least two weeks old;
   - Apache-2.0;
   - free of Google Play Services.
 
   KSP must match Kotlin 2.4.21. If no stable KSP does, stop and report instead of changing Kotlin. Record the chosen versions in the commit message. Verify that `./gradlew help` succeeds and that `checkForbiddenDependencies` passes.
-- [ ] 1.2 Wire KSP and Room into `data`, with schema export to `data/schemas/`. Add WorkManager to `sync`, and `sync`'s dependency on `cookbook-client`. Verify that `./gradlew :data:assembleDebug :sync:assembleDebug` succeeds and that a Room-generated `*_Impl` class does not appear in the `data` Kover report.
+- [x] 1.2 Wire KSP and Room into `data`, with schema export to `data/schemas/`. Add WorkManager to `sync`, and `sync`'s dependency on `cookbook-client`. Verify that `./gradlew :data:assembleDebug :sync:assembleDebug` succeeds and that a Room-generated `*_Impl` class does not appear in the `data` Kover report.
 
 ## 2. Recipe API (`cookbook-client`)
 
