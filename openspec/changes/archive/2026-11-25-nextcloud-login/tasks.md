@@ -78,6 +78,7 @@
   - Logout removes the app password on the server.
   - A wrong address and an address without Cookbook show their errors in English and in German.
   - Partly done on an API 36 emulator without a real instance: the debug build starts on the login screen; `http://…` is rejected with the HTTPS message, `example.com` reports that no Nextcloud was found, and an unresolvable host reports that the server cannot be reached; no crash. Open: everything that needs a real Nextcloud with the Cookbook app.
+  - Deferred by the maintainer when the change was archived; to be done before the first release to the household.
 - [x] 6.3 Verify that CI is green on the pushed branch, and run `openspec validate nextcloud-login --strict`.
 
 ## Workflow follow-up

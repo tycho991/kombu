@@ -39,7 +39,7 @@ The app SHALL install and start on Android 10 (API level 29) and every later ver
 - **THEN** the system refuses the installation
 
 ### Requirement: Pure Kotlin modules stay Android-free
-The modules `ingredient-parser`, `duration-parser`, `recipe-import` and `cookbook-client` SHALL compile and run their tests on a plain JVM without the Android SDK classes. They SHALL NOT depend on any Android module of the project.
+The modules `ingredient-parser`, `duration-parser`, `recipe-import`, `cookbook-client` and `nextcloud-auth` SHALL compile and run their tests on a plain JVM without the Android SDK classes. They SHALL NOT depend on any Android module of the project.
 
 #### Scenario: Android dependency added to a pure module
 - **WHEN** a pure Kotlin module declares a dependency on an Android library or an Android module of the project
