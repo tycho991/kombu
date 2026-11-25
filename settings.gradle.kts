@@ -22,6 +22,7 @@ include(":ingredient-parser")
 include(":duration-parser")
 include(":recipe-import")
 include(":cookbook-client")
+include(":nextcloud-auth")
 
 // Android modules
 include(":data")

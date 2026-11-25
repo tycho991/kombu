@@ -21,6 +21,7 @@ internal val MODULE_LAYERS: Map<String, ModuleLayer> =
         "duration-parser" to ModuleLayer.PURE,
         "recipe-import" to ModuleLayer.PURE,
         "cookbook-client" to ModuleLayer.PURE,
+        "nextcloud-auth" to ModuleLayer.PURE,
         "data" to ModuleLayer.DATA,
         "sync" to ModuleLayer.SYNC,
         "app" to ModuleLayer.APP,

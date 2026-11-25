@@ -35,6 +35,10 @@ gradlePlugin {
             id = "kombu.android.application"
             implementationClass = "io.github.tycho991.kombu.buildlogic.AndroidApplicationConventionPlugin"
         }
+        register("kotlinSerialization") {
+            id = "kombu.kotlin.serialization"
+            implementationClass = "io.github.tycho991.kombu.buildlogic.KotlinSerializationConventionPlugin"
+        }
         register("androidCompose") {
             id = "kombu.android.compose"
             implementationClass = "io.github.tycho991.kombu.buildlogic.AndroidComposeConventionPlugin"
