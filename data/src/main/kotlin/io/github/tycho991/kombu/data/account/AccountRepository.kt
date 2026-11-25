@@ -1,0 +1,98 @@
+package io.github.tycho991.kombu.data.account
+
+import io.github.tycho991.kombu.nextcloudauth.LoginSession
+import io.github.tycho991.kombu.nextcloudauth.NextcloudCredentials
+import io.github.tycho991.kombu.nextcloudauth.NextcloudError
+import io.github.tycho991.kombu.nextcloudauth.NextcloudResult
+import io.github.tycho991.kombu.nextcloudauth.ParsedAddress
+import io.github.tycho991.kombu.nextcloudauth.ServerAddress
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+
+/** How a logout ended (spec nextcloud-account, "Logout revokes the app password"). */
+enum class LogoutResult {
+    /** The app password was revoked on the server, or the server no longer accepted it. */
+    REVOKED,
+
+    /** Signed out locally; the server could not be asked, so the app password is still listed there. */
+    LOCAL_ONLY,
+}
+
+/** Signs the user in and out and exposes the current account. */
+class AccountRepository(
+    private val api: AccountApi,
+    private val store: CredentialStore,
+    private val revokeTimeout: Duration = REVOKE_TIMEOUT,
+) {
+    /** The signed-in account, or `null`. */
+    val account: Flow<NextcloudCredentials?> = store.credentials
+
+    /** Parses [input], checks the server and starts Login Flow v2. */
+    suspend fun startLogin(input: String): NextcloudResult<LoginSession> =
+        when (val parsed = ServerAddress.parse(input)) {
+            is ParsedAddress.Rejected -> NextcloudResult.Failure(NextcloudError.InvalidAddress(parsed.reason))
+
+            is ParsedAddress.Accepted ->
+                when (val status = api.checkServer(parsed.address)) {
+                    is NextcloudResult.Failure -> status
+                    is NextcloudResult.Success -> api.startLogin(parsed.address)
+                }
+        }
+
+    /**
+     * Waits for the approval of [session], checks the account and the Cookbook app, and stores the credentials
+     * only when both checks pass. When a check fails, the new app password is revoked again if possible.
+     */
+    suspend fun completeLogin(
+        session: LoginSession,
+        wakeUps: ReceiveChannel<Unit>,
+    ): NextcloudResult<NextcloudCredentials> {
+        val approval = api.awaitApproval(session, wakeUps)
+        if (approval is NextcloudResult.Failure) return approval
+        val credentials = (approval as NextcloudResult.Success).value
+        val failure = checkAccount(credentials)
+        return if (failure == null) {
+            store.save(credentials)
+            NextcloudResult.Success(credentials)
+        } else {
+            if (failure.error != NextcloudError.Unauthorized) revokeQuietly(credentials)
+            failure
+        }
+    }
+
+    /**
+     * Deletes the stored credentials, then asks the server to revoke the app password (design D12). Returns
+     * `null` when nobody was signed in.
+     */
+    suspend fun logout(): LogoutResult? {
+        val credentials = store.credentials.first() ?: return null
+        store.clear()
+        val revoked = withTimeoutOrNull(revokeTimeout) { api.revokeAppPassword(credentials) }
+        val accepted =
+            revoked is NextcloudResult.Success ||
+                (revoked as? NextcloudResult.Failure)?.error == NextcloudError.Unauthorized
+        return if (accepted) LogoutResult.REVOKED else LogoutResult.LOCAL_ONLY
+    }
+
+    private suspend fun checkAccount(credentials: NextcloudCredentials): NextcloudResult.Failure? {
+        val account = api.verifyAccount(credentials)
+        if (account is NextcloudResult.Failure) return account
+        return api.checkCookbook(credentials) as? NextcloudResult.Failure
+    }
+
+    private suspend fun revokeQuietly(credentials: NextcloudCredentials) {
+        withContext(NonCancellable) {
+            withTimeoutOrNull(revokeTimeout) { api.revokeAppPassword(credentials) }
+        }
+    }
+
+    private companion object {
+        val REVOKE_TIMEOUT: Duration = 10.seconds
+    }
+}

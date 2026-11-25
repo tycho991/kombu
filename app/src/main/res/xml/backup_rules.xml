@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 10 and 11: the account DataStore (ACCOUNT_DATASTORE_NAME in :data) is not backed up (design D9). -->
+<full-backup-content>
+    <exclude domain="file" path="datastore/account.preferences_pb" />
+</full-backup-content>

@@ -43,15 +43,15 @@
 
 ## 4. Credential store (`data`)
 
-- [ ] 4.1 Implement `SecretKeySource` with `AndroidKeystoreKeySource`, and the AES-GCM credential store on Preferences DataStore (design D8). The store offers read as a flow, save and delete, and treats data it cannot decrypt as signed out. Verify with Robolectric tests using a software key: round trip; reading again after a new store instance; a wrong key, which deletes the entry and returns signed out; delete; and a check that the stored file does not contain the password in plain text.
-- [ ] 4.2 Implement `AccountRepository` for the login sequence and for logout:
+- [x] 4.1 Implement `SecretKeySource` with `AndroidKeystoreKeySource`, and the AES-GCM credential store on Preferences DataStore (design D8). The store offers read as a flow, save and delete, and treats data it cannot decrypt as signed out. Verify with Robolectric tests using a software key: round trip; reading again after a new store instance; a wrong key, which deletes the entry and returns signed out; delete; and a check that the stored file does not contain the password in plain text.
+- [x] 4.2 Implement `AccountRepository` for the login sequence and for logout:
   - login: server check, start, poll, account check, Cookbook check, store;
   - Cookbook missing: no storing, and a revocation attempt;
   - logout in the order of design D12.
 
   Verify with tests using fake clients for every path in the spec requirements "Account check after login" and "Logout revokes the app password".
-- [ ] 4.3 Exclude the `account` DataStore file from backup and device transfer with `dataExtractionRules` and `fullBackupContent` (design D9). Verify that Lint passes and that the merged manifest of the app references both rule files.
-- [ ] 4.4 Verify that `./gradlew :data:check` passes with 80 % lines and 70 % branches or higher.
+- [x] 4.3 Exclude the `account` DataStore file from backup and device transfer with `dataExtractionRules` and `fullBackupContent` (design D9). Verify that Lint passes and that the merged manifest of the app references both rule files.
+- [x] 4.4 Verify that `./gradlew :data:check` passes with 80 % lines and 70 % branches or higher.
 
 ## 5. App: login, account and entry point
 
