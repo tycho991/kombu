@@ -38,8 +38,8 @@
 
 ## 3. Cookbook check (`cookbook-client`)
 
-- [ ] 3.1 Implement the Cookbook availability check on `/index.php/apps/cookbook/api/v1/version`. It returns the reported version or `CookbookMissing`, `Unauthorized` or `ServerError`. Verify with `MockWebServer` tests for a JSON answer, `404`, an HTML answer and `401`.
-- [ ] 3.2 Write KDoc for every public declaration. Verify that `./gradlew :cookbook-client:check` passes with the pure-module coverage thresholds.
+- [x] 3.1 Implement the Cookbook availability check on `/index.php/apps/cookbook/api/v1/version`. It returns the reported version or `CookbookMissing`, `Unauthorized` or `ServerError`. Verify with `MockWebServer` tests for a JSON answer, `404`, an HTML answer and `401`.
+- [x] 3.2 Write KDoc for every public declaration. Verify that `./gradlew :cookbook-client:check` passes with the pure-module coverage thresholds.
 
 ## 4. Credential store (`data`)
 
