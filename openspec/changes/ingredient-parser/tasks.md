@@ -6,8 +6,8 @@
 
 ## 2. Exact quantities
 
-- [ ] 2.1 Implement `Rational` (design D2): reduction, sign, `plus`, `times`, `div`, comparison, overflow guard with `Math.multiplyExact`, and exact parsing of integers, decimals with point or comma, ASCII fractions, mixed numbers and Unicode fractions, with the digit limits. Verify with table tests, including 1/3 × 3 = 1, `0.125` = 1/8, `1,5` = 3/2, and too many digits being rejected.
-- [ ] 2.2 Implement `Amount` with `scaledBy` (positive factors only; a factor of zero or below throws) and `format(locale)` (design D6): whole numbers, snapping to 1/2, 1/3, 1/4 and 1/8 within 2 %, mixed numbers, decimals with at most two places and the locale separator, and ranges with an en dash. Verify with tests for every scenario of the spec requirements "Scaling quantities" and "Kitchen-friendly quantity display", in German and English locales.
+- [x] 2.1 Implement `Rational` (design D2): reduction, sign, `plus`, `times`, `div`, comparison, overflow guard with `Math.multiplyExact`, and exact parsing of integers, decimals with point or comma, ASCII fractions, mixed numbers and Unicode fractions, with the digit limits. Verify with table tests, including 1/3 × 3 = 1, `0.125` = 1/8, `1,5` = 3/2, and too many digits being rejected.
+- [x] 2.2 Implement `Amount` with `scaledBy` (positive factors only; a factor of zero or below throws) and `format(locale)` (design D6): whole numbers, snapping to 1/2, 1/3, 1/4 and 1/8 within 2 %, mixed numbers, decimals with at most two places and the locale separator, and ranges with an en dash. Verify with tests for every scenario of the spec requirements "Scaling quantities" and "Kitchen-friendly quantity display", in German and English locales.
 
 ## 3. Units and vocabularies
 
