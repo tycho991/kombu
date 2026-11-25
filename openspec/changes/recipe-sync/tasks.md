@@ -84,8 +84,8 @@
   - "Conflicts keep both versions";
   - "Rejected uploads keep the local change";
   - "Unknown fields are kept", asserted on the request body.
-- [ ] 5.4 Add the state-by-situation table test, plus interruption tests (design D15). The table covers the states `SYNCED`, `CREATED`, `CHANGED`, `DELETED` and `CONFLICT` against server unchanged, changed, deleted and missing `dateModified`. The interruption tests run one sync per request position, fail that request, then run a clean sync. Verify that every interrupted run loses no pending change, and that the clean run reaches the same end state as an uninterrupted run.
-- [ ] 5.5 Implement the run lock and the re-run on `localChangeSeq` (design D5, D10). Verify with tests: two concurrent `run()` calls never overlap; a local change during a run is uploaded by exactly one extra push.
+- [x] 5.4 Add the state-by-situation table test, plus interruption tests (design D15). The table covers the states `SYNCED`, `CREATED`, `CHANGED`, `DELETED` and `CONFLICT` against server unchanged, changed, deleted and missing `dateModified`. The interruption tests run one sync per request position, fail that request, then run a clean sync. Verify that every interrupted run loses no pending change, and that the clean run reaches the same end state as an uninterrupted run.
+- [x] 5.5 Implement the run lock and the re-run on `localChangeSeq` (design D5, D10). Verify with tests: two concurrent `run()` calls never overlap; a local change during a run is uploaded by exactly one extra push.
 
 ## 6. Scheduling and status (`sync`, `app`)
 
