@@ -155,7 +155,7 @@ If a `POST` reached the server but its answer was lost, the retry gets `409`. Be
 
 Files live in `Context.noBackupFilesDir/recipe-images/<localId>/full.jpg` and `thumb.jpg`. Android never backs that directory up and never evicts it, unlike the cache directory.
 
-Requests send `Accept: image/jpeg`. `406`, or a body that is not a JPEG, means "no image". A recipe whose `image` field is empty is not requested at all.
+Requests send `Accept: image/jpeg`. `406`, or a body that is not an image, means "no image". Cookbook labels every image `image/jpeg` but keeps the bytes it downloaded: on the household server five recipes returned WebP or PNG data. The client therefore recognises JPEG, PNG, WebP and GIF by their first bytes and rejects anything else, such as an HTML or SVG page. The files keep the names `full.jpg` and `thumb.jpg`; image decoders read the format from the data, not the name. A recipe whose `image` field is empty is not requested at all.
 
 Downloads write to a temporary file and rename it into place. The row's `imageState` is set only after both files exist. A failed download sets `MISSING`, and the next pull retries every `MISSING` row.
 

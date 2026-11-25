@@ -115,8 +115,9 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
     }
 
     /**
-     * Downloads the image of the recipe with [id] in [size] as JPEG bytes. Returns a success with `null` when the
-     * recipe has no image: the server then answers `406` to a request that accepts only JPEG.
+     * Downloads the image of the recipe with [id] in [size]. The bytes are JPEG, PNG, WebP or GIF: the server labels
+     * every image as JPEG but keeps the format it downloaded. Returns a success with `null` when the recipe has no
+     * image: the server then answers `406` to a request that accepts only JPEG.
      */
     public suspend fun downloadImage(
         credentials: NextcloudCredentials,
@@ -135,7 +136,7 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
             if (response.code == HTTP_NOT_ACCEPTABLE) {
                 NextcloudResult.Success(null)
             } else {
-                response.readBytes { bytes -> bytes.takeIf(::isJpeg) }
+                response.readBytes { bytes -> bytes.takeIf(ImageBytes::isImage) }
             }
         }
     }
@@ -182,8 +183,6 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
         const val HTTP_NOT_ACCEPTABLE = 406
         const val HTTP_CONFLICT = 409
         const val HTTP_UNPROCESSABLE = 422
-        const val JPEG_MAGIC_0: Byte = 0xFF.toByte()
-        const val JPEG_MAGIC_1: Byte = 0xD8.toByte()
 
         /** Marks an answer that was readable but carried no version, so the capabilities are not asked again. */
         val NO_VERSION = CookbookVersion(emptyList())
@@ -200,8 +199,6 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
         /** A recipe id the server returned: a JSON number or string, not a bare word from an HTML page. */
         fun isId(value: JsonPrimitive): Boolean =
             (value.isString || value.content.toLongOrNull() != null) && value.content.isNotBlank()
-
-        fun isJpeg(bytes: ByteArray): Boolean = bytes.size > 2 && bytes[0] == JPEG_MAGIC_0 && bytes[1] == JPEG_MAGIC_1
 
         fun NextcloudCredentials.get(url: HttpUrl): Request = Request
             .Builder()

@@ -3,7 +3,7 @@
 Client for the Nextcloud Cookbook REST API of one account. It signs requests with the credentials from `nextcloud-auth` and returns every outcome as a `NextcloudResult`.
 
 - `CookbookClient.checkAvailable` reads the Cookbook version from the app's version route, or from the Nextcloud capabilities when that route is gone. `CookbookVersion.isSupported` tells whether Kombu supports it (0.10.3 or newer).
-- `listRecipes`, `getRecipe`, `createRecipe`, `updateRecipe` and `deleteRecipe` handle recipes; `downloadImage` fetches a recipe image as JPEG.
+- `listRecipes`, `getRecipe`, `createRecipe`, `updateRecipe` and `deleteRecipe` handle recipes; `downloadImage` fetches a recipe image (JPEG, PNG, WebP or GIF, recognised by its first bytes).
 - `RemoteRecipe` keeps a recipe as raw schema.org `Recipe` JSON, so fields Kombu does not know survive a round trip. `RecipeStub` is one entry of the recipe list.
 - `RecipeHash` hashes a canonical form of a recipe without the fields the server sets itself, so two server versions can be compared.
 

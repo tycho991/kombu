@@ -50,6 +50,7 @@ class CookbookClientTest {
         server.enqueue(
             MockResponse
                 .Builder()
+                .addHeader("Content-Type", "image/jpeg")
                 .body(Buffer().write(bytes))
                 .build(),
         )
@@ -213,7 +214,20 @@ class CookbookClientTest {
     }
 
     @Test
-    fun `reports no image for 406 and for a body that is not a JPEG`() = runTest {
+    fun `keeps WebP and PNG images that the server labels as JPEG`() = runTest {
+        val webp = "RIFF".toByteArray() + byteArrayOf(0x1A, 0x12, 0x02, 0x00) + "WEBPVP8 ".toByteArray()
+        val png = byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0, 0, 0, 0x0D)
+        for (image in listOf(webp, png)) {
+            enqueueBytes(image)
+            assertArrayEquals(
+                image,
+                (client.downloadImage(credentials, "5678", ImageSize.FULL) as NextcloudResult.Success).value,
+            )
+        }
+    }
+
+    @Test
+    fun `reports no image for 406 and for a body that is not an image`() = runTest {
         enqueue(406, """{"msg":"No image with the matching MIME type was found on the server."}""")
         assertEquals(NextcloudResult.Success(null), client.downloadImage(credentials, "5678", ImageSize.FULL))
         assertEquals("full", server.takeRequest().url.queryParameter("size"))
