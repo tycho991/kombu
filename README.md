@@ -84,4 +84,6 @@ The app is developed in English with German as the first translation. Further tr
 
 Kombu is free software, licensed under the [GNU General Public License v3.0 or later](LICENSE).
 
+The ingredient parser contains a Kotlin port of [parse-ingredients](https://github.com/magrinj/parse-ingredients) by Jérémy Magrin, used under the MIT License; see [ingredient-parser/NOTICE](ingredient-parser/NOTICE).
+
 Kombu is an independent project and is not affiliated with or endorsed by Nextcloud GmbH. Nextcloud is a registered trademark of Nextcloud GmbH.

@@ -2,7 +2,7 @@
 
 ## 1. Module setup and attribution
 
-- [ ] 1.1 Add `ingredient-parser/NOTICE` with the upstream MIT license text, copyright line and ported version (`@magrinj/parse-ingredients` 1.0.0). Update the module's `Module.md`. Mention the notice in the README license section. Update the ingredient-parser line of the v1 scope in `openspec/config.yaml` to name the chosen library. Verify that `./gradlew :ingredient-parser:check` runs and that `checkForbiddenDependencies` passes.
+- [x] 1.1 Add `ingredient-parser/NOTICE` with the upstream MIT license text, copyright line and ported version (`@magrinj/parse-ingredients` 1.0.0). Update the module's `Module.md`. Mention the notice in the README license section. Update the ingredient-parser line of the v1 scope in `openspec/config.yaml` to name the chosen library. Verify that `./gradlew :ingredient-parser:check` runs and that `checkForbiddenDependencies` passes.
 
 ## 2. Exact quantities
 

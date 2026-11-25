@@ -44,9 +44,8 @@ context: |
   - Cooking mode: step by step, large type, screen stays on, timers from steps, ticking
     off ingredients, scaling servings (scaling is a view, it never changes the stored
     recipe).
-  - Ingredient parser: a Kotlin port of an MIT-licensed JS ingredient parser with German
-    support (candidates: @magrinj/parse-ingredients, recipe-ingredient-parser-v3), as a
-    pure Kotlin module without Android dependencies.
+  - Ingredient parser: a Kotlin port of the MIT-licensed JS parser @magrinj/parse-ingredients,
+    extended for German (O5), as a pure Kotlin module without Android dependencies.
   - Recipe import via Android share sheet (plain text). Primary source: the Claude Android
     app's recipe card, which is shared as structured text (title, description,
     ingredient/step/notes sections, "• <qty> <unit> <name>" ingredient lines, numbered
