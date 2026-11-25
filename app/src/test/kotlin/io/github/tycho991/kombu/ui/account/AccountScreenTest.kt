@@ -20,7 +20,7 @@ class AccountScreenTest {
 
     private val events = mutableListOf<String>()
 
-    private fun show() {
+    private fun show(unsyncedChanges: Int = 0) {
         composeRule.setContent {
             KombuTheme {
                 AccountScreen(
@@ -28,6 +28,7 @@ class AccountScreenTest {
                     loginName = "alex",
                     onBack = { events += "back" },
                     onLogout = { events += "logout" },
+                    unsyncedChanges = unsyncedChanges,
                 )
             }
         }
@@ -58,6 +59,43 @@ class AccountScreenTest {
 
         composeRule.onNodeWithText("Sign out?").assertDoesNotExist()
         assertEquals(emptyList<String>(), events)
+    }
+
+    @Test
+    @Config(qualifiers = "en")
+    fun theConfirmationWithoutPendingChangesWarnsAboutNothingElse() {
+        show()
+
+        composeRule.onNodeWithText("Sign out").performClick()
+
+        composeRule.onNodeWithText("deletes the stored login and the recipe copy", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("will be lost", substring = true).assertDoesNotExist()
+    }
+
+    @Test
+    @Config(qualifiers = "en")
+    fun theConfirmationNamesThePendingChangesAndCancellingDeletesNothing() {
+        show(unsyncedChanges = 3)
+
+        composeRule.onNodeWithText("Sign out").performClick()
+        composeRule
+            .onNodeWithText("3 changes on this device are not in your Nextcloud yet and will be lost.")
+            .assertIsDisplayed()
+        composeRule.onNodeWithText("Cancel").performClick()
+
+        assertEquals(emptyList<String>(), events)
+    }
+
+    @Test
+    @Config(qualifiers = "de")
+    fun theConfirmationNamesOnePendingChangeInGerman() {
+        show(unsyncedChanges = 1)
+
+        composeRule.onNodeWithText("Abmelden").performClick()
+
+        composeRule
+            .onNodeWithText("1 Änderung auf diesem Gerät ist noch nicht in deiner Nextcloud und geht verloren.")
+            .assertIsDisplayed()
     }
 
     @Test

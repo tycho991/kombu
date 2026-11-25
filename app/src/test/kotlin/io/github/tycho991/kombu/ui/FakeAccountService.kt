@@ -50,6 +50,19 @@ class FakeAccountService(signedIn: NextcloudCredentials? = null) : AccountServic
         return result
     }
 
+    val reauthenticatedSessions = mutableListOf<LoginSession>()
+
+    /** Like Kombu, a new login replaces the credentials only on success; [completion] decides the outcome. */
+    override suspend fun reauthenticate(
+        session: LoginSession,
+        wakeUps: ReceiveChannel<Unit>,
+    ): NextcloudResult<NextcloudCredentials> {
+        reauthenticatedSessions += session
+        val result = completion.await()
+        if (result is NextcloudResult.Success) accountState.value = result.value
+        return result
+    }
+
     override suspend fun logout(): LogoutResult? {
         accountState.value = null
         return logoutResult

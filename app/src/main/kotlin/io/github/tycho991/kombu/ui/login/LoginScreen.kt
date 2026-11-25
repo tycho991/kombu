@@ -42,12 +42,18 @@ private val ItemSpacing = 16.dp
 
 /** Connects [LoginScreen] to its [LoginViewModel] and opens the login page in a browser (design D6). */
 @Composable
-fun LoginRoute(viewModel: LoginViewModel, offlineLogoutNotice: Boolean, onDismissNotice: () -> Unit) {
+fun LoginRoute(
+    viewModel: LoginViewModel,
+    offlineLogoutNotice: Boolean,
+    onDismissNotice: () -> Unit,
+    onFinished: () -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(viewModel) {
         viewModel.loginPages.collect { url -> if (!openLoginPage(context, url)) viewModel.onBrowserMissing() }
     }
+    LaunchedEffect(viewModel) { viewModel.finished.collect { onFinished() } }
     LifecycleResumeEffect(viewModel) {
         viewModel.onResume()
         onPauseOrDispose {}

@@ -42,9 +42,18 @@ data class LoginUiState(
 /**
  * Runs the login (design D5): starts Login Flow v2, asks the UI to open the login page, and waits for the
  * approval. The running session is kept in [savedState], so polling resumes after process death.
+ *
+ * With [signInAgain], it replaces the rejected credentials of the signed-in account instead (spec
+ * nextcloud-account, "Sign in again to the same account"); the address starts as [initialAddress].
  */
-class LoginViewModel(private val accounts: AccountService, private val savedState: SavedStateHandle) : ViewModel() {
-    private val mutableState = MutableStateFlow(LoginUiState(address = savedState[KEY_INPUT] ?: ""))
+class LoginViewModel(
+    private val accounts: AccountService,
+    private val savedState: SavedStateHandle,
+    private val signInAgain: Boolean = false,
+    initialAddress: String = "",
+) : ViewModel() {
+    private val mutableState = MutableStateFlow(LoginUiState(address = savedState[KEY_INPUT] ?: initialAddress))
+    private val finishedEvents = Channel<Unit>(Channel.CONFLATED)
     private val loginPageRequests = Channel<String>(Channel.BUFFERED)
     private val wakeUps = Channel<Unit>(Channel.CONFLATED)
     private var job: Job? = null
@@ -54,6 +63,9 @@ class LoginViewModel(private val accounts: AccountService, private val savedStat
 
     /** Login page URLs the UI must open in a browser, one element per request. */
     val loginPages: Flow<String> = loginPageRequests.receiveAsFlow()
+
+    /** Emits once a new login to the same account is stored; the UI then returns to the start screen. */
+    val finished: Flow<Unit> = finishedEvents.receiveAsFlow()
 
     init {
         restoreSession()?.let { session -> job = viewModelScope.launch { await(session) } }
@@ -107,11 +119,14 @@ class LoginViewModel(private val accounts: AccountService, private val savedStat
 
     private suspend fun await(session: LoginSession) {
         mutableState.update { it.copy(step = LoginStep.WAITING_FOR_APPROVAL) }
-        when (val result = accounts.completeLogin(session, wakeUps)) {
+        val result =
+            if (signInAgain) accounts.reauthenticate(session, wakeUps) else accounts.completeLogin(session, wakeUps)
+        when (result) {
             // The account flow switches to the start screen; the form is reset for a later login.
             is NextcloudResult.Success -> {
                 clearSession()
                 mutableState.update { LoginUiState(address = it.address) }
+                finishedEvents.trySend(Unit)
             }
 
             is NextcloudResult.Failure -> fail(result.error)

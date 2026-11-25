@@ -195,6 +195,7 @@ class RecipeRepositoryTest {
                 conflictCount = 1,
                 lastSuccessAt = 5_000,
                 problem = SyncProblem.ServerError(503),
+                localChangeSeq = 1,
             ),
             repository.status().first(),
         )

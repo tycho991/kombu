@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="start_title">Deine Rezepte</string>
-    <string name="start_placeholder">Kombu wird gerade eingerichtet. Deine Rezepte und der Kochmodus erscheinen bald hier.</string>
     <string name="start_account">Konto</string>
 
     <!-- Anmeldung -->
@@ -42,7 +41,33 @@
     <string name="account_login_name">Benutzer</string>
     <string name="account_sign_out">Abmelden</string>
     <string name="logout_confirm_title">Abmelden?</string>
-    <string name="logout_confirm_text">Kombu löscht die gespeicherte Anmeldung auf diesem Gerät und entfernt sein App-Passwort aus deiner Nextcloud.</string>
+    <string name="logout_confirm_text">Kombu löscht die gespeicherte Anmeldung und die Rezeptkopie auf diesem Gerät und entfernt sein App-Passwort aus deiner Nextcloud. Deine Rezepte bleiben in deiner Nextcloud.</string>
+    <plurals name="logout_confirm_unsynced">
+        <item quantity="one">%d Änderung auf diesem Gerät ist noch nicht in deiner Nextcloud und geht verloren.</item>
+        <item quantity="other">%d Änderungen auf diesem Gerät sind noch nicht in deiner Nextcloud und gehen verloren.</item>
+    </plurals>
     <string name="logout_confirm">Abmelden</string>
     <string name="logout_dismiss">Abbrechen</string>
+    <plurals name="sync_recipe_count">
+        <item quantity="one">%d Rezept auf diesem Gerät</item>
+        <item quantity="other">%d Rezepte auf diesem Gerät</item>
+    </plurals>
+    <string name="sync_never">Noch nicht abgeglichen.</string>
+    <string name="sync_last_success">Zuletzt abgeglichen: %1$s</string>
+    <plurals name="sync_pending">
+        <item quantity="one">%d Änderung ist noch nicht hochgeladen.</item>
+        <item quantity="other">%d Änderungen sind noch nicht hochgeladen.</item>
+    </plurals>
+    <plurals name="sync_conflicts">
+        <item quantity="one">%d Rezept wurde an zwei Stellen geändert und braucht deine Entscheidung.</item>
+        <item quantity="other">%d Rezepte wurden an zwei Stellen geändert und brauchen deine Entscheidung.</item>
+    </plurals>
+    <string name="sync_running">Wird abgeglichen …</string>
+    <string name="sync_now">Jetzt abgleichen</string>
+    <string name="sync_sign_in_again">Erneut anmelden</string>
+    <string name="sync_problem_offline">Der letzte Abgleich ist fehlgeschlagen: Der Server ist nicht erreichbar. Kombu versucht es später erneut.</string>
+    <string name="sync_problem_server">Der letzte Abgleich ist fehlgeschlagen: Der Server hat einen Fehler gemeldet (HTTP %1$d). Kombu versucht es später erneut.</string>
+    <string name="sync_problem_credentials">Deine Nextcloud akzeptiert das App-Passwort von Kombu nicht mehr. Melde dich erneut an, damit der Abgleich weiterläuft. Deine Rezepte und Änderungen bleiben auf diesem Gerät.</string>
+    <string name="sync_problem_cookbook_missing">Der letzte Abgleich ist fehlgeschlagen: Die App Cookbook ist für dein Konto nicht verfügbar.</string>
+    <string name="sync_problem_cookbook_too_old">Kombu braucht zum Abgleichen Cookbook %2$s oder neuer, deine Nextcloud hat aber Cookbook %1$s.</string>
 </resources>

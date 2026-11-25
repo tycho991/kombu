@@ -38,6 +38,12 @@ interface AccountService {
         wakeUps: ReceiveChannel<Unit>,
     ): NextcloudResult<NextcloudCredentials>
 
+    /** Signs in again to the same account after the server rejected the stored credentials. */
+    suspend fun reauthenticate(
+        session: LoginSession,
+        wakeUps: ReceiveChannel<Unit>,
+    ): NextcloudResult<NextcloudCredentials>
+
     /** Signs out; returns `null` when nobody was signed in. */
     suspend fun logout(): LogoutResult?
 }
@@ -81,7 +87,7 @@ class AccountRepository(
      * [session]; if the new login is for the same server and login name, it replaces the credentials and keeps
      * all local data. A login for another account is revoked again and gives [NextcloudError.DifferentAccount].
      */
-    suspend fun reauthenticate(
+    override suspend fun reauthenticate(
         session: LoginSession,
         wakeUps: ReceiveChannel<Unit>,
     ): NextcloudResult<NextcloudCredentials> {

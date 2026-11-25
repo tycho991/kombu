@@ -46,6 +46,12 @@ class SyncEngine(
         result
     }
 
+    /**
+     * Runs [block] while no sync runs; a sync that starts meanwhile waits. Logout uses it to delete the local copy
+     * without a running sync writing recipes of the old account back.
+     */
+    suspend fun <T> withoutSync(block: suspend () -> T): T = lock.withLock { block() }
+
     private suspend fun sync(session: SyncSession, localChangeSeq: Long) {
         val version = client.checkAvailable(session.credentials).orAbort()
         if (!version.isSupported) throw SyncAbort(SyncProblem.CookbookTooOld(version.toString()))

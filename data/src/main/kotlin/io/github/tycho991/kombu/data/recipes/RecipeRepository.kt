@@ -64,6 +64,7 @@ class RecipeRepository(
             conflictCount = conflicts,
             lastSuccessAt = row?.lastSuccessAt,
             problem = row?.problemOrNull(),
+            localChangeSeq = row?.localChangeSeq ?: 0,
         )
     }
 

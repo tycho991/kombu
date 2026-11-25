@@ -36,6 +36,8 @@ data class SyncStatus(
     val lastSuccessAt: Long? = null,
     /** Why the last sync failed, or `null` when it completed. */
     val problem: SyncProblem? = null,
+    /** Grows with every local change; the app schedules a sync when it grows. */
+    val localChangeSeq: Long = 0,
 )
 
 /** The sync bookkeeping the engine reads at the start of a run. */

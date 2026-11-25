@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,10 @@ import io.github.tycho991.kombu.ui.theme.KombuTheme
 private val ContentPadding = 24.dp
 private val ItemSpacing = 16.dp
 
-/** Shows the signed-in [server] and [loginName] and offers logout after a confirmation. */
+/**
+ * Shows the signed-in [server] and [loginName] and offers logout after a confirmation. The confirmation names the
+ * [unsyncedChanges] that a logout would lose (spec nextcloud-account, "Logout revokes the app password").
+ */
 @Composable
 fun AccountScreen(
     server: String,
@@ -34,6 +38,7 @@ fun AccountScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier,
+    unsyncedChanges: Int = 0,
 ) {
     var confirming by rememberSaveable { mutableStateOf(false) }
     Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
@@ -54,7 +59,18 @@ fun AccountScreen(
         AlertDialog(
             onDismissRequest = { confirming = false },
             title = { Text(stringResource(R.string.logout_confirm_title)) },
-            text = { Text(stringResource(R.string.logout_confirm_text)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(ItemSpacing)) {
+                    Text(stringResource(R.string.logout_confirm_text))
+                    if (unsyncedChanges > 0) {
+                        Text(
+                            text =
+                            pluralStringResource(R.plurals.logout_confirm_unsynced, unsyncedChanges, unsyncedChanges),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+            },
             confirmButton = {
                 TextButton(onClick = {
                     confirming = false

@@ -89,14 +89,14 @@
 
 ## 6. Scheduling and status (`sync`, `app`)
 
-- [ ] 6.1 Implement `SyncWorker` with the result mapping, and `SyncScheduler` with the four triggers and their policies and constraints (design D10). Verify with Robolectric and `work-testing` tests for:
+- [x] 6.1 Implement `SyncWorker` with the result mapping, and `SyncScheduler` with the four triggers and their policies and constraints (design D10). Verify with Robolectric and `work-testing` tests for:
   - each result mapping;
   - unique names;
   - `KEEP` behaviour;
   - the network constraint on all triggers except manual;
   - the 1-hour period.
-- [ ] 6.2 Wire the scheduler into `AppContainer`: schedule on app start, trigger after local changes, cancel on logout. Verify that `./gradlew :sync:check` passes, with Kover at 80 % lines and 70 % branches or higher.
-- [ ] 6.3 Show the sync status on the start screen (spec "Sync status", design D12):
+- [x] 6.2 Wire the scheduler into `AppContainer`: schedule on app start, trigger after local changes, cancel on logout. Verify that `./gradlew :sync:check` passes, with Kover at 80 % lines and 70 % branches or higher.
+- [x] 6.3 Show the sync status on the start screen (spec "Sync status", design D12):
   - recipe count;
   - last successful sync in the device locale;
   - pending changes and conflicts;
@@ -105,8 +105,8 @@
   - a "sync now" button.
 
   Add all strings, including plurals, in English and German. Verify with Robolectric Compose tests in both languages for: the empty state, after a sync, running, and each problem type.
-- [ ] 6.4 Add the "sign in again" path from the status to the login flow, with the server prefilled and the different-account message (spec `nextcloud-account`, "Sign in again to the same account"). Verify with view-model and screen tests for: same account; different account; cancelled.
-- [ ] 6.5 Extend the logout confirmation with the pending-change count, as a plural resource in English and German (spec "Logout revokes the app password"). Verify with tests for: zero pending (unchanged text) and three pending; and that cancelling deletes nothing. Verify that `./gradlew :app:check` passes at 70 % lines or higher.
+- [x] 6.4 Add the "sign in again" path from the status to the login flow, with the server prefilled and the different-account message (spec `nextcloud-account`, "Sign in again to the same account"). Verify with view-model and screen tests for: same account; different account; cancelled.
+- [x] 6.5 Extend the logout confirmation with the pending-change count, as a plural resource in English and German (spec "Logout revokes the app password"). Verify with tests for: zero pending (unchanged text) and three pending; and that cancelling deletes nothing. Verify that `./gradlew :app:check` passes at 70 % lines or higher.
 
 ## 7. Documentation and verification
 

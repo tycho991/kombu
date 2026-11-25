@@ -7,24 +7,42 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.tycho991.kombu.R
+import io.github.tycho991.kombu.cookbookclient.CookbookVersion
+import io.github.tycho991.kombu.data.recipes.SyncProblem
+import io.github.tycho991.kombu.data.recipes.SyncStatus
 import io.github.tycho991.kombu.ui.theme.KombuTheme
+import java.text.DateFormat
+import java.util.Date
+import java.util.Locale
 
 private val ContentPadding = 24.dp
 private val ItemSpacing = 12.dp
 
-/** First screen of the app until the recipe list exists. All texts come from string resources. */
+/** The callbacks of [StartScreen]. */
+data class StartActions(
+    val onOpenAccount: () -> Unit = {},
+    val onSyncNow: () -> Unit = {},
+    val onSignInAgain: () -> Unit = {},
+)
+
+/** First screen of the app until the recipe list exists: the state of the local recipe copy and its sync. */
 @Composable
-fun StartScreen(modifier: Modifier = Modifier, onOpenAccount: () -> Unit = {}) {
+fun StartScreen(state: StartUiState, modifier: Modifier = Modifier, actions: StartActions = StartActions()) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -32,33 +50,86 @@ fun StartScreen(modifier: Modifier = Modifier, onOpenAccount: () -> Unit = {}) {
                 modifier = Modifier.fillMaxWidth().statusBarsPadding(),
                 horizontalArrangement = Arrangement.End,
             ) {
-                TextButton(onClick = onOpenAccount) { Text(stringResource(R.string.start_account)) }
+                TextButton(onClick = actions.onOpenAccount) { Text(stringResource(R.string.start_account)) }
             }
         },
     ) { innerPadding ->
         Column(
-            modifier =
-            Modifier
-                .padding(innerPadding)
-                .padding(ContentPadding),
+            modifier = Modifier.padding(innerPadding).padding(ContentPadding),
             verticalArrangement = Arrangement.spacedBy(ItemSpacing),
         ) {
-            Text(
-                text = stringResource(R.string.start_title),
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            Text(
-                text = stringResource(R.string.start_placeholder),
-                style = MaterialTheme.typography.bodyLarge,
-            )
+            Text(text = stringResource(R.string.start_title), style = MaterialTheme.typography.headlineMedium)
+            SyncSummary(state.status)
+            if (state.running) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                Text(stringResource(R.string.sync_running), style = MaterialTheme.typography.bodyMedium)
+            }
+            state.status.problem?.let { problem ->
+                Text(
+                    text = problem.message(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                )
+                if (problem == SyncProblem.CredentialsRejected) {
+                    Button(onClick = actions.onSignInAgain) { Text(stringResource(R.string.sync_sign_in_again)) }
+                }
+            }
+            if (state.status.problem != SyncProblem.CredentialsRejected) {
+                OutlinedButton(onClick = actions.onSyncNow, enabled = !state.running) {
+                    Text(stringResource(R.string.sync_now))
+                }
+            }
         }
     }
+}
+
+@Composable
+private fun SyncSummary(status: SyncStatus) {
+    Text(
+        text = pluralStringResource(R.plurals.sync_recipe_count, status.recipeCount, status.recipeCount),
+        style = MaterialTheme.typography.bodyLarge,
+    )
+    val lastSuccess = status.lastSuccessAt
+    Text(
+        text =
+        if (lastSuccess == null) {
+            stringResource(R.string.sync_never)
+        } else {
+            stringResource(R.string.sync_last_success, formatTime(lastSuccess, LocalConfiguration.current.locales[0]))
+        },
+        style = MaterialTheme.typography.bodyMedium,
+    )
+    if (status.pendingCount > 0) {
+        Text(pluralStringResource(R.plurals.sync_pending, status.pendingCount, status.pendingCount))
+    }
+    if (status.conflictCount > 0) {
+        Text(pluralStringResource(R.plurals.sync_conflicts, status.conflictCount, status.conflictCount))
+    }
+}
+
+/** [epochMillis] as date and time in the format of [locale]. */
+fun formatTime(epochMillis: Long, locale: Locale): String =
+    DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale).format(Date(epochMillis))
+
+/** The user-facing explanation of a sync problem (design D12), from the string resources. */
+@Composable
+fun SyncProblem.message(): String = when (this) {
+    SyncProblem.Offline -> stringResource(R.string.sync_problem_offline)
+
+    is SyncProblem.ServerError -> stringResource(R.string.sync_problem_server, statusCode)
+
+    SyncProblem.CredentialsRejected -> stringResource(R.string.sync_problem_credentials)
+
+    SyncProblem.CookbookMissing -> stringResource(R.string.sync_problem_cookbook_missing)
+
+    is SyncProblem.CookbookTooOld ->
+        stringResource(R.string.sync_problem_cookbook_too_old, version, CookbookVersion.MINIMUM.toString())
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun StartScreenPreview() {
     KombuTheme {
-        StartScreen()
+        StartScreen(StartUiState(SyncStatus(recipeCount = 64, pendingCount = 2, lastSuccessAt = 0)))
     }
 }

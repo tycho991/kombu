@@ -3,7 +3,6 @@
     <!-- The product name is not translated. -->
     <string name="app_name" translatable="false">Kombu</string>
     <string name="start_title">Your recipes</string>
-    <string name="start_placeholder">Kombu is being set up. Your recipes and the cooking mode will appear here soon.</string>
     <string name="start_account">Account</string>
 
     <!-- Login screen -->
@@ -44,7 +43,33 @@
     <string name="account_login_name">User</string>
     <string name="account_sign_out">Sign out</string>
     <string name="logout_confirm_title">Sign out?</string>
-    <string name="logout_confirm_text">Kombu deletes the stored login on this device and removes its app password from your Nextcloud.</string>
+    <string name="logout_confirm_text">Kombu deletes the stored login and the recipe copy on this device and removes its app password from your Nextcloud. Your recipes stay in your Nextcloud.</string>
+    <plurals name="logout_confirm_unsynced">
+        <item quantity="one">%d change on this device is not in your Nextcloud yet and will be lost.</item>
+        <item quantity="other">%d changes on this device are not in your Nextcloud yet and will be lost.</item>
+    </plurals>
     <string name="logout_confirm">Sign out</string>
     <string name="logout_dismiss">Cancel</string>
+    <plurals name="sync_recipe_count">
+        <item quantity="one">%d recipe on this device</item>
+        <item quantity="other">%d recipes on this device</item>
+    </plurals>
+    <string name="sync_never">Not synced yet.</string>
+    <string name="sync_last_success">Last synced: %1$s</string>
+    <plurals name="sync_pending">
+        <item quantity="one">%d change is not uploaded yet.</item>
+        <item quantity="other">%d changes are not uploaded yet.</item>
+    </plurals>
+    <plurals name="sync_conflicts">
+        <item quantity="one">%d recipe was changed in two places and needs your decision.</item>
+        <item quantity="other">%d recipes were changed in two places and need your decision.</item>
+    </plurals>
+    <string name="sync_running">Syncing…</string>
+    <string name="sync_now">Sync now</string>
+    <string name="sync_sign_in_again">Sign in again</string>
+    <string name="sync_problem_offline">The last sync failed: the server cannot be reached. Kombu tries again later.</string>
+    <string name="sync_problem_server">The last sync failed: the server reported an error (HTTP %1$d). Kombu tries again later.</string>
+    <string name="sync_problem_credentials">Your Nextcloud no longer accepts Kombu\'s app password. Sign in again to keep syncing. Your recipes and changes stay on this device.</string>
+    <string name="sync_problem_cookbook_missing">The last sync failed: the Cookbook app is not available for your account.</string>
+    <string name="sync_problem_cookbook_too_old">Kombu needs Cookbook %2$s or newer to sync, but your Nextcloud has Cookbook %1$s.</string>
 </resources>

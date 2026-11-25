@@ -12,10 +12,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val accounts = (application as KombuApplication).container.accounts
+        val container = (application as KombuApplication).container
         setContent {
             KombuTheme {
-                KombuApp(accounts)
+                KombuApp(container.accounts, container.recipes.status(), container.sync)
             }
         }
     }

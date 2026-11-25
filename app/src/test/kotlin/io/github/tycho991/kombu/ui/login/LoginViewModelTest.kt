@@ -2,6 +2,7 @@ package io.github.tycho991.kombu.ui.login
 
 import androidx.lifecycle.SavedStateHandle
 import io.github.tycho991.kombu.nextcloudauth.AddressError
+import io.github.tycho991.kombu.nextcloudauth.LoginSession
 import io.github.tycho991.kombu.nextcloudauth.NextcloudError
 import io.github.tycho991.kombu.nextcloudauth.NextcloudResult
 import io.github.tycho991.kombu.ui.FakeAccountService
@@ -204,5 +205,46 @@ class LoginViewModelTest {
         viewModel.onBrowserMissing()
 
         assertTrue(viewModel.state.value.browserMissing)
+    }
+
+    @Test
+    fun signingInAgainStartsWithTheServerAndReplacesTheCredentials() = runTest {
+        val viewModel = LoginViewModel(
+            accounts,
+            savedState,
+            signInAgain = true,
+            initialAddress = "https://cloud.example.com",
+        )
+        assertEquals("https://cloud.example.com", viewModel.state.value.address)
+
+        viewModel.signIn()
+        accounts.completion.complete(NextcloudResult.Success(testCredentials))
+
+        assertEquals(Unit, viewModel.finished.first())
+        assertEquals(listOf(testSession), accounts.reauthenticatedSessions)
+        assertEquals(emptyList<LoginSession>(), accounts.completedSessions)
+    }
+
+    @Test
+    fun signingInAgainWithAnotherAccountShowsTheReason() {
+        val viewModel = LoginViewModel(accounts, savedState, signInAgain = true, initialAddress = "cloud.example.com")
+
+        viewModel.signIn()
+        accounts.completion.complete(NextcloudResult.Failure(NextcloudError.DifferentAccount))
+
+        assertEquals(NextcloudError.DifferentAccount, viewModel.state.value.error)
+        assertEquals(LoginStep.ENTER_ADDRESS, viewModel.state.value.step)
+    }
+
+    @Test
+    fun cancellingTheNewLoginStoresNothing() {
+        val viewModel = LoginViewModel(accounts, savedState, signInAgain = true, initialAddress = "cloud.example.com")
+        viewModel.signIn()
+
+        viewModel.cancel()
+
+        assertEquals(LoginStep.ENTER_ADDRESS, viewModel.state.value.step)
+        assertFalse(savedState.contains("login.token"))
+        assertNull(accounts.accountState.value)
     }
 }
