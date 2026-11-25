@@ -74,6 +74,7 @@ class LoginScreenTest {
                 NextcloudError.CookbookTooOld(
                     "0.10.2",
                 ) to "needs Cookbook 0.10.3 or newer, but this Nextcloud has Cookbook 0.10.2",
+                NextcloudError.DifferentAccount to "signed in with a different account",
                 NextcloudError.NotFound to "no longer exists",
                 NextcloudError.NameTaken to "already has this name",
                 NextcloudError.NameMissing to "needs a name",
@@ -101,6 +102,7 @@ class LoginScreenTest {
                 NextcloudError.CookbookTooOld(
                     "0.10.2",
                 ) to "braucht Cookbook 0.10.3 oder neuer, diese Nextcloud hat aber Cookbook 0.10.2",
+                NextcloudError.DifferentAccount to "mit einem anderen Konto angemeldet",
                 NextcloudError.NotFound to "nicht mehr",
                 NextcloudError.NameTaken to "schon diesen Namen",
                 NextcloudError.NameMissing to "braucht einen Namen",

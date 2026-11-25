@@ -20,6 +20,8 @@ fun NextcloudError.message(): String = when (this) {
 }
 
 /** The string resource of an error kind whose message has no arguments. */
+// A flat, exhaustive mapping: splitting it up would only lose the compiler's check that every kind has a text.
+@Suppress("CyclomaticComplexMethod")
 @StringRes
 private fun NextcloudError.messageResource(): Int = when (this) {
     is NextcloudError.InvalidAddress -> reason.messageResource()
@@ -31,6 +33,7 @@ private fun NextcloudError.messageResource(): Int = when (this) {
     NextcloudError.Unauthorized -> R.string.error_unauthorized
     NextcloudError.CookbookMissing -> R.string.error_cookbook_missing
     is NextcloudError.CookbookTooOld -> R.string.error_cookbook_too_old
+    NextcloudError.DifferentAccount -> R.string.error_different_account
     NextcloudError.NotFound -> R.string.error_not_found
     NextcloudError.NameTaken -> R.string.error_name_taken
     NextcloudError.NameMissing -> R.string.error_name_missing

@@ -48,6 +48,8 @@ See proposal.md for scope and `specs/recipe-sync/spec.md` for the behaviour.
 
 `SyncEngine` talks to a `LocalRecipeStore` interface. `data` implements it with Room, and tests implement it in memory. That keeps the engine's tests on the plain JVM, without Robolectric, even though the `sync` module is Android.
 
+The engine reads a recipe, talks to the server, then writes. The user may change the recipe in between, so every engine write is a compare-and-set: `replace(expected, updated)` and `remove(expected)` apply only if the stored row still equals what the engine read. Otherwise the engine skips the recipe; the `localChangeSeq` re-run (D5) or the next run handles it. Without this, a pull could move the base under a fresh local edit, and the next push would overwrite the server change silently.
+
 Alternative considered: a new pure module `sync-core`. It would make the JVM-only rule enforceable by the build, but it adds a module, a layer entry and Gradle wiring for logic that tests already run without Android. It can be split off later if the engine grows.
 
 ### D2 Recipes as raw JSON
@@ -82,7 +84,7 @@ Table `recipes`, one row per recipe:
 - `localJson` — the pending local version (`null` when synced);
 - `state` — `SYNCED`, `CREATED`, `CHANGED`, `DELETED` or `CONFLICT`;
 - `conflict` — `BOTH_CHANGED`, `DELETED_ON_SERVER` or `CHANGED_ON_SERVER_DELETED_HERE` (only in state `CONFLICT`);
-- `serverJson` — the server version in a conflict (`null` if deleted there);
+- `serverJson`, `serverModified` — the server version in a conflict (`null` if deleted there) and its stub `dateModified`, so a later pull downloads it again only when it moved;
 - `uploadError` — `NAME_TAKEN`, `NAME_MISSING` or `REJECTED`, or `null`;
 - extracted columns for later list and filter screens: `name`, `category`, `keywords`;
 - `imageState` — `NONE`, `PRESENT` or `MISSING`;
@@ -90,7 +92,7 @@ Table `recipes`, one row per recipe:
 
 Table `sync_status` has a single row: `lastSuccessAt`, `problem`, `problemDetail`, `credentialsRejected` and a `localChangeSeq` counter.
 
-Counts (recipes, pending, conflicts) are `Flow` queries. The shown version of a recipe is `localJson ?: baseJson`. Rows in state `DELETED` are hidden from lists.
+Enum columns use Room's built-in name mapping, so no type converters are needed. Counts (recipes, pending, conflicts) are `Flow` queries. The shown version of a recipe is `localJson ?: baseJson`. Rows in state `DELETED` are hidden from lists.
 
 The schema is exported to `data/schemas/` and checked in. There is no `fallbackToDestructiveMigration`, because the database holds pending changes that a destructive migration would lose (R2).
 

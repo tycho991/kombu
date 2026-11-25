@@ -10,10 +10,14 @@ import io.github.tycho991.kombu.data.account.AccountService
 import io.github.tycho991.kombu.data.account.AndroidKeystoreKeySource
 import io.github.tycho991.kombu.data.account.CredentialStore
 import io.github.tycho991.kombu.data.account.RemoteAccountApi
+import io.github.tycho991.kombu.data.recipes.ImageStore
+import io.github.tycho991.kombu.data.recipes.RecipeRepository
+import io.github.tycho991.kombu.data.recipes.db.KombuDatabase
 import io.github.tycho991.kombu.nextcloudauth.KOMBU_USER_AGENT
 import io.github.tycho991.kombu.nextcloudauth.NextcloudAuthClient
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 /** The app's shared objects, created once per process (design D11). */
@@ -30,6 +34,12 @@ class AppContainer(context: Context) {
                 },
             ).build()
 
+    private val database: KombuDatabase = KombuDatabase.open(context)
+
+    /** The local recipe copy; its images live in the no-backup directory (design D8). */
+    val recipes: RecipeRepository =
+        RecipeRepository(database, ImageStore(File(context.noBackupFilesDir, RECIPE_IMAGE_DIRECTORY)))
+
     /** Signing in and out. */
     val accounts: AccountService =
         AccountRepository(
@@ -42,10 +52,12 @@ class AppContainer(context: Context) {
                 ),
                 keySource = AndroidKeystoreKeySource(),
             ),
+            localData = recipes,
         )
 
     private companion object {
         const val CONNECT_TIMEOUT_SECONDS = 15L
         const val READ_TIMEOUT_SECONDS = 30L
+        const val RECIPE_IMAGE_DIRECTORY = "recipe-images"
     }
 }

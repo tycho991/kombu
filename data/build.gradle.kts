@@ -9,6 +9,11 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+// The schema test (room-testing) reads the exported schema from the assets of the Robolectric unit tests.
+android {
+    sourceSets.getByName("test").assets.directories.add("$projectDir/schemas")
+}
+
 dependencies {
     api(project(":nextcloud-auth"))
     api(project(":cookbook-client"))
@@ -20,4 +25,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.robolectric)
 }

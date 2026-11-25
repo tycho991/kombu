@@ -29,6 +29,7 @@
     <string name="error_unauthorized">Die Anmeldung ist fehlgeschlagen. Bitte versuche es noch einmal.</string>
     <string name="error_cookbook_missing">Kombu braucht die App Cookbook in Nextcloud. Bitte die Administration deiner Nextcloud, sie zu installieren und zu aktivieren.</string>
     <string name="error_cookbook_too_old">Kombu braucht Cookbook %2$s oder neuer, diese Nextcloud hat aber Cookbook %1$s. Bitte die Administration deiner Nextcloud, es zu aktualisieren.</string>
+    <string name="error_different_account">Du hast dich mit einem anderen Konto angemeldet. Für ein anderes Konto melde dich zuerst ab; Kombu löscht dann die Rezepte des bisherigen Kontos von diesem Gerät.</string>
     <string name="error_not_found">Das Rezept gibt es auf dem Server nicht mehr.</string>
     <string name="error_name_taken">Ein anderes Rezept auf dem Server hat schon diesen Namen.</string>
     <string name="error_name_missing">Das Rezept braucht einen Namen.</string>

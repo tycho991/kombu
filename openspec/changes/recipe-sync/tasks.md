@@ -49,25 +49,25 @@
 
 ## 4. Local store (`data`)
 
-- [ ] 4.1 Create the Room database, version 1 (design D4): `recipes` and `sync_status` tables, DAOs, converters for the enums, the exported schema checked in, and no destructive fallback. Verify with Robolectric tests on an in-memory database:
+- [x] 4.1 Create the Room database, version 1 (design D4): `recipes` and `sync_status` tables, DAOs, converters for the enums, the exported schema checked in, and no destructive fallback. Verify with Robolectric tests on an in-memory database:
   - insert, query and update per state;
   - the counts flow;
   - `DELETED` rows hidden from the recipe list query;
   - the schema test from `room-testing`.
-- [ ] 4.2 Implement `ImageStore` in `noBackupFilesDir` with temporary-file writes and rename (design D8). Verify with tests for:
+- [x] 4.2 Implement `ImageStore` in `noBackupFilesDir` with temporary-file writes and rename (design D8). Verify with tests for:
   - a write then a read;
   - an interrupted write that leaves no partial file and keeps the old image;
   - deleting one recipe's images;
   - deleting all images.
-- [ ] 4.3 Implement `RecipeRepository` local operations (spec "Offline editing"): create, edit (on top of the base JSON), delete, the `localChangeSeq` bump, and the shown version. Verify with tests for:
+- [x] 4.3 Implement `RecipeRepository` local operations (spec "Offline editing"): create, edit (on top of the base JSON), delete, the `localChangeSeq` bump, and the shown version. Verify with tests for:
   - edit of a `SYNCED` recipe gives `CHANGED`, with unknown fields kept;
   - delete of `CREATED` removes the row;
   - delete of `CHANGED` gives `DELETED`;
   - a repeated edit keeps one pending change.
-- [ ] 4.4 Implement conflict resolution, every row of the design D7 table, in one transaction each. Verify with one test per table cell, and with a test that "keep mine" uses the server version the user saw as base.
-- [ ] 4.5 Implement `LocalRecipeStore` for the engine on top of Room, plus `clearAll()` and the pending count. Extend `AccountRepository.logout()` to clear the recipes and images (design D13). Exclude the database from backups in `backup_rules.xml` and `data_extraction_rules.xml` (spec "Local recipe data stays on the device"). Verify with tests: logout leaves no rows and no image files. Verify with a test that parses both XML rule files for the database exclusion.
-- [ ] 4.6 Add `reauthenticate()` to `AccountRepository` (design D13). Verify with tests: the same server and login name replaces the credentials and clears `credentialsRejected`; a different login name stores nothing, revokes the new app password and returns `DifferentAccount`.
-- [ ] 4.7 Verify that `./gradlew :data:check` passes, with Kover at 80 % lines and 70 % branches or higher.
+- [x] 4.4 Implement conflict resolution, every row of the design D7 table, in one transaction each. Verify with one test per table cell, and with a test that "keep mine" uses the server version the user saw as base.
+- [x] 4.5 Implement `LocalRecipeStore` for the engine on top of Room, plus `clearAll()` and the pending count. Extend `AccountRepository.logout()` to clear the recipes and images (design D13). Exclude the database from backups in `backup_rules.xml` and `data_extraction_rules.xml` (spec "Local recipe data stays on the device"). Verify with tests: logout leaves no rows and no image files. Verify with a test that parses both XML rule files for the database exclusion.
+- [x] 4.6 Add `reauthenticate()` to `AccountRepository` (design D13). Verify with tests: the same server and login name replaces the credentials and clears `credentialsRejected`; a different login name stores nothing, revokes the new app password and returns `DifferentAccount`.
+- [x] 4.7 Verify that `./gradlew :data:check` passes, with Kover at 80 % lines and 70 % branches or higher.
 
 ## 5. Sync engine (`sync`)
 

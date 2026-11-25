@@ -38,6 +38,7 @@ class AccountRepositoryTest {
             startedAtMillis = 0,
         )
     private val api = FakeAccountApi()
+    private val localData = FakeLocalData()
     private lateinit var open: TestDataStore
     private lateinit var store: CredentialStore
     private lateinit var repository: AccountRepository
@@ -46,7 +47,7 @@ class AccountRepositoryTest {
     fun setUp() {
         open = TestDataStore(File(folder.root, "account.preferences_pb"))
         store = CredentialStore(open.dataStore, SoftwareKeySource())
-        repository = AccountRepository(api, store)
+        repository = AccountRepository(api, store, localData)
     }
 
     @After
@@ -152,6 +153,7 @@ class AccountRepositoryTest {
         assertEquals(LogoutResult.REVOKED, repository.logout())
         assertNull(repository.account.first())
         assertEquals(listOf("revokeAppPassword"), api.calls)
+        assertEquals(listOf("clearAll"), localData.calls)
         assertEquals(credentials, api.lastCredentials)
     }
 
@@ -170,6 +172,7 @@ class AccountRepositoryTest {
 
         assertEquals(LogoutResult.LOCAL_ONLY, repository.logout())
         assertNull(repository.account.first())
+        assertEquals(listOf("clearAll"), localData.calls)
     }
 
     @Test
@@ -185,6 +188,84 @@ class AccountRepositoryTest {
     fun logoutWithoutAccountDoesNothing() = runTest {
         assertNull(repository.logout())
         assertEquals(emptyList<String>(), api.calls)
+        assertEquals(emptyList<String>(), localData.calls)
+    }
+
+    @Test
+    fun reauthenticationToTheSameAccountReplacesTheCredentialsAndKeepsLocalData() = runTest {
+        store.save(credentials.copy(appPassword = "rejected-password"))
+
+        assertEquals(NextcloudResult.Success(credentials), repository.reauthenticate(session, Channel()))
+        assertEquals(credentials, repository.account.first())
+        assertEquals(listOf("credentialsAccepted"), localData.calls)
+        assertEquals(listOf("awaitApproval", "verifyAccount", "checkCookbook"), api.calls)
+    }
+
+    @Test
+    fun reauthenticationWithAnotherLoginNameIsRevokedAndStoresNothing() = runTest {
+        val old = credentials.copy(loginName = "sam", appPassword = "rejected-password")
+        store.save(old)
+
+        assertEquals(
+            NextcloudResult.Failure(NextcloudError.DifferentAccount),
+            repository.reauthenticate(session, Channel()),
+        )
+        assertEquals(old, repository.account.first())
+        assertEquals(emptyList<String>(), localData.calls)
+        assertEquals(listOf("awaitApproval", "revokeAppPassword"), api.calls)
+        assertEquals(credentials, api.lastCredentials)
+    }
+
+    @Test
+    fun reauthenticationOnAnotherServerIsRevoked() = runTest {
+        val old = NextcloudCredentials(ServerAddress.of("https://other.example.com".toHttpUrl()), "alex", "old")
+        store.save(old)
+
+        assertEquals(
+            NextcloudResult.Failure(NextcloudError.DifferentAccount),
+            repository.reauthenticate(session, Channel()),
+        )
+        assertEquals(old, repository.account.first())
+    }
+
+    @Test
+    fun reauthenticationKeepsTheOldStateWhenTheCheckFails() = runTest {
+        val old = credentials.copy(appPassword = "rejected-password")
+        store.save(old)
+        api.cookbook = NextcloudResult.Failure(NextcloudError.Unreachable)
+
+        assertEquals(
+            NextcloudResult.Failure(NextcloudError.Unreachable),
+            repository.reauthenticate(session, Channel()),
+        )
+        assertEquals(old, repository.account.first())
+        assertEquals(emptyList<String>(), localData.calls)
+    }
+
+    @Test
+    fun reauthenticationPassesOnAnUnapprovedLogin() = runTest {
+        store.save(credentials)
+        api.approval = NextcloudResult.Failure(NextcloudError.LoginExpired)
+
+        assertEquals(
+            NextcloudResult.Failure(NextcloudError.LoginExpired),
+            repository.reauthenticate(session, Channel()),
+        )
+        assertEquals(listOf("awaitApproval"), api.calls)
+    }
+
+    private class FakeLocalData : AccountLocalData {
+        val calls = mutableListOf<String>()
+
+        override suspend fun unsyncedCount(): Int = 0
+
+        override suspend fun clearAll() {
+            calls += "clearAll"
+        }
+
+        override suspend fun credentialsAccepted() {
+            calls += "credentialsAccepted"
+        }
     }
 
     private inner class FakeAccountApi : AccountApi {

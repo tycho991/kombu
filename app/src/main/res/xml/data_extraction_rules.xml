@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Android 12+: the account DataStore (ACCOUNT_DATASTORE_NAME in :data) never leaves the device (design D9). -->
+<!--
+    Android 12+: the account DataStore (ACCOUNT_DATASTORE_NAME in :data) and the recipe database
+    (RECIPE_DATABASE_NAME in :data) never leave the device (design D9 of nextcloud-login, spec recipe-sync
+    "Local recipe data stays on the device"). Recipe images live in noBackupFilesDir, which is never transferred.
+-->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="file" path="datastore/account.preferences_pb" />
+        <exclude domain="database" path="recipes.db" />
+        <exclude domain="database" path="recipes.db-journal" />
+        <exclude domain="database" path="recipes.db-wal" />
+        <exclude domain="database" path="recipes.db-shm" />
     </cloud-backup>
     <device-transfer>
         <exclude domain="file" path="datastore/account.preferences_pb" />
+        <exclude domain="database" path="recipes.db" />
+        <exclude domain="database" path="recipes.db-journal" />
+        <exclude domain="database" path="recipes.db-wal" />
+        <exclude domain="database" path="recipes.db-shm" />
     </device-transfer>
 </data-extraction-rules>

@@ -46,6 +46,7 @@ interface AccountService {
 class AccountRepository(
     private val api: AccountApi,
     private val store: CredentialStore,
+    private val localData: AccountLocalData,
     private val revokeTimeout: Duration = REVOKE_TIMEOUT,
 ) : AccountService {
     override val account: Flow<NextcloudCredentials?> = store.credentials
@@ -72,7 +73,32 @@ class AccountRepository(
     ): NextcloudResult<NextcloudCredentials> {
         val approval = api.awaitApproval(session, wakeUps)
         if (approval is NextcloudResult.Failure) return approval
-        val credentials = (approval as NextcloudResult.Success).value
+        return checkAndStore((approval as NextcloudResult.Success).value)
+    }
+
+    /**
+     * Signs in again after the server rejected the stored credentials (design D13). Waits for the approval of
+     * [session]; if the new login is for the same server and login name, it replaces the credentials and keeps
+     * all local data. A login for another account is revoked again and gives [NextcloudError.DifferentAccount].
+     */
+    suspend fun reauthenticate(
+        session: LoginSession,
+        wakeUps: ReceiveChannel<Unit>,
+    ): NextcloudResult<NextcloudCredentials> {
+        val approval = api.awaitApproval(session, wakeUps)
+        if (approval !is NextcloudResult.Success) return approval
+        val credentials = approval.value
+        val current = store.credentials.first()
+        val sameAccount = current?.server == credentials.server && current.loginName == credentials.loginName
+        return if (sameAccount) {
+            checkAndStore(credentials).also { if (it is NextcloudResult.Success) localData.credentialsAccepted() }
+        } else {
+            revokeQuietly(credentials)
+            NextcloudResult.Failure(NextcloudError.DifferentAccount)
+        }
+    }
+
+    private suspend fun checkAndStore(credentials: NextcloudCredentials): NextcloudResult<NextcloudCredentials> {
         val failure = checkAccount(credentials)
         return if (failure == null) {
             store.save(credentials)
@@ -84,12 +110,13 @@ class AccountRepository(
     }
 
     /**
-     * Deletes the stored credentials, then asks the server to revoke the app password (design D12). Returns
-     * `null` when nobody was signed in.
+     * Deletes the stored credentials and the local recipe copy, then asks the server to revoke the app password
+     * (design D12, D13). Returns `null` when nobody was signed in.
      */
     override suspend fun logout(): LogoutResult? {
         val credentials = store.credentials.first() ?: return null
         store.clear()
+        localData.clearAll()
         val revoked = withTimeoutOrNull(revokeTimeout) { api.revokeAppPassword(credentials) }
         val accepted =
             revoked is NextcloudResult.Success ||

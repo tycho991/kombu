@@ -50,6 +50,9 @@ public sealed interface NextcloudError {
         val version: String,
     ) : NextcloudError
 
+    /** A new login belongs to another account than the one signed in; that one must sign out first. */
+    public data object DifferentAccount : NextcloudError
+
     /** The requested object, for example a recipe, does not exist on the server (HTTP 404). */
     public data object NotFound : NextcloudError
 
