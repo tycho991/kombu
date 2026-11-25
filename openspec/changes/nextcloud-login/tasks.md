@@ -70,7 +70,7 @@
 
 ## 6. Documentation and integration check
 
-- [ ] 6.1 Update the README: the first steps for signing in, the requirements (HTTPS, the Cookbook app on the server), and the note that each login creates an app password named "Kombu". Update CONTRIBUTING.md if commands changed. Verify that the README contains no server address other than example domains.
+- [x] 6.1 Update the README: the first steps for signing in, the requirements (HTTPS, the Cookbook app on the server), and the note that each login creates an app password named "Kombu". Update CONTRIBUTING.md if commands changed. Verify that the README contains no server address other than example domains.
 - [ ] 6.2 On an emulator with a debug build against a real Nextcloud with the Cookbook app, verify all of the following and record the result in this task. The maintainer provides the instance, and no address is committed.
   - Login through the browser.
   - The app password named "Kombu" in the security settings.

@@ -12,7 +12,7 @@ Kombu has no server of its own. Everything is stored in your Nextcloud and share
 
 ## Status
 
-Early development. The project scaffold is in place: a buildable Android project with its module layout, quality gates and CI, and a placeholder first screen. No recipe features yet.
+Early development. Kombu can sign in to a Nextcloud and sign out again; the start screen is still a placeholder. No recipe features yet.
 
 Development is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec). The project context lives in [`openspec/config.yaml`](openspec/config.yaml), and changes appear under [`openspec/changes/`](openspec/changes/).
 
@@ -21,7 +21,17 @@ The first milestone (v1) covers recipes and the cooking mode. Shopping lists, me
 ## Requirements
 
 - Android 10 (API level 29) or later. Google Play Services are not needed.
-- A Nextcloud instance with the Cookbook app (and Calendar/Tasks for the later features)
+- A Nextcloud reachable over HTTPS with a certificate your device trusts. Plain HTTP and self-signed certificates are not supported.
+- The Cookbook app installed and enabled in that Nextcloud (and Calendar/Tasks for the later features).
+- A web browser on the device for the login.
+
+## Signing in
+
+1. Enter the address of your Nextcloud, for example `cloud.example.com` or `example.com/nextcloud`. Kombu adds `https://` itself.
+2. Kombu checks the server and opens the Nextcloud login page in your browser. Sign in there, including two-factor authentication if your account uses it, and allow access.
+3. Return to Kombu. It continues on its own once access is granted.
+
+Kombu never sees your Nextcloud password. Nextcloud creates an app password for Kombu instead, which you find under the name "Kombu" in the security settings of your Nextcloud. Kombu stores it encrypted on the device and leaves it out of backups. Signing out in Kombu removes the app password from your Nextcloud again; if the server cannot be reached at that moment, you can remove it in the security settings yourself.
 
 ## Building
 
