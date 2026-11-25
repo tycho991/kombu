@@ -25,6 +25,8 @@ context: |
   - Multi-user: every household member has their own Nextcloud account; sharing uses
     Nextcloud's own sharing.
   - The server URL is always user-configurable; nothing is tied to a specific instance.
+  - Login: Nextcloud Login Flow v2 (browser login, app password); no manual app-password
+    entry, the account password never reaches the app.
   - Distribution: first as a directly installed APK for the household; store choice
     (F-Droid, Google Play) comes later. The code must not depend on Google Play Services.
   - Roadmap: v1 = recipes + cooking mode. Shopping list, meal plan and chores follow
