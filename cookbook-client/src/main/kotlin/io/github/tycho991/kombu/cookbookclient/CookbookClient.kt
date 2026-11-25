@@ -147,12 +147,15 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
         else -> response.readBody { body -> decodeVersion(body) ?: NO_VERSION }
     }
 
-    private fun readCapabilities(response: Response): NextcloudResult<CookbookVersion?> = response.readBody { body ->
-        val version =
-            ((parseObject(body)?.get("ocs") as? JsonObject)?.path("data", "capabilities", "cookbook"))
-                ?.get("version")
-        versionOf(version) ?: NO_VERSION
-    }
+    private fun readCapabilities(response: Response): NextcloudResult<CookbookVersion?> =
+        if (response.code == HTTP_NOT_FOUND) {
+            NextcloudResult.Success(NO_VERSION)
+        } else {
+            response.readBody { body ->
+                val cookbook = (parseObject(body)?.get("ocs") as? JsonObject)?.path("data", "capabilities", "cookbook")
+                versionOf(cookbook?.get("version")) ?: NO_VERSION
+            }
+        }
 
     private fun decodeVersion(body: String): CookbookVersion? = try {
         CookbookVersion(json.decodeFromString<VersionAnswer>(body).cookbookVersion).takeIf { it.parts.isNotEmpty() }

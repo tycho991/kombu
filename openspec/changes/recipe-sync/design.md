@@ -137,7 +137,7 @@ After the run, if `localChangeSeq` grew while it ran, the engine runs push once 
 
 ### D6 Lost answers to a create
 
-If a `POST` reached the server but its answer was lost, the retry gets `409`. Before marking `NAME_TAKEN`, the engine looks up the stub with the same name. If that recipe's hash equals the hash of the recipe Kombu sent (normalised like D3), Kombu adopts it as its own upload. Otherwise the row gets `NAME_TAKEN`. Without this check, every interrupted create would turn into a false error.
+If a `POST` reached the server but its answer was lost, the retry gets `409`. Before marking `NAME_TAKEN`, the engine looks up the stub with the same name. If that recipe's hash equals the hash of the recipe Kombu sent (normalised like D3, and without `dateCreated`, which the server sets on every create), Kombu adopts it as its own upload. The pull of the next run usually stores that server recipe as a new synced row first; then the created row is the same recipe twice and is removed. Otherwise the row gets `NAME_TAKEN`. Without this check, every interrupted create would turn into a false error.
 
 ### D7 Conflict resolution
 

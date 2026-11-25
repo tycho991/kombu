@@ -303,6 +303,14 @@ class CookbookClientTest {
     }
 
     @Test
+    fun `reports a missing app when the capabilities route is missing too`() = runTest {
+        enqueue(404)
+        enqueue(404)
+
+        assertEquals(NextcloudResult.Failure(NextcloudError.CookbookMissing), client.checkAvailable(credentials))
+    }
+
+    @Test
     fun `passes on failures of the capabilities request`() = runTest {
         enqueue(404)
         enqueue(401)

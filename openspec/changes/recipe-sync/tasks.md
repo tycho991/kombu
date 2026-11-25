@@ -71,14 +71,14 @@
 
 ## 5. Sync engine (`sync`)
 
-- [ ] 5.1 Implement an in-memory `LocalRecipeStore` test fake and a `MockWebServer` dispatcher that simulates a Cookbook server (recipes, stubs, images, error injection per request). Verify with a self-test that the dispatcher serves list, get, create, update, delete and images consistently.
-- [ ] 5.2 Implement the check and pull steps (design D5). Verify with JVM tests for every scenario of the spec requirements:
+- [x] 5.1 Implement an in-memory `LocalRecipeStore` test fake and a `MockWebServer` dispatcher that simulates a Cookbook server (recipes, stubs, images, error injection per request). Verify with a self-test that the dispatcher serves list, get, create, update, delete and images consistently.
+- [x] 5.2 Implement the check and pull steps (design D5). Verify with JVM tests for every scenario of the spec requirements:
   - "Supported Cookbook versions";
   - "Server changes are downloaded", including "Nothing changed": no full `GET` and no image request;
   - "Recipe images";
   - "Server deletions";
   - "Rejected credentials stop the sync".
-- [ ] 5.3 Implement the push step, including the lost-create adoption (D6) and the same-content adoption (D11). Verify with JVM tests for every scenario of the spec requirements:
+- [x] 5.3 Implement the push step, including the lost-create adoption (D6) and the same-content adoption (D11). Verify with JVM tests for every scenario of the spec requirements:
   - "Pending changes are uploaded";
   - "Check before upload";
   - "Conflicts keep both versions";
