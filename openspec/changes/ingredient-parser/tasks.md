@@ -46,7 +46,7 @@
 
 ## 6. Quality gates and integration
 
-- [ ] 6.1 Write KDoc for every public declaration. Verify that `./gradlew :ingredient-parser:check` passes with Kover at 90 % lines and 80 % branches or higher, detekt and ktlint with zero findings, and no compiler warnings, and that the module appears in the aggregated Dokka site.
+- [x] 6.1 Write KDoc for every public declaration. Verify that `./gradlew :ingredient-parser:check` passes with Kover at 90 % lines and 80 % branches or higher, detekt and ktlint with zero findings, and no compiler warnings, and that the module appears in the aggregated Dokka site.
 - [ ] 6.2 Run `./gradlew build` and `openspec validate ingredient-parser --strict`, push, and verify that CI is green.
 
 ## Workflow follow-up
