@@ -26,10 +26,12 @@ public class CookbookClient(private val httpClient: OkHttpClient) {
      * No minimum version is enforced yet (open question O9).
      */
     public suspend fun checkAvailable(credentials: NextcloudCredentials): NextcloudResult<CookbookVersion> {
+        // The version route has no /v1 prefix, unlike the other API routes. Cookbook 0.11.5 deprecated it in
+        // favour of the OCS capabilities, but every released version still serves it.
         val request =
             Request
                 .Builder()
-                .url(credentials.server.resolve("index.php/apps/cookbook/api/v1/version"))
+                .url(credentials.server.resolve("index.php/apps/cookbook/api/version"))
                 .header("Authorization", credentials.authorizationHeader())
                 .header("Accept", "application/json")
                 .get()

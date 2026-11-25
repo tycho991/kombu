@@ -48,7 +48,7 @@ class CookbookClientTest {
         assertEquals(NextcloudResult.Success(CookbookVersion(listOf(0, 11, 2))), result)
         assertEquals("0.11.2", (result as NextcloudResult.Success).value.toString())
         val request = server.takeRequest()
-        assertEquals("/nextcloud/index.php/apps/cookbook/api/v1/version", request.url.encodedPath)
+        assertEquals("/nextcloud/index.php/apps/cookbook/api/version", request.url.encodedPath)
         assertEquals(credentials.authorizationHeader(), request.headers["Authorization"])
     }
 
