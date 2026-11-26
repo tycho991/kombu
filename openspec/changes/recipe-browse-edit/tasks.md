@@ -13,19 +13,19 @@
 
 ## 2. Recipe fields and durations (pure modules)
 
-- [ ] 2.1 Implement `IsoDuration.parse` and `IsoDuration.format` in `duration-parser`, with KDoc (design D4). Verify with JUnit 5 tests:
+- [x] 2.1 Implement `IsoDuration.parse` and `IsoDuration.format` in `duration-parser`, with KDoc (design D4). Verify with JUnit 5 tests:
   - `PT1H5M`, `PT45M`, `PT2H`, `PT01H05M00S`, `P1DT2H`, `pt30m`, `PT1.5S`;
   - rejected: empty, `P`, `PT`, `1H`, `-PT5M`, `PT5X`;
   - formatting of 0, 45 min, 1 h 5 min and 26 h;
   - parse-format round trips.
-- [ ] 2.2 Implement `RecipeFields` in `cookbook-client`: typed reading and single-key writing of description, category, keywords, servings, the three times, ingredients, steps and source URL, with KDoc (design D3). Verify with tests per row of the D3 table:
+- [x] 2.2 Implement `RecipeFields` in `cookbook-client`: typed reading and single-key writing of description, category, keywords, servings, the three times, ingredients, steps and source URL, with KDoc (design D3). Verify with tests per row of the D3 table:
   - every accepted input shape, including `HowToStep` and `HowToSection` steps, `recipeYield` as `4` and `"4 Portionen"`, and keywords as a string and as a list;
   - unexpected types read as absent;
   - empty and zero values read as absent;
   - cleared values remove their key;
   - writing one field leaves every other key identical, compared as canonical JSON;
   - a non-`http(s)` source URL reads as absent.
-- [ ] 2.3 Implement `RecipeDiff.between` in `cookbook-client`, with KDoc (design D3). Verify with tests that it:
+- [x] 2.3 Implement `RecipeDiff.between` in `cookbook-client`, with KDoc (design D3). Verify with tests that it:
   - reports each shown field that differs;
   - counts other differing keys;
   - ignores the server-managed keys, key order and `1` versus `1.0`;

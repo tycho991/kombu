@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.time.Duration.Companion.minutes
 
 /**
  * Task 5.4 (design D15): a sync is interrupted at every request position, once before the server handles the
@@ -101,8 +102,10 @@ class InterruptionTest {
         private fun JsonObject.name() = getValue("name").jsonPrimitive.content
     }
 
+    // About 50 complete worlds over real sockets take close to a minute on their own, more in a parallel build,
+    // so the default limit of one minute is too tight.
     @Test
-    fun everyInterruptedRunKeepsAllChangesAndTheNextRunCatchesUp() = runTest {
+    fun everyInterruptedRunKeepsAllChangesAndTheNextRunCatchesUp() = runTest(timeout = 5.minutes) {
         val (expected, requestCount) =
             World().use { world ->
                 world.prepare()

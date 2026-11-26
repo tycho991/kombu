@@ -81,8 +81,8 @@ A new `RecipeFields` API in `cookbook-client` reads and writes the fields the sc
 
 The same module gets `RecipeDiff.between(a, b)`. It compares two versions per top-level key and ignores the server-managed keys that `RecipeHash` also ignores. Each value is compared through `RecipeHash.canonical`, so key order and number formatting do not count. The result is:
 
-- the differing fields among those the conflict view shows (name, description, category, keywords, servings, the three times, ingredients and steps);
-- the count of other differing keys.
+- the differing fields among those the conflict view shows (name, description, category, keywords, servings, the three times, ingredients and steps), when their typed values differ;
+- the count of other differing keys, including shown fields that differ only in their stored form (keywords as a list and as a string), so the conflict view never shows two equal values.
 
 Alternative considered: typed accessors in `data` or `app`. They would be Android-module code for pure logic, tested under Robolectric and held to lower coverage thresholds. They also could not be reused by `recipe-share-import`, which writes the same fields.
 
