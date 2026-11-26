@@ -124,13 +124,13 @@
 
 ## 8. End to end and documentation
 
-- [ ] 8.1 Write the A3 end-to-end test in `app` (design, Test strategy). It uses Room under Robolectric, the real repository and sync engine, and `test-cookbook-server`. Verify that the test passes for:
+- [x] 8.1 Write the A3 end-to-end test in `app` (design, Test strategy). It uses Room under Robolectric, the real repository and sync engine, and `test-cookbook-server`. Verify that the test passes for:
   - an offline edit uploaded;
   - an offline edit against a web edit, giving a conflict and then "keep mine" on the server;
   - the same, with "take Nextcloud's";
   - a sync during editing in another field and in the same field;
   - creating, renaming after `409`, and deleting.
-- [ ] 8.2 Update the README (finding, reading, scaling, editing, conflicts; what the editor changes and leaves alone). Verify that `./gradlew build` passes locally with zero detekt and lint findings, no new baseline, and `app` at 70 % lines or higher.
+- [x] 8.2 Update the README (finding, reading, scaling, editing, conflicts; what the editor changes and leaves alone). Verify that `./gradlew build` passes locally with zero detekt and lint findings, no new baseline, and `app` at 70 % lines or higher.
 - [ ] 8.3 Test on the paired phone against the household server (manual, design Test strategy):
   - list, search and filters;
   - the view with images and scaling;

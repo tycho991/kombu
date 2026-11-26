@@ -12,7 +12,7 @@ Kombu has no server of its own. Everything is stored in your Nextcloud and share
 
 ## Status
 
-Early development. Kombu can sign in to a Nextcloud, keeps a complete offline copy of your Cookbook recipes and shows the sync status on its start screen. The recipe list, the recipe view and the editor come next.
+Early development. Kombu signs in to a Nextcloud, keeps a complete offline copy of your Cookbook recipes, and lets you find, read, scale, create, edit and delete them, with a conflict view for changes made in two places. The cooking mode and the recipe import come next.
 
 Development is spec-driven with [OpenSpec](https://github.com/Fission-AI/OpenSpec). The project context lives in [`openspec/config.yaml`](openspec/config.yaml), and changes appear under [`openspec/changes/`](openspec/changes/).
 
@@ -44,9 +44,36 @@ After signing in, Kombu downloads every recipe of your Cookbook, including its i
 - **Not synced:** categories and keywords as separate objects (renaming a category), and anything outside the Cookbook app.
 - **Signing out** deletes the recipe copy on the device, after telling you how many changes are not uploaded yet. Your recipes stay in your Nextcloud.
 
-If Nextcloud stops accepting Kombu's app password (for example because you removed it in the security settings), the start screen asks you to sign in again. Signing in again to the same account keeps all recipes and changes on the device.
+If Nextcloud stops accepting Kombu's app password (for example because you removed it in the security settings), the sync status bar above the recipe list asks you to sign in again. Signing in again to the same account keeps all recipes and changes on the device.
 
 Kombu supports Cookbook 0.10.3 or newer. The recipe copy is stored in the app's private storage and is left out of backups and device transfers; after a restore, Kombu downloads the recipes again.
+
+## Finding and reading recipes
+
+Kombu opens on the recipe list. A bar above it shows the last sync, a running sync, changes that are not uploaded yet and the current problem; tapping it opens the full sync status with "Sync now".
+
+- **Search** looks at the name, category, keywords and ingredient lines, ignoring case and accents: `creme brulee` finds `Crème brûlée`.
+- **Filters** narrow the list to one category or to recipes with all chosen keywords. "Needs attention" shows recipes in conflict and recipes the server refused.
+- **Sorting** is by name or by last change; Kombu remembers your choice.
+- **Markers** show recipes with changes that are not uploaded yet, conflicts and refused uploads.
+
+The recipe view shows the image and every field the recipe has, with times in your language. If the recipe states its servings, you can change them and the ingredient quantities follow: `200 g Mehl` for 4 servings becomes `300 g Mehl` for 6. Lines without a quantity at their start, such as `Saft von 3 Orangen`, stay as written and are marked "not scaled" while you scale. Scaling never changes the stored recipe.
+
+Everything on these screens works without network; only the link to the original recipe opens a browser.
+
+## Editing recipes
+
+The editor changes the name, description, category, keywords, servings, preparation, cooking and total time, ingredient lines and steps. The category comes from the categories your recipes already use, or you type a new one. A comma in the keyword field starts the next keyword, and duplicates are merged.
+
+- **What the editor changes:** only the fields you edited. Everything else stays exactly as stored, including the image, nutrition, tools, the source link and fields Kombu does not know. Saving without changes writes nothing.
+- **What it checks:** a name is required and must differ from your other recipes; servings are a whole number of at least 1; times are hours and minutes. A time stored in a form Kombu cannot read stays as it is unless you replace or remove it.
+- **Unsaved changes:** leaving the editor with changes asks first. What you typed survives a screen rotation and the system stopping the app.
+- **Sync while editing:** if a sync changed a field you also edited, Kombu names the field and lets you keep your value or take the one from Nextcloud. Changes to other fields are kept either way. If the recipe was deleted in Nextcloud meanwhile, you can save your entries as a new recipe.
+- **Deleting** asks for confirmation; the next sync deletes the recipe in Nextcloud too.
+
+## Conflicts
+
+A recipe changed in Kombu and in Nextcloud before they synced is a conflict; so is a recipe changed on one side and deleted on the other. Kombu overwrites neither version. Open the recipe and tap "Resolve" to see the conflict view: it lists each differing field with the value in Kombu and in Nextcloud, or shows the version that still exists. You keep one whole version, and Kombu says what the choice discards before applying it. To combine both, keep one version and edit it afterwards. A recipe in conflict cannot be edited or deleted until it is resolved.
 
 ## Building
 

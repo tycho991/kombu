@@ -146,7 +146,9 @@ class ConflictViewModelTest {
         view.choose(Resolution.TAKE_SERVER)
         view.cancel()
 
-        assertNull(view.shown().pending)
+        assertNull(
+            (view.state.first { it is ConflictUiState.Shown && it.pending == null } as ConflictUiState.Shown).pending,
+        )
         assertEquals(row, app.recipes.recipe(row.localId).first())
     }
 

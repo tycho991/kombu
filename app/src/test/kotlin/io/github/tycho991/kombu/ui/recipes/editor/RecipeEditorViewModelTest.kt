@@ -71,6 +71,13 @@ class RecipeEditorViewModelTest {
 
     private suspend fun RecipeEditorViewModel.loaded(): EditorUiState = state.first { !it.loading }
 
+    /** Changes the form and waits until the state shows it, so that later reads are never stale. */
+    private suspend fun RecipeEditorViewModel.edit(change: (EditorForm) -> EditorForm): EditorUiState {
+        val expected = change(state.value.form)
+        update(change)
+        return state.first { it.form == expected && it.errors.isEmpty() }
+    }
+
     private suspend fun RecipeEditorViewModel.saveAndWait(): EditorUiState {
         save()
         return state.first { it.finished || it.dialog != null || it.errors.isNotEmpty() || it.saveFailed }
@@ -88,8 +95,7 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         assertEquals("Soup", editor.loaded().form.name)
 
-        editor.update { it.copy(name = "Lentil soup") }
-        assertTrue(editor.state.value.hasChanges)
+        assertTrue(editor.edit { it.copy(name = "Lentil soup") }.hasChanges)
         assertTrue(editor.saveAndWait().finished)
 
         val saved = checkNotNull(stored(row.localId).local)
@@ -107,9 +113,8 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         editor.loaded()
         // Touching a field and restoring it is no change either.
-        editor.update { it.copy(name = "Other") }
-        editor.update { it.copy(name = "Soup") }
-        assertFalse(editor.state.value.hasChanges)
+        editor.edit { it.copy(name = "Other") }
+        assertFalse(editor.edit { it.copy(name = "Soup") }.hasChanges)
 
         assertTrue(editor.saveAndWait().finished)
 
@@ -124,15 +129,14 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         editor.loaded()
 
-        editor.update { it.copy(name = " ") }
+        editor.edit { it.copy(name = " ") }
         assertEquals(setOf(FormError.NAME_REQUIRED), editor.saveAndWait().errors)
-        editor.update { it.copy(name = " linsenSUPPE ") }
+        editor.edit { it.copy(name = " linsenSUPPE ") }
         assertEquals(setOf(FormError.NAME_TAKEN), editor.saveAndWait().errors)
-        editor.update { it.copy(name = "Rye", servings = "0", cookTime = TimeInput(minutes = "75")) }
+        editor.edit { it.copy(name = "Rye", servings = "0", cookTime = TimeInput(minutes = "75")) }
         assertEquals(setOf(FormError.SERVINGS_INVALID, FormError.COOK_TIME_INVALID), editor.saveAndWait().errors)
 
-        editor.update { it.copy(servings = "") }
-        assertEquals(emptySet<FormError>(), editor.state.value.errors)
+        assertEquals(emptySet<FormError>(), editor.edit { it.copy(servings = "") }.errors)
         assertEquals(0L, seq())
     }
 
@@ -142,8 +146,8 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         editor.loaded()
 
-        editor.update { it.typingKeyword("Warm, spicy, ").copy(keywordInput = "SPICY") }
-        editor.update { it.copy(ingredients = "200 g lentils\n\n1 onion\n  \n", steps = it.steps.moved(2, 0)) }
+        editor.edit { it.typingKeyword("Warm, spicy, ").copy(keywordInput = "SPICY") }
+        editor.edit { it.copy(ingredients = "200 g lentils\n\n1 onion\n  \n", steps = it.steps.moved(2, 0)) }
         editor.saveAndWait()
 
         val saved = checkNotNull(stored(row.localId).local).json
@@ -161,7 +165,7 @@ class RecipeEditorViewModelTest {
         assertEquals(TimeInput(raw = "about an hour"), opened.totalTime)
         assertEquals(TimeInput("1", "5"), opened.cookTime)
 
-        editor.update { it.copy(cookTime = TimeInput()) }
+        editor.edit { it.copy(cookTime = TimeInput()) }
         editor.saveAndWait()
 
         val saved = checkNotNull(stored(row.localId).local).json
@@ -176,8 +180,9 @@ class RecipeEditorViewModelTest {
         assertTrue(state.isNew)
         assertFalse(state.hasChanges)
 
-        editor.update { it.copy(name = "Linsensuppe", servings = "2", ingredients = "200 g Linsen") }
-        assertTrue(editor.state.value.hasChanges)
+        assertTrue(
+            editor.edit { it.copy(name = "Linsensuppe", servings = "2", ingredients = "200 g Linsen") }.hasChanges,
+        )
         assertTrue(editor.saveAndWait().finished)
 
         val created = app.recipes.recipes().first().single()
@@ -196,7 +201,7 @@ class RecipeEditorViewModelTest {
 
         editor.discard()
 
-        assertTrue(editor.state.value.finished)
+        assertTrue(editor.state.first { it.finished }.finished)
         assertEquals(emptyList<LocalRecipe>(), app.recipes.recipes().first())
     }
 
@@ -212,7 +217,7 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         editor.loaded()
 
-        editor.update { it.copy(name = "Lentil soup") }
+        editor.edit { it.copy(name = "Lentil soup") }
         editor.saveAndWait()
 
         val fixed = stored(row.localId)
@@ -229,7 +234,7 @@ class RecipeEditorViewModelTest {
         val saved = SavedStateHandle()
         val first = editor(row.localId, saved)
         first.loaded()
-        first.update { it.copy(description = "Typed before the app was stopped") }
+        first.edit { it.copy(description = "Typed before the app was stopped") }
 
         // A sync changes the recipe while the app is stopped; the restored editor keeps what the user typed.
         app.store.replace(stored(row.localId), stored(row.localId).copy(base = soup.with("name", JsonPrimitive("Web"))))
@@ -250,7 +255,7 @@ class RecipeEditorViewModelTest {
         editor.loaded()
         app.store.replace(row, row.copy(base = soup.with("description", JsonPrimitive("From the web"))))
 
-        editor.update { it.copy(steps = listOf("Everything at once.")) }
+        editor.edit { it.copy(steps = listOf("Everything at once.")) }
         assertTrue(editor.saveAndWait().finished)
 
         val saved = checkNotNull(stored(row.localId).shown).json
@@ -265,7 +270,7 @@ class RecipeEditorViewModelTest {
         editor.loaded()
         app.store.replace(row, row.copy(base = soup.with("name", JsonPrimitive("Web soup"))))
 
-        editor.update { it.copy(name = "My soup") }
+        editor.edit { it.copy(name = "My soup") }
         val asked = editor.saveAndWait()
 
         assertEquals(setOf(RecipeField.NAME), (asked.dialog as EditorDialog.Collision).fields)
@@ -281,12 +286,12 @@ class RecipeEditorViewModelTest {
         val editor = editor(row.localId)
         editor.loaded()
         app.store.replace(row, row.copy(base = soup.with("name", JsonPrimitive("Web soup"))))
-        editor.update { it.copy(name = "My soup", description = "Mine too") }
+        editor.edit { it.copy(name = "My soup", description = "Mine too") }
         editor.saveAndWait()
 
         editor.takeTheirs()
 
-        val state = editor.state.value
+        val state = editor.state.first { it.dialog == null && it.form.name == "Web soup" }
         assertNull(state.dialog)
         assertFalse(state.finished)
         assertEquals("Web soup", state.form.name)
@@ -305,7 +310,7 @@ class RecipeEditorViewModelTest {
         editor.loaded()
         app.store.remove(row)
 
-        editor.update { it.copy(description = "Still mine") }
+        editor.edit { it.copy(description = "Still mine") }
         assertEquals(EditorDialog.Gone, editor.saveAndWait().dialog)
         editor.saveAsNew()
         editor.state.first { it.finished }

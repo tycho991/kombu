@@ -24,4 +24,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     // Screen and end-to-end tests run against an in-memory recipe database.
     testImplementation(libs.androidx.room.runtime)
+    // The end-to-end conflict test (A3) syncs against a Cookbook in memory.
+    testImplementation(project(":test-cookbook-server"))
 }
