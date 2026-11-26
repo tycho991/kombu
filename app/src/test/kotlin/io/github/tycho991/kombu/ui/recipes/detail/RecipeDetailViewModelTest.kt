@@ -98,4 +98,18 @@ class RecipeDetailViewModelTest {
         assertNull(state.servings)
         assertEquals("1 Beutel Tee", state.ingredients.single().text)
     }
+
+    @Test
+    fun scaledQuantitiesFollowTheKitchenFormOfTheirUnit() = runTest {
+        val localId =
+            synced(
+                """{"name":"Zwiebelsuppe","recipeYield":2,
+            "recipeIngredient":["1 Zwiebel","1/2 TL Salz","0,5 l Milch","200 g Mehl"]}""",
+            )
+        val view = RecipeDetailViewModel(localId, app.recipes, SavedStateHandle(mapOf("servings" to 3)), Locale.GERMAN)
+
+        val state = view.state.first { it is RecipeDetailUiState.Shown } as RecipeDetailUiState.Shown
+
+        assertEquals(listOf("1½ Zwiebel", "¾ TL Salz", "0,75 l Milch", "300 g Mehl"), state.ingredients.map { it.text })
+    }
 }

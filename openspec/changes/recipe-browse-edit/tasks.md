@@ -93,6 +93,8 @@
   - the stored servings shown again on return.
 - [x] 5.3 Add deletion with a confirmation that names the recipe (spec "Delete a recipe"). Verify with tests that confirming removes it from the list and schedules a sync, and that cancelling changes nothing.
 
+- [x] 5.4 Format scaled quantities by unit (delta spec `ingredient-parsing`, decided after the device test): add `QuantityStyle` and `IngredientUnit.isMetric` to `ingredient-parser`; `Amount.format(locale, style)` writes fractions with fraction characters (`½`, `2¼`) or decimals; `Measured.displayText` picks decimals for metric units and fractions otherwise. Verify with JUnit 5 tests for every fraction character, mixed numbers, metric and imperial units, counted items, ranges and both locales, and with the recipe view showing `1½ Zwiebel`, `¾ TL Salz` and `0,75 l Milch` at factor 1.5. Update `ingredient-parser/Module.md`.
+
 ## 6. Editor (`app`)
 
 - [x] 6.1 Build the editor for new and existing recipes (spec "Create a recipe", "Edit a recipe", "Editable fields"):
@@ -139,6 +141,8 @@
   - a cleared time checked in the web interface.
 
   Record the result in the commit message without server details.
+
+  Partial result (2026-11-26, Pixel 8, debug build `b422da1`..`c75e029`, over VPN): the list showed every recipe; scaling worked, but halves appeared as `1 1/2` next to decimals written in the recipes, which led to task 5.4 (quantities by unit); creating a recipe worked. Still open: search and filters in detail, editing and deleting, the conflict made with the web interface in both directions, and a cleared time checked in the web interface.
 - [x] 8.4 Push and confirm that CI is green. Verify that `openspec validate recipe-browse-edit --strict` passes.
 
 ## Workflow follow-up

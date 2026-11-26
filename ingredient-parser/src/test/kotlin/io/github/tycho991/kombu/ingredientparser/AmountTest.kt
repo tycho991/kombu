@@ -72,20 +72,24 @@ class AmountTest {
             value = [
                 "400;1;400",
                 "0;1;0",
-                "33;100;1/3",
-                "1;2;1/2",
-                "2;3;2/3",
-                "3;4;3/4",
-                "1;8;1/8",
-                "9;4;2 1/4",
-                "3;2;1 1/2",
+                "33;100;⅓",
+                "1;2;½",
+                "2;3;⅔",
+                "3;4;¾",
+                "1;8;⅛",
+                "9;4;2¼",
+                "3;2;1½",
                 "201;100;2",
                 "1;10;0.1",
                 "115;100;1.15",
                 "1071;1000;1.07",
-                "1234;1000;1 1/4",
+                "1234;1000;1¼",
                 "1;7;0.14",
-                "5;3;1 2/3",
+                "5;3;1⅔",
+                "3;8;⅜",
+                "5;8;⅝",
+                "7;8;⅞",
+                "17;8;2⅛",
             ],
         )
         fun `english display`(numerator: Long, denominator: Long, expected: String) {
@@ -99,13 +103,41 @@ class AmountTest {
 
         @Test
         fun `fractions look the same in every locale`() {
-            assertEquals("2 1/4", Amount(r(9, 4)).format(Locale.GERMAN))
+            assertEquals("2¼", Amount(r(9, 4)).format(Locale.GERMAN))
+            assertEquals("2¼", Amount(r(9, 4)).format(Locale.ENGLISH))
+        }
+
+        @Test
+        fun `the decimal style never uses fractions`() {
+            assertEquals("1,5", Amount(r(3, 2)).format(Locale.GERMAN, QuantityStyle.DECIMAL))
+            assertEquals("0.75", Amount(r(3, 4)).format(Locale.ENGLISH, QuantityStyle.DECIMAL))
+            assertEquals("0,33", Amount(r(1, 3)).format(Locale.GERMAN, QuantityStyle.DECIMAL))
+            assertEquals("2", Amount(r(2)).format(Locale.GERMAN, QuantityStyle.DECIMAL))
+            assertEquals("0,5–1", Amount(r(1, 2), r(1)).format(Locale.GERMAN, QuantityStyle.DECIMAL))
+        }
+
+        @Test
+        fun `metric units use decimals, every other unit fractions`() {
+            val metric = setOf(
+                IngredientUnit.MILLIGRAM,
+                IngredientUnit.GRAM,
+                IngredientUnit.KILOGRAM,
+                IngredientUnit.MILLILITER,
+                IngredientUnit.CENTILITER,
+                IngredientUnit.LITER,
+            )
+            IngredientUnit.entries.forEach { unit ->
+                val expected = if (unit in metric) QuantityStyle.DECIMAL else QuantityStyle.FRACTION
+                assertEquals(expected, QuantityStyle.of(unit), unit.name)
+                assertEquals(unit in metric, unit.isMetric, unit.name)
+            }
+            assertEquals(QuantityStyle.FRACTION, QuantityStyle.of(null))
         }
 
         @Test
         fun `a range shows both ends with an en dash`() {
             assertEquals("2–3", Amount(r(2), r(3)).format(Locale.GERMAN))
-            assertEquals("1/2–1", Amount(r(1, 2), r(1)).format(Locale.ENGLISH))
+            assertEquals("½–1", Amount(r(1, 2), r(1)).format(Locale.ENGLISH))
         }
     }
 }

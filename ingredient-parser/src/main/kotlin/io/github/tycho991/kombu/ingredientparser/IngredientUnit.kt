@@ -123,4 +123,15 @@ public enum class IngredientUnit {
 
     /** Scoop or ball (`Kugel`). */
     SCOOP,
+    ;
+
+    /**
+     * Whether this is a metric unit of weight or volume. Quantities in these units are shown as decimals
+     * (`1,5 l`), quantities in every other unit as fractions (`1½ EL`); see [QuantityStyle].
+     */
+    public val isMetric: Boolean get() = this in METRIC
+
+    private companion object {
+        val METRIC = setOf(MILLIGRAM, GRAM, KILOGRAM, MILLILITER, CENTILITER, LITER)
+    }
 }

@@ -43,11 +43,12 @@ public sealed interface IngredientLine {
     ) : IngredientLine {
         /**
          * Returns [original] with only the quantity text replaced by [amount], scaled by [factor] and
-         * formatted for [locale]. The rest of the line, including units glued to the number, approximation
-         * words and notes, stays exactly as written.
+         * formatted for [locale] in the style of its [unit] ([QuantityStyle.of]): decimals for metric units,
+         * fractions otherwise. The rest of the line, including units glued to the number, approximation words
+         * and notes, stays exactly as written.
          */
         public fun displayText(locale: Locale, factor: Rational = Rational.ONE): String =
-            original.replaceRange(quantityRange, amount.scaledBy(factor).format(locale))
+            original.replaceRange(quantityRange, amount.scaledBy(factor).format(locale, QuantityStyle.of(unit)))
     }
 
     /**

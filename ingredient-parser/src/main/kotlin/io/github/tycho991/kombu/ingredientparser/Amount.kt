@@ -34,18 +34,35 @@ public data class Amount(
     }
 
     /**
-     * Formats this amount for display: whole numbers as they are, values close to a multiple of 1/2, 1/3,
-     * 1/4 or 1/8 as a fraction or mixed number (`1/3`, `2 1/4`), and anything else as a decimal with at most
-     * two places and the decimal separator of [locale]. A range is shown as both ends joined by an en dash.
+     * Formats this amount for display in [style]. Whole numbers are shown as they are. With
+     * [QuantityStyle.FRACTION], values close to a multiple of 1/2, 1/3, 1/4 or 1/8 are shown with a fraction
+     * character (`⅓`, `2¼`). Anything else is a decimal with at most two places and the decimal separator of
+     * [locale]. A range is shown as both ends joined by an en dash.
      */
-    public fun format(locale: Locale): String = if (isRange) {
-        "${QuantityFormat.format(min, locale)}$RANGE_DASH${QuantityFormat.format(max, locale)}"
+    public fun format(locale: Locale, style: QuantityStyle = QuantityStyle.FRACTION): String = if (isRange) {
+        "${QuantityFormat.format(min, locale, style)}$RANGE_DASH${QuantityFormat.format(max, locale, style)}"
     } else {
-        QuantityFormat.format(min, locale)
+        QuantityFormat.format(min, locale, style)
     }
 
     private companion object {
         const val RANGE_DASH = "–"
+    }
+}
+
+/** How a quantity is written: the kitchen's form for its unit (spec ingredient-parsing). */
+public enum class QuantityStyle {
+    /** Fractions with fraction characters where they fit (`1½`, `¾`), decimals otherwise; for spoons and pieces. */
+    FRACTION,
+
+    /** Decimals (`1,5`, `0,75`); for metric units. */
+    DECIMAL,
+    ;
+
+    /** Style lookup by unit. */
+    public companion object {
+        /** The style for quantities in [unit]: decimals for metric units, fractions otherwise. */
+        public fun of(unit: IngredientUnit?): QuantityStyle = if (unit?.isMetric == true) DECIMAL else FRACTION
     }
 }
 
@@ -58,25 +75,43 @@ internal object QuantityFormat {
     private const val TOLERANCE = 0.02
     private const val DECIMAL_PLACES = 2
 
-    fun format(value: Rational, locale: Locale): String {
-        if (value.isWhole) return value.numerator.toString()
+    /** The fraction characters by reduced fraction; every reduced fraction of the denominators has one. */
+    private val GLYPHS = mapOf(
+        "1/2" to "½",
+        "1/3" to "⅓",
+        "2/3" to "⅔",
+        "1/4" to "¼",
+        "3/4" to "¾",
+        "1/8" to "⅛",
+        "3/8" to "⅜",
+        "5/8" to "⅝",
+        "7/8" to "⅞",
+    )
+
+    fun format(value: Rational, locale: Locale, style: QuantityStyle = QuantityStyle.FRACTION): String = when {
+        value.isWhole -> value.numerator.toString()
+        style == QuantityStyle.DECIMAL -> decimal(value, locale)
+        else -> snappedFraction(value) ?: decimal(value, locale)
+    }
+
+    /** [value] as a fraction or mixed number with a fraction character, or `null` when none is close enough. */
+    private fun snappedFraction(value: Rational): String? {
         val exact = value.toDouble()
         return DENOMINATORS.firstNotNullOfOrNull { denominator ->
             val multiples = (exact * denominator).roundToLong()
             val close = multiples > 0 && abs(multiples.toDouble() / denominator - exact) <= TOLERANCE * exact
             if (close) fraction(multiples, denominator) else null
-        } ?: decimal(value, locale)
+        }
     }
 
     private fun fraction(multiples: Long, denominator: Long): String {
         val reduced = Rational.of(multiples, denominator)
         val whole = reduced.numerator / reduced.denominator
         val rest = reduced.numerator % reduced.denominator
-        return when {
-            rest == 0L -> "$whole"
-            whole == 0L -> "$rest/${reduced.denominator}"
-            else -> "$whole $rest/${reduced.denominator}"
-        }
+        // A value that snaps to a whole number, such as 2.01, has no fractional part left.
+        if (rest == 0L) return "$whole"
+        val glyph = GLYPHS.getValue("$rest/${reduced.denominator}")
+        return if (whole == 0L) glyph else "$whole$glyph"
     }
 
     private fun decimal(value: Rational, locale: Locale): String {

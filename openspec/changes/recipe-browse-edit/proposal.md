@@ -63,7 +63,9 @@ Out of scope:
 
 ### Modified Capabilities
 
-None. `recipe-sync` already specifies offline editing, the upload queue, conflicts and their resolution, and the sync status; this change adds the screens for them without changing their behaviour. "Start screen" in `nextcloud-account` now means the recipe list, which needs no requirement change.
+- `ingredient-parsing`: "Kitchen-friendly quantity display" now depends on the unit. Metric units show decimals (`1,5 l`), every other unit and counted items show fractions with fraction characters (`1½ Zwiebeln`, `¾ TL`). The device test found halves shown as `1 1/2 l` next to decimals in the recipe text, and the user chose this rule.
+
+`recipe-sync` already specifies offline editing, the upload queue, conflicts and their resolution, and the sync status; this change adds the screens for them without changing their behaviour. "Start screen" in `nextcloud-account` now means the recipe list, which needs no requirement change.
 
 ## Impact
 
