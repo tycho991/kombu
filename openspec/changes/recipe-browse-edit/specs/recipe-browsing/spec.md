@@ -155,6 +155,10 @@ The recipe view SHALL let the user change the number of servings when the recipe
 - **WHEN** a recipe for 4 servings has the line `200 g Mehl` and the user sets 6 servings
 - **THEN** the line shows `300 g Mehl`
 
+#### Scenario: Stored servings in the same form
+- **WHEN** a recipe for 2 servings with the line `1/2 Limette` is shown at 2 servings
+- **THEN** the line shows `½ Limette`, in the same form as a scaled quantity
+
 #### Scenario: Line without quantity
 - **WHEN** the user scales a recipe with the line `Salz und Pfeffer`
 - **THEN** that line stays as written

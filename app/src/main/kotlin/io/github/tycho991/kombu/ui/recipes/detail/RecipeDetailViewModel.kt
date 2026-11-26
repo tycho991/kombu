@@ -137,8 +137,8 @@ class RecipeDetailViewModel(
             when (val parsed = IngredientParser.parse(line)) {
                 is IngredientLine.Heading -> IngredientRow(parsed.text, heading = true)
 
-                is IngredientLine.Measured ->
-                    IngredientRow(if (scaling) parsed.displayText(locale, factor) else parsed.original)
+                // Also at the stored servings, so that `1/2 Limette` reads `½ Limette` either way.
+                is IngredientLine.Measured -> IngredientRow(parsed.displayText(locale, factor))
 
                 is IngredientLine.Unmeasured -> IngredientRow(parsed.original, unscaled = scaling)
             }

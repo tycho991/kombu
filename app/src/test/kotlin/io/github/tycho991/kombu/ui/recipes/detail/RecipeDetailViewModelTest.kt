@@ -112,4 +112,19 @@ class RecipeDetailViewModelTest {
 
         assertEquals(listOf("1½ Zwiebel", "¾ TL Salz", "0,75 l Milch", "300 g Mehl"), state.ingredients.map { it.text })
     }
+
+    @Test
+    fun theStoredServingsShowQuantitiesInTheKitchenFormToo() = runTest {
+        val localId =
+            synced(
+                """{"name":"Club Sandwich","recipeYield":2,
+            "recipeIngredient":["1/2 Limette","1 1/2 TL Senf","100 ml Öl","Salz, Pfeffer"]}""",
+            )
+        val view = RecipeDetailViewModel(localId, app.recipes, SavedStateHandle(), Locale.GERMAN)
+
+        val state = view.state.first { it is RecipeDetailUiState.Shown } as RecipeDetailUiState.Shown
+
+        assertEquals(listOf("½ Limette", "1½ TL Senf", "100 ml Öl", "Salz, Pfeffer"), state.ingredients.map { it.text })
+        assertFalse(state.ingredients.any { it.unscaled })
+    }
 }

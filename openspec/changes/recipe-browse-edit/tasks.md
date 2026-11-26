@@ -94,6 +94,7 @@
 - [x] 5.3 Add deletion with a confirmation that names the recipe (spec "Delete a recipe"). Verify with tests that confirming removes it from the list and schedules a sync, and that cancelling changes nothing.
 
 - [x] 5.4 Format scaled quantities by unit (delta spec `ingredient-parsing`, decided after the device test): add `QuantityStyle` and `IngredientUnit.isMetric` to `ingredient-parser`; `Amount.format(locale, style)` writes fractions with fraction characters (`½`, `2¼`) or decimals; `Measured.displayText` picks decimals for metric units and fractions otherwise. Verify with JUnit 5 tests for every fraction character, mixed numbers, metric and imperial units, counted items, ranges and both locales, and with the recipe view showing `1½ Zwiebel`, `¾ TL Salz` and `0,75 l Milch` at factor 1.5. Update `ingredient-parser/Module.md`.
+- [x] 5.5 Show measured lines in the kitchen form at the stored servings too (spec "Scaled servings", found in the device test: `1/2 Limette` stayed as typed while scaled lines used `½`). Verify with a view-model test at the stored servings: `½ Limette`, `1½ TL Senf`, `100 ml Öl` and an unmeasured line as written, none with the hint.
 
 ## 6. Editor (`app`)
 
