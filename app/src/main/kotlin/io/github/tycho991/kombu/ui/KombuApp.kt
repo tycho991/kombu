@@ -1,6 +1,5 @@
 package io.github.tycho991.kombu.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -9,33 +8,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.lifecycle.viewmodel.viewModelFactory
-import io.github.tycho991.kombu.data.account.AccountService
-import io.github.tycho991.kombu.data.recipes.SyncStatus
-import io.github.tycho991.kombu.sync.SyncControl
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import io.github.tycho991.kombu.ui.account.AccountScreen
 import io.github.tycho991.kombu.ui.login.LoginRoute
 import io.github.tycho991.kombu.ui.login.LoginViewModel
+import io.github.tycho991.kombu.ui.navigation.Route
+import io.github.tycho991.kombu.ui.recipes.list.RecipeListRoute
+import io.github.tycho991.kombu.ui.recipes.list.RecipeListViewModel
 import io.github.tycho991.kombu.ui.start.StartActions
 import io.github.tycho991.kombu.ui.start.StartScreen
 import io.github.tycho991.kombu.ui.start.StartViewModel
-import kotlinx.coroutines.flow.Flow
 
 /**
- * The top level of the UI: loading, login, start screen, account screen or the new login after rejected
- * credentials, following the account state. [recipeStatus] and [sync] feed the sync status on the start screen.
+ * The top level of the UI: loading, login, or the signed-in screens, following the account state. Signing out
+ * leaves the signed-in part, so its back stack starts again at the recipe list after the next login.
  */
 @Composable
-fun KombuApp(accounts: AccountService, recipeStatus: Flow<SyncStatus>, sync: SyncControl) {
+fun KombuApp(dependencies: KombuDependencies) {
     val factory =
         viewModelFactory {
-            initializer { MainViewModel(accounts, recipeStatus) }
-            initializer { LoginViewModel(accounts, createSavedStateHandle()) }
-            initializer { StartViewModel(recipeStatus, sync) }
+            initializer { MainViewModel(dependencies.accounts, dependencies.status) }
+            initializer { LoginViewModel(dependencies.accounts, createSavedStateHandle()) }
         }
     val main: MainViewModel = viewModel(factory = factory)
     val state by main.state.collectAsStateWithLifecycle()
@@ -52,57 +57,92 @@ fun KombuApp(accounts: AccountService, recipeStatus: Flow<SyncStatus>, sync: Syn
                 onDismissNotice = main::dismissOfflineLogoutNotice,
             )
 
-        is MainUiState.SignedIn -> SignedIn(current, main, accounts, factory)
+        is MainUiState.SignedIn -> SignedIn(current, main, dependencies)
     }
+}
+
+/** The signed-in screens on a Navigation 3 back stack with the recipe list as its root (design D1). */
+@Composable
+private fun SignedIn(current: MainUiState.SignedIn, main: MainViewModel, dependencies: KombuDependencies) {
+    val backStack = rememberNavBackStack(Route.RecipeList)
+    val back: () -> Unit = { backStack.removeLastOrNull() }
+    NavDisplay(
+        backStack = backStack,
+        onBack = back,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        entryProvider = entryProvider {
+            entry<Route.RecipeList> { RecipeListEntry(dependencies, backStack) }
+            entry<Route.SyncStatus> { SyncStatusEntry(dependencies, backStack) }
+            entry<Route.Account> {
+                AccountScreen(
+                    server = current.server,
+                    loginName = current.loginName,
+                    onBack = back,
+                    onLogout = main::logout,
+                    unsyncedChanges = current.unsyncedChanges,
+                )
+            }
+            entry<Route.SignInAgain> {
+                val signInAgain = viewModelFactory {
+                    initializer {
+                        LoginViewModel(
+                            dependencies.accounts,
+                            createSavedStateHandle(),
+                            true,
+                            current.server,
+                        )
+                    }
+                }
+                LoginRoute(
+                    viewModel = viewModel<LoginViewModel>(factory = signInAgain),
+                    offlineLogoutNotice = false,
+                    onDismissNotice = {},
+                    onFinished = back,
+                )
+            }
+        },
+    )
 }
 
 @Composable
-private fun SignedIn(
-    current: MainUiState.SignedIn,
-    main: MainViewModel,
-    accounts: AccountService,
-    factory: androidx.lifecycle.ViewModelProvider.Factory,
-) {
-    when {
-        current.showAccount -> {
-            BackHandler(onBack = main::closeAccount)
-            AccountScreen(
-                server = current.server,
-                loginName = current.loginName,
-                onBack = main::closeAccount,
-                onLogout = main::logout,
-                unsyncedChanges = current.unsyncedChanges,
-            )
-        }
-
-        current.signingInAgain -> {
-            BackHandler(onBack = main::closeAccount)
-            val signInAgain =
-                viewModelFactory {
-                    initializer { LoginViewModel(accounts, createSavedStateHandle(), true, current.server) }
-                }
-            LoginRoute(
-                viewModel = viewModel<LoginViewModel>(key = SIGN_IN_AGAIN_KEY, factory = signInAgain),
-                offlineLogoutNotice = false,
-                onDismissNotice = {},
-                onFinished = main::closeAccount,
-            )
-        }
-
-        else -> {
-            val start = viewModel<StartViewModel>(factory = factory)
-            val startState by start.state.collectAsStateWithLifecycle()
-            StartScreen(
-                state = startState,
-                actions =
-                StartActions(
-                    onOpenAccount = main::openAccount,
-                    onSyncNow = start::syncNow,
-                    onSignInAgain = main::signInAgain,
-                ),
-            )
-        }
-    }
+private fun RecipeListEntry(dependencies: KombuDependencies, backStack: NavBackStack<NavKey>) {
+    val locale = LocalConfiguration.current.locales[0]
+    val list = viewModel<RecipeListViewModel>(
+        factory = viewModelFactory {
+            initializer {
+                RecipeListViewModel(
+                    recipes = dependencies.recipes,
+                    preferences = dependencies.browse,
+                    status = dependencies.status,
+                    running = dependencies.sync.running,
+                    saved = createSavedStateHandle(),
+                    locale = locale,
+                )
+            }
+        },
+    )
+    RecipeListRoute(
+        viewModel = list,
+        onOpenAccount = { backStack.add(Route.Account) },
+        onOpenSyncStatus = { backStack.add(Route.SyncStatus) },
+    )
 }
 
-private const val SIGN_IN_AGAIN_KEY = "sign-in-again"
+@Composable
+private fun SyncStatusEntry(dependencies: KombuDependencies, backStack: NavBackStack<NavKey>) {
+    val start = viewModel<StartViewModel>(
+        factory = viewModelFactory { initializer { StartViewModel(dependencies.status, dependencies.sync) } },
+    )
+    val startState by start.state.collectAsStateWithLifecycle()
+    StartScreen(
+        state = startState,
+        actions = StartActions(
+            onBack = { backStack.removeLastOrNull() },
+            onSyncNow = start::syncNow,
+            onSignInAgain = { backStack.add(Route.SignInAgain) },
+        ),
+    )
+}

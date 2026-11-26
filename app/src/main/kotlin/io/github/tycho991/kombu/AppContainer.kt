@@ -12,6 +12,8 @@ import io.github.tycho991.kombu.data.account.AccountService
 import io.github.tycho991.kombu.data.account.AndroidKeystoreKeySource
 import io.github.tycho991.kombu.data.account.CredentialStore
 import io.github.tycho991.kombu.data.account.RemoteAccountApi
+import io.github.tycho991.kombu.data.recipes.BROWSE_DATASTORE_NAME
+import io.github.tycho991.kombu.data.recipes.BrowsePreferences
 import io.github.tycho991.kombu.data.recipes.ImageStore
 import io.github.tycho991.kombu.data.recipes.RecipeRepository
 import io.github.tycho991.kombu.data.recipes.RoomRecipeStore
@@ -54,6 +56,14 @@ class AppContainer(context: Context) {
 
     /** The local recipe copy; its images live in the no-backup directory (design D8). */
     val recipes: RecipeRepository = RecipeRepository(database, images)
+
+    /** The recipe list's sort order (design D7 of recipe-browse-edit). */
+    val browse: BrowsePreferences =
+        BrowsePreferences(
+            PreferenceDataStoreFactory.create(
+                produceFile = { context.preferencesDataStoreFile(BROWSE_DATASTORE_NAME) },
+            ),
+        )
 
     /** Starts and stops syncs through WorkManager. */
     val sync: SyncControl = SyncScheduler(WorkManager.getInstance(context))

@@ -71,7 +71,7 @@ None. `recipe-sync` already specifies offline editing, the upload queue, conflic
   - Jetpack Navigation 3 (`androidx.navigation3:navigation3-runtime`, `navigation3-ui`) and `androidx.lifecycle:lifecycle-viewmodel-navigation3`, Apache-2.0, for the back stack and per-screen view models;
   - Coil 3 (`io.coil-kt.coil3:coil-compose`), Apache-2.0, to load the stored image files. Its network module is not added.
 
-  Apache-2.0 is compatible with GPL-3.0-or-later. Icons are vector drawables from Material Symbols (Apache-2.0) in the app's resources, so no icon library is added.
+  Apache-2.0 is compatible with GPL-3.0-or-later. Icons are vector drawables from Material Icons (Apache-2.0, attributed in each file) in the app's resources, so no icon library is added.
 - **Modules:**
   - `cookbook-client`: new public API for recipe fields and the field comparison;
   - `duration-parser`: first code;

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import io.github.tycho991.kombu.data.recipes.SyncProblem
@@ -32,7 +33,7 @@ class StartScreenTest {
     private fun show(darkTheme: Boolean = false) {
         val actions =
             StartActions(
-                onOpenAccount = { events += "account" },
+                onBack = { events += "back" },
                 onSyncNow = { events += "syncNow" },
                 onSignInAgain = { events += "signInAgain" },
             )
@@ -53,12 +54,12 @@ class StartScreenTest {
     fun showsTheEmptyStateInEnglish() {
         show()
 
-        text("Your recipes")
+        composeRule.onNodeWithText("Sync").assertIsDisplayed()
         text("0 recipes on this device")
         text("Not synced yet.")
         composeRule.onNodeWithText("Sync now").performClick()
-        composeRule.onNodeWithText("Account").performClick()
-        assertEquals(listOf("syncNow", "account"), events)
+        composeRule.onNodeWithContentDescription("Back").performClick()
+        assertEquals(listOf("syncNow", "back"), events)
     }
 
     @Test
@@ -109,7 +110,7 @@ class StartScreenTest {
         state = StartUiState(SyncStatus(recipeCount = 2, pendingCount = 1, conflictCount = 2, lastSuccessAt = synced))
         show()
 
-        text("Deine Rezepte")
+        composeRule.onNodeWithText("Abgleich").assertIsDisplayed()
         text("2 Rezepte auf diesem Gerät")
         text("Zuletzt abgeglichen: ${formatTime(synced, Locale.GERMAN)}")
         text("1 Änderung ist noch nicht hochgeladen.")
@@ -141,13 +142,13 @@ class StartScreenTest {
     @Config(qualifiers = "fr")
     fun fallsBackToEnglishForUnsupportedLanguage() {
         show()
-        text("Your recipes")
+        text("Not synced yet.")
     }
 
     @Test
     @Config(qualifiers = "en-night")
     fun rendersInDarkTheme() {
         show(darkTheme = true)
-        text("Your recipes")
+        text("0 recipes on this device")
     }
 }

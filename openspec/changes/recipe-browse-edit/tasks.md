@@ -55,7 +55,7 @@
 
 ## 4. Navigation and start screen (`app`)
 
-- [ ] 4.1 Replace the signed-in state switch in `KombuApp` with a Navigation 3 `NavDisplay` and the keys from design D1. Move today's start screen to `SyncStatus` unchanged; the account screen and "sign in again" become entries. Verify with Robolectric tests:
+- [x] 4.1 Replace the signed-in state switch in `KombuApp` with a Navigation 3 `NavDisplay` and the keys from design D1. Move today's start screen to `SyncStatus` unchanged; the account screen and "sign in again" become entries. Verify with Robolectric tests:
   - after login the list is the root;
   - back from each entry returns to its parent;
   - back from the list leaves the app;
@@ -63,7 +63,7 @@
   - signing out clears the stack and shows the login screen.
 
   The existing sign-in-again, account and sync-status tests must pass after their move.
-- [ ] 4.2 Build the recipe list screen (design D2, D8):
+- [x] 4.2 Build the recipe list screen (design D2, D8):
   - Coil thumbnails with the placeholder, keyed by the file's modification time;
   - the pending, conflict and needs-attention markers;
   - search, filter chips for category and keywords, the attention filter and the sort menu;
@@ -71,7 +71,7 @@
   - the three empty states.
 
   Add the strings, the plurals and the icon drawables in `values/` and `values-de/`. Verify with Compose tests in English and German for: each empty state; markers; a search with and without a match; "clear search and filters"; a category filter; two keywords; the attention filter; both sort orders; the order kept after recreation.
-- [ ] 4.3 Build the sync status bar above the list (spec "Sync status bar"). Tapping it opens `SyncStatus`; its conflict count opens the list with the attention filter. Verify with Compose tests in both languages for: synced; running; offline with two pending changes; conflicts; credentials rejected, including the path to "sign in again".
+- [x] 4.3 Build the sync status bar above the list (spec "Sync status bar"). Tapping it opens `SyncStatus`; its conflict count opens the list with the attention filter. Verify with Compose tests in both languages for: synced; running; offline with two pending changes; conflicts; credentials rejected, including the path to "sign in again".
 
 ## 5. Recipe view (`app`)
 

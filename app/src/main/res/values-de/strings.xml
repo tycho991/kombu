@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="start_title">Deine Rezepte</string>
     <string name="start_account">Konto</string>
 
     <!-- Anmeldung -->
@@ -70,4 +69,47 @@
     <string name="sync_problem_credentials">Deine Nextcloud akzeptiert das App-Passwort von Kombu nicht mehr. Melde dich erneut an, damit der Abgleich weiterläuft. Deine Rezepte und Änderungen bleiben auf diesem Gerät.</string>
     <string name="sync_problem_cookbook_missing">Der letzte Abgleich ist fehlgeschlagen: Die App Cookbook ist für dein Konto nicht verfügbar.</string>
     <string name="sync_problem_cookbook_too_old">Kombu braucht zum Abgleichen Cookbook %2$s oder neuer, deine Nextcloud hat aber Cookbook %1$s.</string>
+
+    <!-- Rezeptliste -->
+    <string name="recipes_title">Rezepte</string>
+    <string name="recipes_search">Rezepte durchsuchen</string>
+    <string name="recipes_search_clear">Suche leeren</string>
+    <string name="recipes_sort">Sortieren</string>
+    <string name="recipes_sort_name">Nach Name</string>
+    <string name="recipes_sort_last_change">Nach letzter Änderung</string>
+    <string name="recipes_new">Neues Rezept</string>
+    <string name="recipes_filter_category">Kategorie</string>
+    <string name="recipes_filter_category_all">Alle Kategorien</string>
+    <string name="recipes_filter_keywords">Schlagwörter</string>
+    <plurals name="recipes_filter_keywords_selected">
+        <item quantity="one">%d Schlagwort</item>
+        <item quantity="other">%d Schlagwörter</item>
+    </plurals>
+    <string name="recipes_filter_attention">Zu klären</string>
+    <string name="recipes_marker_pending">Noch nicht hochgeladen</string>
+    <string name="recipes_marker_conflict">An zwei Stellen geändert</string>
+    <string name="recipes_marker_attention">Zu klären</string>
+    <string name="recipes_empty_downloading">Deine Rezepte werden heruntergeladen …</string>
+    <string name="recipes_empty_failed">Auf diesem Gerät sind noch keine Rezepte.</string>
+    <string name="recipes_empty_none">Es gibt noch keine Rezepte.</string>
+    <string name="recipes_empty_create">Rezept anlegen</string>
+    <string name="recipes_empty_nothing_found">Nichts gefunden.</string>
+    <string name="recipes_clear_filters">Suche und Filter zurücksetzen</string>
+
+    <!-- Abgleich-Leiste über der Rezeptliste und der vollständige Abgleichstatus -->
+    <string name="bar_synced_at">Abgeglichen: %1$s</string>
+    <string name="bar_never">Noch nicht abgeglichen</string>
+    <string name="bar_offline">Offline</string>
+    <string name="bar_failed">Abgleich fehlgeschlagen</string>
+    <string name="bar_not_possible">Abgleich nicht möglich</string>
+    <string name="bar_sign_in">Erneut anmelden, um weiter abzugleichen</string>
+    <plurals name="bar_pending">
+        <item quantity="one">%d Änderung wartet</item>
+        <item quantity="other">%d Änderungen warten</item>
+    </plurals>
+    <plurals name="bar_attention">
+        <item quantity="one">%d zu klären</item>
+        <item quantity="other">%d zu klären</item>
+    </plurals>
+    <string name="sync_status_title">Abgleich</string>
 </resources>

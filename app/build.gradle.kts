@@ -20,4 +20,6 @@ dependencies {
 
     testImplementation(libs.robolectric)
     testImplementation(libs.kotlinx.coroutines.test)
+    // Screen and end-to-end tests run against an in-memory recipe database.
+    testImplementation(libs.androidx.room.runtime)
 }

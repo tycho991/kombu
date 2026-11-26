@@ -2,21 +2,23 @@ package io.github.tycho991.kombu.ui.start
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,30 +37,38 @@ private val ItemSpacing = 12.dp
 
 /** The callbacks of [StartScreen]. */
 data class StartActions(
-    val onOpenAccount: () -> Unit = {},
+    val onBack: () -> Unit = {},
     val onSyncNow: () -> Unit = {},
     val onSignInAgain: () -> Unit = {},
 )
 
-/** First screen of the app until the recipe list exists: the state of the local recipe copy and its sync. */
+/**
+ * The full sync status, opened from the bar above the recipe list (spec recipe-browsing, "Sync status bar"): the
+ * state of the local recipe copy and its sync, with "sync now" and "sign in again".
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(state: StartUiState, modifier: Modifier = Modifier, actions: StartActions = StartActions()) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth().statusBarsPadding(),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                TextButton(onClick = actions.onOpenAccount) { Text(stringResource(R.string.start_account)) }
-            }
+            TopAppBar(
+                title = { Text(stringResource(R.string.sync_status_title)) },
+                navigationIcon = {
+                    IconButton(onClick = actions.onBack) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_arrow_back),
+                            contentDescription = stringResource(R.string.account_back),
+                        )
+                    }
+                },
+            )
         },
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding).padding(ContentPadding),
             verticalArrangement = Arrangement.spacedBy(ItemSpacing),
         ) {
-            Text(text = stringResource(R.string.start_title), style = MaterialTheme.typography.headlineMedium)
             SyncSummary(state.status)
             if (state.running) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())

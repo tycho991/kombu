@@ -2,7 +2,6 @@
 <resources>
     <!-- The product name is not translated. -->
     <string name="app_name" translatable="false">Kombu</string>
-    <string name="start_title">Your recipes</string>
     <string name="start_account">Account</string>
 
     <!-- Login screen -->
@@ -72,4 +71,47 @@
     <string name="sync_problem_credentials">Your Nextcloud no longer accepts Kombu\'s app password. Sign in again to keep syncing. Your recipes and changes stay on this device.</string>
     <string name="sync_problem_cookbook_missing">The last sync failed: the Cookbook app is not available for your account.</string>
     <string name="sync_problem_cookbook_too_old">Kombu needs Cookbook %2$s or newer to sync, but your Nextcloud has Cookbook %1$s.</string>
+
+    <!-- Recipe list -->
+    <string name="recipes_title">Recipes</string>
+    <string name="recipes_search">Search recipes</string>
+    <string name="recipes_search_clear">Clear search</string>
+    <string name="recipes_sort">Sort</string>
+    <string name="recipes_sort_name">By name</string>
+    <string name="recipes_sort_last_change">By last change</string>
+    <string name="recipes_new">New recipe</string>
+    <string name="recipes_filter_category">Category</string>
+    <string name="recipes_filter_category_all">All categories</string>
+    <string name="recipes_filter_keywords">Keywords</string>
+    <plurals name="recipes_filter_keywords_selected">
+        <item quantity="one">%d keyword</item>
+        <item quantity="other">%d keywords</item>
+    </plurals>
+    <string name="recipes_filter_attention">Needs attention</string>
+    <string name="recipes_marker_pending">Not uploaded yet</string>
+    <string name="recipes_marker_conflict">Changed in two places</string>
+    <string name="recipes_marker_attention">Needs attention</string>
+    <string name="recipes_empty_downloading">Your recipes are being downloaded…</string>
+    <string name="recipes_empty_failed">No recipes are on this device yet.</string>
+    <string name="recipes_empty_none">There are no recipes yet.</string>
+    <string name="recipes_empty_create">Create a recipe</string>
+    <string name="recipes_empty_nothing_found">Nothing found.</string>
+    <string name="recipes_clear_filters">Clear search and filters</string>
+
+    <!-- Sync status bar above the recipe list and the full sync status -->
+    <string name="bar_synced_at">Synced %1$s</string>
+    <string name="bar_never">Not synced yet</string>
+    <string name="bar_offline">Offline</string>
+    <string name="bar_failed">Sync failed</string>
+    <string name="bar_not_possible">Sync not possible</string>
+    <string name="bar_sign_in">Sign in again to keep syncing</string>
+    <plurals name="bar_pending">
+        <item quantity="one">%d change waiting</item>
+        <item quantity="other">%d changes waiting</item>
+    </plurals>
+    <plurals name="bar_attention">
+        <item quantity="one">%d needs attention</item>
+        <item quantity="other">%d need attention</item>
+    </plurals>
+    <string name="sync_status_title">Sync</string>
 </resources>

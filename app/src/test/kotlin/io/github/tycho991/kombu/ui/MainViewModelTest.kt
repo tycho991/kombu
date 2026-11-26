@@ -36,14 +36,10 @@ class MainViewModelTest {
     }
 
     @Test
-    fun showsStartScreenWhenSignedInAndOpensTheAccount() {
+    fun showsTheSignedInAccount() {
         val viewModel = MainViewModel(FakeAccountService(signedIn = testCredentials), status)
 
-        assertEquals(MainUiState.SignedIn("https://cloud.example.com", "alex", false), viewModel.state.value)
-        viewModel.openAccount()
-        assertEquals(MainUiState.SignedIn("https://cloud.example.com", "alex", true), viewModel.state.value)
-        viewModel.closeAccount()
-        assertEquals(MainUiState.SignedIn("https://cloud.example.com", "alex", false), viewModel.state.value)
+        assertEquals(MainUiState.SignedIn("https://cloud.example.com", "alex"), viewModel.state.value)
     }
 
     @Test
@@ -56,19 +52,8 @@ class MainViewModelTest {
     }
 
     @Test
-    fun opensAndClosesTheNewLogin() {
-        val viewModel = MainViewModel(FakeAccountService(signedIn = testCredentials), status)
-
-        viewModel.signInAgain()
-        assertEquals(true, (viewModel.state.value as MainUiState.SignedIn).signingInAgain)
-        viewModel.closeAccount()
-        assertEquals(MainUiState.SignedIn("https://cloud.example.com", "alex", false), viewModel.state.value)
-    }
-
-    @Test
     fun logoutOnlineShowsNoNotice() {
         val viewModel = MainViewModel(FakeAccountService(signedIn = testCredentials), status)
-        viewModel.openAccount()
 
         viewModel.logout()
 
