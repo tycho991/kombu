@@ -139,7 +139,7 @@
   - a cleared time checked in the web interface.
 
   Record the result in the commit message without server details.
-- [ ] 8.4 Push and confirm that CI is green. Verify that `openspec validate recipe-browse-edit --strict` passes.
+- [x] 8.4 Push and confirm that CI is green. Verify that `openspec validate recipe-browse-edit --strict` passes.
 
 ## Workflow follow-up
 
