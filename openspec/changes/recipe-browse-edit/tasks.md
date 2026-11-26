@@ -35,7 +35,7 @@
 
 ## 3. Data layer (`data`)
 
-- [ ] 3.1 Implement `RecipeQuery`, the list state and the derived flows `categories()` and `keywords()` (design D7). Verify with JVM tests for:
+- [x] 3.1 Implement `RecipeQuery`, the list state and the derived flows `categories()` and `keywords()` (design D7). Verify with JVM tests for:
   - search over name, category, keywords and ingredients;
   - several terms;
   - case, accents and `ß`;
@@ -43,7 +43,7 @@
   - name order with German and English collation (`Äpfel` among the `A` names);
   - last-change order from `localChangeAt` and `dateModified`, with unparseable dates last;
   - distinct, sorted categories and keywords that update when a recipe changes.
-- [ ] 3.2 Add `RecipeRepository.edit(localId, expected, change)` with the results `Edited`, `Collision(fields, current)` and `Gone` (design D5), and the unique-name check against the other visible rows. Verify with Robolectric and Room tests:
+- [x] 3.2 Add `RecipeRepository.edit(localId, expected, change)` with the results `Edited`, `Collision(fields, current)` and `Gone` (design D5), and the unique-name check against the other visible rows. Verify with Robolectric and Room tests:
   - unchanged row;
   - row changed by a sync in another field, where the edit keeps the sync's change;
   - row changed in the same field;
@@ -51,7 +51,7 @@
   - a sync write racing the transaction;
   - the name check ignores case and spaces and excludes the recipe itself;
   - `localChangeSeq` grows exactly once per successful edit.
-- [ ] 3.3 Add `BrowsePreferences` (the sort order in a DataStore, design D7). Verify with a test that the order survives a new instance and defaults to name. Verify that `./gradlew :data:check` passes at 80 % lines and 70 % branches.
+- [x] 3.3 Add `BrowsePreferences` (the sort order in a DataStore, design D7). Verify with a test that the order survives a new instance and defaults to name. Verify that `./gradlew :data:check` passes at 80 % lines and 70 % branches.
 
 ## 4. Navigation and start screen (`app`)
 
