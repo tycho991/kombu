@@ -147,4 +147,59 @@
     <string name="delete_confirm_text">Kombu löscht „%1$s“ jetzt auf diesem Gerät und beim nächsten Abgleich in deiner Nextcloud.</string>
     <string name="delete_confirm">Löschen</string>
     <string name="delete_dismiss">Abbrechen</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">Neues Rezept</string>
+    <string name="editor_title_edit">Rezept bearbeiten</string>
+    <string name="editor_save">Speichern</string>
+    <string name="editor_close">Schließen</string>
+    <string name="editor_name">Name</string>
+    <string name="editor_description">Beschreibung</string>
+    <string name="editor_category">Kategorie</string>
+    <string name="editor_keywords">Schlagwörter</string>
+    <string name="editor_keyword_hint">Schlagwort eingeben; ein Komma beginnt das nächste</string>
+    <string name="editor_keyword_remove">%1$s entfernen</string>
+    <string name="editor_servings">Portionen</string>
+    <string name="editor_prep_time">Vorbereitungszeit</string>
+    <string name="editor_cook_time">Kochzeit</string>
+    <string name="editor_total_time">Gesamtzeit</string>
+    <string name="editor_hours">Stunden</string>
+    <string name="editor_minutes">Minuten</string>
+    <string name="editor_time_raw">Gespeichert als: %1$s</string>
+    <string name="editor_time_raw_clear">Entfernen</string>
+    <string name="editor_ingredients">Zutaten, eine pro Zeile</string>
+    <string name="editor_steps">Zubereitung</string>
+    <string name="editor_step">Schritt %1$d</string>
+    <string name="editor_step_add">Schritt hinzufügen</string>
+    <string name="editor_step_up">Schritt nach oben</string>
+    <string name="editor_step_down">Schritt nach unten</string>
+    <string name="editor_step_remove">Schritt entfernen</string>
+    <string name="editor_error_name_required">Gib einen Namen ein.</string>
+    <string name="editor_error_name_taken">Ein anderes Rezept hat schon diesen Namen.</string>
+    <string name="editor_error_servings">Portionen müssen eine ganze Zahl ab 1 sein.</string>
+    <string name="editor_error_time">Gib ganze Stunden und Minuten unter 60 ein.</string>
+    <string name="editor_save_failed">Das Rezept konnte nicht gespeichert werden. Deine Eingaben bleiben erhalten.</string>
+    <string name="discard_title">Änderungen verwerfen?</string>
+    <string name="discard_text">Deine Änderungen an diesem Rezept gehen verloren.</string>
+    <string name="discard_confirm">Verwerfen</string>
+    <string name="discard_dismiss">Weiter bearbeiten</string>
+    <string name="collision_title">Inzwischen in Nextcloud geändert</string>
+    <string name="collision_text">Während du bearbeitet hast, wurde das in Nextcloud geändert: %1$s. Welche Werte soll das Rezept behalten?</string>
+    <string name="collision_keep_mine">Meine behalten</string>
+    <string name="collision_take_theirs">Die aus Nextcloud übernehmen</string>
+    <string name="gone_title">Rezept in Nextcloud gelöscht</string>
+    <string name="gone_text">Dieses Rezept wurde in Nextcloud gelöscht, während du es bearbeitet hast. Deine Eingaben als neues Rezept speichern?</string>
+    <string name="gone_save_new">Als neues Rezept speichern</string>
+
+    <!-- Rezeptfelder, wie sie in den Fragen des Editors und in der Konfliktansicht heißen -->
+    <string name="field_name">Name</string>
+    <string name="field_description">Beschreibung</string>
+    <string name="field_category">Kategorie</string>
+    <string name="field_keywords">Schlagwörter</string>
+    <string name="field_servings">Portionen</string>
+    <string name="field_prep_time">Vorbereitungszeit</string>
+    <string name="field_cook_time">Kochzeit</string>
+    <string name="field_total_time">Gesamtzeit</string>
+    <string name="field_ingredients">Zutaten</string>
+    <string name="field_steps">Zubereitung</string>
 </resources>

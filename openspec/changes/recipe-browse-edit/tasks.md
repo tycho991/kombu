@@ -95,7 +95,7 @@
 
 ## 6. Editor (`app`)
 
-- [ ] 6.1 Build the editor for new and existing recipes (spec "Create a recipe", "Edit a recipe", "Editable fields"):
+- [x] 6.1 Build the editor for new and existing recipes (spec "Create a recipe", "Edit a recipe", "Editable fields"):
   - all fields from the spec;
   - the category picker with the existing categories plus free entry;
   - keyword chips with suggestions and comma splitting;
@@ -104,7 +104,7 @@
   - the step list with add, remove, move up and move down.
 
   Add the strings in English and German. Verify with Compose tests in both languages that every field is shown and editable and that no image field is offered.
-- [ ] 6.2 Implement saving with the edited-field set and the D3 writers (design D5, spec "Only edited fields change"). Validate the name, servings and times (spec "Recipe name", "Servings and times"), and normalise keywords, steps and ingredient lines (spec "Keywords", "Ingredients and steps"). Verify with view-model tests for:
+- [x] 6.2 Implement saving with the edited-field set and the D3 writers (design D5, spec "Only edited fields change"). Validate the name, servings and times (spec "Recipe name", "Servings and times"), and normalise keywords, steps and ingredient lines (spec "Keywords", "Ingredients and steps"). Verify with view-model tests for:
   - a name-only change that leaves the JSON otherwise identical, including a source URL, nutrition and `HowToStep` steps;
   - saving without changes writes nothing;
   - each validation error;
@@ -114,8 +114,8 @@
   - an unreadable time kept, and a cleared time removed;
   - a new recipe created as pending;
   - a fixed refused upload that clears the reason and schedules a sync.
-- [ ] 6.3 Add the unsaved-changes dialog and the saved form state (spec "Unsaved changes"). Verify with tests: back with changes asks and keeps editing when declined; back without changes leaves; the form survives view-model recreation from its `SavedStateHandle`.
-- [ ] 6.4 Handle `Collision` and `Gone` (spec "Sync updates during editing"). Verify with view-model tests: different fields are merged; the same field shows the dialog naming the field; both choices behave as in design D5; a recipe deleted meanwhile is saved as a new recipe on request.
+- [x] 6.3 Add the unsaved-changes dialog and the saved form state (spec "Unsaved changes"). Verify with tests: back with changes asks and keeps editing when declined; back without changes leaves; the form survives view-model recreation from its `SavedStateHandle`.
+- [x] 6.4 Handle `Collision` and `Gone` (spec "Sync updates during editing"). Verify with view-model tests: different fields are merged; the same field shows the dialog naming the field; both choices behave as in design D5; a recipe deleted meanwhile is saved as a new recipe on request.
 
 ## 7. Conflict view (`app`)
 

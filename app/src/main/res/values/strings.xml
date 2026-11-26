@@ -149,4 +149,59 @@
     <string name="delete_confirm_text">Kombu deletes \"%1$s\" on this device now and in your Nextcloud at the next sync.</string>
     <string name="delete_confirm">Delete</string>
     <string name="delete_dismiss">Cancel</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">New recipe</string>
+    <string name="editor_title_edit">Edit recipe</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_close">Close</string>
+    <string name="editor_name">Name</string>
+    <string name="editor_description">Description</string>
+    <string name="editor_category">Category</string>
+    <string name="editor_keywords">Keywords</string>
+    <string name="editor_keyword_hint">Type a keyword; a comma starts the next one</string>
+    <string name="editor_keyword_remove">Remove %1$s</string>
+    <string name="editor_servings">Servings</string>
+    <string name="editor_prep_time">Preparation time</string>
+    <string name="editor_cook_time">Cooking time</string>
+    <string name="editor_total_time">Total time</string>
+    <string name="editor_hours">Hours</string>
+    <string name="editor_minutes">Minutes</string>
+    <string name="editor_time_raw">Stored as: %1$s</string>
+    <string name="editor_time_raw_clear">Remove</string>
+    <string name="editor_ingredients">Ingredients, one per line</string>
+    <string name="editor_steps">Steps</string>
+    <string name="editor_step">Step %1$d</string>
+    <string name="editor_step_add">Add step</string>
+    <string name="editor_step_up">Move step up</string>
+    <string name="editor_step_down">Move step down</string>
+    <string name="editor_step_remove">Remove step</string>
+    <string name="editor_error_name_required">Enter a name.</string>
+    <string name="editor_error_name_taken">Another recipe already has this name.</string>
+    <string name="editor_error_servings">Servings must be a whole number of at least 1.</string>
+    <string name="editor_error_time">Enter whole hours and minutes below 60.</string>
+    <string name="editor_save_failed">The recipe could not be saved. Your entries are kept.</string>
+    <string name="discard_title">Discard changes?</string>
+    <string name="discard_text">Your changes to this recipe will be lost.</string>
+    <string name="discard_confirm">Discard</string>
+    <string name="discard_dismiss">Keep editing</string>
+    <string name="collision_title">Changed in Nextcloud meanwhile</string>
+    <string name="collision_text">While you were editing, this was changed in Nextcloud: %1$s. Which values should the recipe keep?</string>
+    <string name="collision_keep_mine">Keep mine</string>
+    <string name="collision_take_theirs">Use Nextcloud\'s</string>
+    <string name="gone_title">Recipe deleted in Nextcloud</string>
+    <string name="gone_text">This recipe was deleted in Nextcloud while you were editing it. Save your entries as a new recipe?</string>
+    <string name="gone_save_new">Save as new recipe</string>
+
+    <!-- Recipe fields, as named in the editor's questions and the conflict view -->
+    <string name="field_name">name</string>
+    <string name="field_description">description</string>
+    <string name="field_category">category</string>
+    <string name="field_keywords">keywords</string>
+    <string name="field_servings">servings</string>
+    <string name="field_prep_time">preparation time</string>
+    <string name="field_cook_time">cooking time</string>
+    <string name="field_total_time">total time</string>
+    <string name="field_ingredients">ingredients</string>
+    <string name="field_steps">steps</string>
 </resources>
