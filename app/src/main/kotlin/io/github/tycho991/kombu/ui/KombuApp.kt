@@ -25,6 +25,8 @@ import io.github.tycho991.kombu.ui.account.AccountScreen
 import io.github.tycho991.kombu.ui.login.LoginRoute
 import io.github.tycho991.kombu.ui.login.LoginViewModel
 import io.github.tycho991.kombu.ui.navigation.Route
+import io.github.tycho991.kombu.ui.recipes.conflict.ConflictRoute
+import io.github.tycho991.kombu.ui.recipes.conflict.ConflictViewModel
 import io.github.tycho991.kombu.ui.recipes.detail.RecipeDetailRoute
 import io.github.tycho991.kombu.ui.recipes.detail.RecipeDetailViewModel
 import io.github.tycho991.kombu.ui.recipes.editor.RecipeEditorRoute
@@ -81,6 +83,7 @@ private fun SignedIn(current: MainUiState.SignedIn, main: MainViewModel, depende
             entry<Route.RecipeList> { RecipeListEntry(dependencies, backStack) }
             entry<Route.RecipeDetail> { key -> RecipeDetailEntry(key, dependencies, backStack) }
             entry<Route.RecipeEditor> { key -> RecipeEditorEntry(key, dependencies, backStack) }
+            entry<Route.Conflict> { key -> ConflictEntry(key, dependencies, backStack) }
             entry<Route.SyncStatus> { SyncStatusEntry(dependencies, backStack) }
             entry<Route.Account> {
                 AccountScreen(
@@ -157,7 +160,16 @@ private fun RecipeDetailEntry(
         // The recipe was deleted or removed by a sync: leave its view (design D10).
         onClose = { backStack.remove(key) },
         onEdit = { backStack.add(Route.RecipeEditor(key.localId)) },
+        onResolve = { backStack.add(Route.Conflict(key.localId)) },
     )
+}
+
+@Composable
+private fun ConflictEntry(key: Route.Conflict, dependencies: KombuDependencies, backStack: NavBackStack<NavKey>) {
+    val conflict = viewModel<ConflictViewModel>(
+        factory = viewModelFactory { initializer { ConflictViewModel(key.localId, dependencies.recipes) } },
+    )
+    ConflictRoute(viewModel = conflict, onBack = { backStack.removeLastOrNull() }, onDone = { backStack.remove(key) })
 }
 
 @Composable

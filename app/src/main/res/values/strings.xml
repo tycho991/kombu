@@ -204,4 +204,30 @@
     <string name="field_total_time">total time</string>
     <string name="field_ingredients">ingredients</string>
     <string name="field_steps">steps</string>
+
+    <!-- Conflict view -->
+    <string name="conflict_title">Resolve conflict</string>
+    <string name="conflict_in_kombu">In Kombu</string>
+    <string name="conflict_in_nextcloud">In Nextcloud</string>
+    <string name="conflict_empty">(empty)</string>
+    <plurals name="conflict_other_fields">
+        <item quantity="one">%d other field differs; Kombu does not show it.</item>
+        <item quantity="other">%d other fields differ; Kombu does not show them.</item>
+    </plurals>
+    <string name="conflict_version_kombu">The version in Kombu</string>
+    <string name="conflict_version_nextcloud">The version in Nextcloud</string>
+    <string name="conflict_keep_mine">Keep my version</string>
+    <string name="conflict_take_server">Use the Nextcloud version</string>
+    <string name="conflict_keep_recipe">Keep the recipe</string>
+    <string name="conflict_delete_here">Delete it here too</string>
+    <string name="conflict_delete_anyway">Delete it anyway</string>
+    <string name="conflict_keep_server">Keep the Nextcloud version</string>
+    <string name="conflict_confirm_title">Apply your choice?</string>
+    <string name="conflict_confirm_keep_mine">Kombu uploads your version at the next sync. The changes made in Nextcloud are discarded.</string>
+    <string name="conflict_confirm_take_server">Kombu takes the version from Nextcloud. Your changes are discarded.</string>
+    <string name="conflict_confirm_keep_recipe">Kombu uploads the recipe to Nextcloud again at the next sync.</string>
+    <string name="conflict_confirm_delete_here">Kombu deletes the recipe on this device. Your changes are discarded.</string>
+    <string name="conflict_confirm_delete_anyway">Kombu deletes the recipe in Nextcloud at the next sync. The changes made in Nextcloud are discarded.</string>
+    <string name="conflict_confirm_keep_server">Kombu keeps the version from Nextcloud. Your deletion is discarded.</string>
+    <string name="conflict_changed_meanwhile">This recipe changed again in the meantime. Nothing was applied; check the conflict again.</string>
 </resources>

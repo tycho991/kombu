@@ -119,8 +119,8 @@
 
 ## 7. Conflict view (`app`)
 
-- [ ] 7.1 Build the conflict view for the three kinds with `RecipeDiff` (spec "Conflict view", design D6), showing both values per differing field and the count of other fields. Add the strings in English and German. Verify with Compose tests in both languages per kind.
-- [ ] 7.2 Implement the choices, their confirmations and the "changed meanwhile" path on top of `resolve` (spec "Choosing a conflict version"). Verify with view-model tests per kind and choice, mapped as in the D6 table, and with a row updated by a sync between showing and confirming.
+- [x] 7.1 Build the conflict view for the three kinds with `RecipeDiff` (spec "Conflict view", design D6), showing both values per differing field and the count of other fields. Add the strings in English and German. Verify with Compose tests in both languages per kind.
+- [x] 7.2 Implement the choices, their confirmations and the "changed meanwhile" path on top of `resolve` (spec "Choosing a conflict version"). Verify with view-model tests per kind and choice, mapped as in the D6 table, and with a row updated by a sync between showing and confirming.
 
 ## 8. End to end and documentation
 

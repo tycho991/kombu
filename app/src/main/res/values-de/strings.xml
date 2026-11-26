@@ -202,4 +202,30 @@
     <string name="field_total_time">Gesamtzeit</string>
     <string name="field_ingredients">Zutaten</string>
     <string name="field_steps">Zubereitung</string>
+
+    <!-- Konfliktansicht -->
+    <string name="conflict_title">Konflikt klären</string>
+    <string name="conflict_in_kombu">In Kombu</string>
+    <string name="conflict_in_nextcloud">In Nextcloud</string>
+    <string name="conflict_empty">(leer)</string>
+    <plurals name="conflict_other_fields">
+        <item quantity="one">%d weiteres Feld unterscheidet sich; Kombu zeigt es nicht an.</item>
+        <item quantity="other">%d weitere Felder unterscheiden sich; Kombu zeigt sie nicht an.</item>
+    </plurals>
+    <string name="conflict_version_kombu">Die Version in Kombu</string>
+    <string name="conflict_version_nextcloud">Die Version in Nextcloud</string>
+    <string name="conflict_keep_mine">Meine Version behalten</string>
+    <string name="conflict_take_server">Version aus Nextcloud übernehmen</string>
+    <string name="conflict_keep_recipe">Rezept behalten</string>
+    <string name="conflict_delete_here">Auch hier löschen</string>
+    <string name="conflict_delete_anyway">Trotzdem löschen</string>
+    <string name="conflict_keep_server">Version aus Nextcloud behalten</string>
+    <string name="conflict_confirm_title">Deine Wahl anwenden?</string>
+    <string name="conflict_confirm_keep_mine">Kombu lädt deine Version beim nächsten Abgleich hoch. Die Änderungen in Nextcloud werden verworfen.</string>
+    <string name="conflict_confirm_take_server">Kombu übernimmt die Version aus Nextcloud. Deine Änderungen werden verworfen.</string>
+    <string name="conflict_confirm_keep_recipe">Kombu lädt das Rezept beim nächsten Abgleich wieder in Nextcloud hoch.</string>
+    <string name="conflict_confirm_delete_here">Kombu löscht das Rezept auf diesem Gerät. Deine Änderungen werden verworfen.</string>
+    <string name="conflict_confirm_delete_anyway">Kombu löscht das Rezept beim nächsten Abgleich in Nextcloud. Die Änderungen in Nextcloud werden verworfen.</string>
+    <string name="conflict_confirm_keep_server">Kombu behält die Version aus Nextcloud. Dein Löschen wird verworfen.</string>
+    <string name="conflict_changed_meanwhile">Dieses Rezept hat sich inzwischen erneut geändert. Es wurde nichts angewendet; prüfe den Konflikt noch einmal.</string>
 </resources>
