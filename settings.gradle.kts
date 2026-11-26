@@ -24,6 +24,9 @@ include(":recipe-import")
 include(":cookbook-client")
 include(":nextcloud-auth")
 
+// Test support (pure Kotlin/JVM, used only by tests)
+include(":test-cookbook-server")
+
 // Android modules
 include(":data")
 include(":sync")

@@ -5,6 +5,7 @@ import io.github.tycho991.kombu.data.recipes.LocalRecipe
 import io.github.tycho991.kombu.data.recipes.RecipeState
 import io.github.tycho991.kombu.data.recipes.SyncProblem
 import io.github.tycho991.kombu.data.recipes.UploadError
+import io.github.tycho991.kombu.testcookbookserver.FakeCookbookServer
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonPrimitive
 import mockwebserver3.MockResponse

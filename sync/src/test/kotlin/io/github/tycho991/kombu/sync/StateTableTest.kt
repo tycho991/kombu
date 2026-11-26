@@ -3,6 +3,7 @@ package io.github.tycho991.kombu.sync
 import io.github.tycho991.kombu.data.recipes.ConflictKind
 import io.github.tycho991.kombu.data.recipes.LocalRecipe
 import io.github.tycho991.kombu.data.recipes.RecipeState
+import io.github.tycho991.kombu.testcookbookserver.FakeCookbookServer
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

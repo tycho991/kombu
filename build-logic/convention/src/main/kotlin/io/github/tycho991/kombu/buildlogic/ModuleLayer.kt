@@ -22,6 +22,8 @@ internal val MODULE_LAYERS: Map<String, ModuleLayer> =
         "recipe-import" to ModuleLayer.PURE,
         "cookbook-client" to ModuleLayer.PURE,
         "nextcloud-auth" to ModuleLayer.PURE,
+        // Test support: pure Kotlin, held to the pure thresholds, used only through test configurations.
+        "test-cookbook-server" to ModuleLayer.PURE,
         "data" to ModuleLayer.DATA,
         "sync" to ModuleLayer.SYNC,
         "app" to ModuleLayer.APP,

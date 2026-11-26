@@ -6,6 +6,7 @@ import io.github.tycho991.kombu.cookbookclient.RemoteRecipe
 import io.github.tycho991.kombu.data.recipes.LocalRecipe
 import io.github.tycho991.kombu.nextcloudauth.NextcloudCredentials
 import io.github.tycho991.kombu.nextcloudauth.ServerAddress
+import io.github.tycho991.kombu.testcookbookserver.FakeCookbookServer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import mockwebserver3.MockWebServer

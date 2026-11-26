@@ -1,5 +1,6 @@
 package io.github.tycho991.kombu.sync
 
+import io.github.tycho991.kombu.testcookbookserver.FakeCookbookServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

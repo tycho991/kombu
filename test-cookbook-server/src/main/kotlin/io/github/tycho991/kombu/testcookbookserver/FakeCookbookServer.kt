@@ -1,4 +1,4 @@
-package io.github.tycho991.kombu.sync
+package io.github.tycho991.kombu.testcookbookserver
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -25,7 +25,9 @@ import okio.Buffer
  *
  * Tests change it like a user of the web interface would ([add], [edit], [delete]) and inject failures.
  */
-class FakeCookbookServer : Dispatcher() {
+// The fake mirrors the whole Cookbook API that the sync uses in one place; splitting it would scatter one fake.
+@Suppress("TooManyFunctions")
+public class FakeCookbookServer : Dispatcher() {
     private val recipes = linkedMapOf<String, JsonObject>()
     private val images = mutableMapOf<String, ByteArray>()
     private val withoutDate = mutableSetOf<String>()
@@ -41,19 +43,19 @@ class FakeCookbookServer : Dispatcher() {
     )
 
     /** The bodies of every create and update, in order. */
-    val bodies = mutableListOf<JsonObject>()
+    public val bodies: MutableList<JsonObject> = mutableListOf()
 
     /** Every request the server received, in order, as "METHOD path". */
-    val log = mutableListOf<String>()
+    public val log: MutableList<String> = mutableListOf()
 
     /** The version the version route reports; `null` makes the route answer `404`. */
-    var version: List<Int>? = listOf(0, 11, 12)
+    public var version: List<Int>? = listOf(0, 11, 12)
 
     /** The recipes as stored, without the fields the server adds when reading. */
-    val stored: Map<String, JsonObject> get() = recipes
+    public val stored: Map<String, JsonObject> get() = recipes
 
     /** Adds a recipe like the web interface would and returns its id. */
-    fun add(recipe: JsonObject, image: Boolean = false, dated: Boolean = true): String {
+    public fun add(recipe: JsonObject, image: Boolean = false, dated: Boolean = true): String {
         val id = (nextId++).toString()
         recipes[id] = stamp(JsonObject(recipe + ("id" to JsonPrimitive(id))))
         if (image) images[id] = jpeg(id)
@@ -65,24 +67,24 @@ class FakeCookbookServer : Dispatcher() {
     }
 
     /** Changes a stored recipe like the web interface would. */
-    fun edit(id: String, change: (JsonObject) -> JsonObject) {
+    public fun edit(id: String, change: (JsonObject) -> JsonObject) {
         recipes[id] = stamp(change(recipes.getValue(id)))
     }
 
     /** Deletes a recipe like the web interface would. */
-    fun delete(id: String) {
+    public fun delete(id: String) {
         recipes.remove(id)
         images.remove(id)
     }
 
     /** Gives the recipe a new image file. */
-    fun setImage(id: String, bytes: ByteArray?) {
+    public fun setImage(id: String, bytes: ByteArray?) {
         if (bytes == null) images.remove(id) else images[id] = bytes
     }
 
     /** Answers the next [times] requests matching [matches] with [response] instead of serving them. */
-    fun fail(
-        response: MockResponse = MockResponse.Builder().code(500).build(),
+    public fun fail(
+        response: MockResponse = MockResponse.Builder().code(SERVER_ERROR).build(),
         times: Int = Int.MAX_VALUE,
         matches: (RecordedRequest) -> Boolean,
     ) {
@@ -90,17 +92,17 @@ class FakeCookbookServer : Dispatcher() {
     }
 
     /** Drops the connection of every request matching [matches] before serving it. */
-    fun drop(matches: (RecordedRequest) -> Boolean) {
+    public fun drop(matches: (RecordedRequest) -> Boolean) {
         fail(DROPPED, matches = matches)
     }
 
     /** Serves the next request matching [matches], then drops the connection, so its answer is lost. */
-    fun loseAnswer(matches: (RecordedRequest) -> Boolean) {
+    public fun loseAnswer(matches: (RecordedRequest) -> Boolean) {
         failures += Failure(matches, DROPPED, 1, afterHandling = true)
     }
 
     /** Removes all injected failures. */
-    fun heal() {
+    public fun heal() {
         failures.clear()
     }
 
@@ -123,12 +125,12 @@ class FakeCookbookServer : Dispatcher() {
             path == RECIPES && request.method == "POST" -> create(body(request))
             path.startsWith("$RECIPES/") && segments.size == RECIPE_SEGMENTS -> single(request, segments.last())
             path.startsWith("$RECIPES/") && segments.last() == "image" -> image(segments[segments.size - 2])
-            else -> status(404)
+            else -> status(NOT_FOUND)
         }
     }
 
     private fun single(request: RecordedRequest, id: String): MockResponse = when (request.method) {
-        "GET" -> recipes[id]?.let { json(withReadFields(id, it)) } ?: status(404)
+        "GET" -> recipes[id]?.let { json(withReadFields(id, it)) } ?: status(NOT_FOUND)
 
         "PUT" -> update(body(request))
 
@@ -137,7 +139,7 @@ class FakeCookbookServer : Dispatcher() {
             json(JsonPrimitive("Recipe $id deleted successfully"))
         }
 
-        else -> status(405)
+        else -> status(METHOD_NOT_ALLOWED)
     }
 
     /** Cookbook adds an image link and the user's print setting to every recipe it returns. */
@@ -148,12 +150,12 @@ class FakeCookbookServer : Dispatcher() {
     private fun create(recipe: JsonObject): MockResponse {
         val name = recipe.name
         return when {
-            name.isNullOrBlank() -> status(422)
+            name.isNullOrBlank() -> status(UNPROCESSABLE)
 
             // Like Cookbook, a body with an id updates that recipe instead.
             recipe["id"] != null -> update(recipe)
 
-            recipes.values.any { it.name == name } -> status(409)
+            recipes.values.any { it.name == name } -> status(CONFLICT)
 
             else -> json(JsonPrimitive(add(JsonObject(recipe + ("dateCreated" to JsonPrimitive("c$tick")))).toInt()))
         }
@@ -163,11 +165,11 @@ class FakeCookbookServer : Dispatcher() {
         val id = recipe["id"]?.jsonPrimitive?.contentOrNull
         val name = recipe.name
         return when {
-            id == null || id !in recipes -> status(500)
+            id == null || id !in recipes -> status(SERVER_ERROR)
 
-            name.isNullOrBlank() -> status(422)
+            name.isNullOrBlank() -> status(UNPROCESSABLE)
 
-            recipes.any { (other, stored) -> other != id && stored.name == name } -> status(409)
+            recipes.any { (other, stored) -> other != id && stored.name == name } -> status(CONFLICT)
 
             else -> {
                 // The server stores what it gets, without the fields it adds when reading.
@@ -179,11 +181,11 @@ class FakeCookbookServer : Dispatcher() {
 
     private fun image(id: String): MockResponse = images[id]?.let {
         MockResponse.Builder().addHeader("Content-Type", "image/jpeg").body(Buffer().write(it)).build()
-    } ?: status(406)
+    } ?: status(NOT_ACCEPTABLE)
 
     private fun versionAnswer(): MockResponse =
         version?.let { json(buildJsonObject { put("cookbook_version", JsonArray(it.map(::JsonPrimitive))) }) }
-            ?: status(404)
+            ?: status(NOT_FOUND)
 
     private fun stub(id: String): JsonObject {
         val recipe = recipes.getValue(id)
@@ -213,22 +215,36 @@ class FakeCookbookServer : Dispatcher() {
 
     private fun status(code: Int): MockResponse = MockResponse.Builder().code(code).body("""{"msg":"$code"}""").build()
 
-    companion object {
-        const val PREFIX = "/nextcloud/"
-        const val RECIPES = "index.php/apps/cookbook/api/v1/recipes"
+    /** Path constants and helpers for building test data. */
+    public companion object {
+        /** The path of the Nextcloud instance on the mock server; tests sign in to `url("/nextcloud")`. */
+        public const val PREFIX: String = "/nextcloud/"
+
+        /** The path of the recipe collection, relative to [PREFIX]. */
+        public const val RECIPES: String = "index.php/apps/cookbook/api/v1/recipes"
+        private const val NOT_FOUND = 404
+        private const val METHOD_NOT_ALLOWED = 405
+        private const val NOT_ACCEPTABLE = 406
+        private const val CONFLICT = 409
+        private const val UNPROCESSABLE = 422
+        private const val SERVER_ERROR = 500
         private const val RECIPE_SEGMENTS = 7
         private val DROPPED = MockResponse.Builder().onResponseStart(SocketEffect.CloseSocket()).build()
 
         private const val SECONDS = 60
 
         /** A date as Cookbook writes it into `recipe.json`: with a space and without time zone. */
-        fun rawDate(tick: Int): String = "2024-01-01 10:%02d:%02d".format(tick / SECONDS, tick % SECONDS)
+        public fun rawDate(tick: Int): String = "2024-01-01 10:%02d:%02d".format(tick / SECONDS, tick % SECONDS)
 
         /** A small fake JPEG, different per recipe. */
-        fun jpeg(id: String): ByteArray = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte()) + id.toByteArray()
+        public fun jpeg(id: String): ByteArray = byteArrayOf(
+            0xFF.toByte(),
+            0xD8.toByte(),
+            0xFF.toByte(),
+        ) + id.toByteArray()
 
         /** An invented recipe with an unknown field of varying type. */
-        fun recipe(name: String, image: String? = null): JsonObject = buildJsonObject {
+        public fun recipe(name: String, image: String? = null): JsonObject = buildJsonObject {
             put("@type", "Recipe")
             put("name", name)
             put("recipeIngredient", JsonArray(listOf(JsonPrimitive("1 onion"))))

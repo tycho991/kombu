@@ -2,14 +2,14 @@
 
 ## 1. Build setup
 
-- [ ] 1.1 Add Navigation 3 (`navigation3-runtime`, `navigation3-ui`), `lifecycle-viewmodel-navigation3` and Coil 3 (`coil-compose`, without the network module) to `gradle/libs.versions.toml` and `app` (design D1, D2). Each must be:
+- [x] 1.1 Add Navigation 3 (`navigation3-runtime`, `navigation3-ui`), `lifecycle-viewmodel-navigation3` and Coil 3 (`coil-compose`, without the network module) to `gradle/libs.versions.toml` and `app` (design D1, D2). Each must be:
   - the newest stable release at least two weeks old;
   - Apache-2.0;
   - free of Google Play Services;
   - compatible with Compose BOM 2026.09.00 and Kotlin 2.4.21.
 
   If no stable Navigation 3 release fits, stop and report instead of switching libraries. Record the chosen versions in the commit message. Verify that `./gradlew :app:assembleDebug` and `checkForbiddenDependencies` pass.
-- [ ] 1.2 Create the pure-Kotlin module `test-cookbook-server` and move `FakeCookbookServer` and `FakeCookbookServerTest` into it from `sync/src/test` (design D9). Switch `sync` to `testImplementation(project(":test-cookbook-server"))`. Verify that all `sync` tests pass unchanged, and that the new module passes its Kover thresholds (90 % lines, 80 % branches) and detekt. Update CONTRIBUTING.md's module list.
+- [x] 1.2 Create the pure-Kotlin module `test-cookbook-server` and move `FakeCookbookServer` and `FakeCookbookServerTest` into it from `sync/src/test` (design D9). Switch `sync` to `testImplementation(project(":test-cookbook-server"))`. Verify that all `sync` tests pass unchanged, and that the new module passes its Kover thresholds (90 % lines, 80 % branches) and detekt. Update CONTRIBUTING.md's module list.
 
 ## 2. Recipe fields and durations (pure modules)
 

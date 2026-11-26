@@ -7,6 +7,7 @@ dependencies {
     api(libs.androidx.work.runtime.ktx)
 
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(project(":test-cookbook-server"))
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.androidx.work.testing)
     testImplementation(libs.robolectric)

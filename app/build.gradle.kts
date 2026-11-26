@@ -1,6 +1,7 @@
 plugins {
     id("kombu.android.application")
     id("kombu.android.compose")
+    id("kombu.kotlin.serialization")
 }
 
 dependencies {
@@ -11,6 +12,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.coil.compose)
     implementation(libs.okhttp)
 
     testImplementation(libs.robolectric)

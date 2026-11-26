@@ -4,6 +4,7 @@ import io.github.tycho991.kombu.data.recipes.ConflictKind
 import io.github.tycho991.kombu.data.recipes.ImageState
 import io.github.tycho991.kombu.data.recipes.RecipeState
 import io.github.tycho991.kombu.data.recipes.SyncProblem
+import io.github.tycho991.kombu.testcookbookserver.FakeCookbookServer
 import kotlinx.coroutines.test.runTest
 import mockwebserver3.MockResponse
 import org.junit.Assert.assertArrayEquals
