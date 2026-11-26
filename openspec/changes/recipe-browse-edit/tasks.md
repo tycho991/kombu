@@ -75,7 +75,7 @@
 
 ## 5. Recipe view (`app`)
 
-- [ ] 5.1 Build the recipe view (spec "Recipe view", "Recipe state in the view"):
+- [x] 5.1 Build the recipe view (spec "Recipe view", "Recipe state in the view"):
   - the image, then every field from `RecipeFields`, with times formatted from `IsoDuration`;
   - ingredient headings;
   - the source link opened in a Custom Tab;
@@ -84,14 +84,14 @@
   - closing when the row disappears.
 
   Add the strings in English and German. Verify with Compose tests in both languages for: a complete recipe; a sparse recipe with no empty sections; a raw unreadable time; each banner and its action; a row removed while open.
-- [ ] 5.2 Add the servings control and scaling with `IngredientParser` and `displayText(locale, factor)` (spec "Scaled servings", "Unscaled ingredient lines are marked"). Verify with view-model and Compose tests for:
+- [x] 5.2 Add the servings control and scaling with `IngredientParser` and `displayText(locale, factor)` (spec "Scaled servings", "Unscaled ingredient lines are marked"). Verify with view-model and Compose tests for:
   - 4 to 6 servings (`200 g Mehl` becomes `300 g Mehl`);
   - the hint on `Saft von 3 Orangen` only while scaled;
   - headings without the hint;
   - no control without servings;
   - the recipe not marked as changed after scaling;
   - the stored servings shown again on return.
-- [ ] 5.3 Add deletion with a confirmation that names the recipe (spec "Delete a recipe"). Verify with tests that confirming removes it from the list and schedules a sync, and that cancelling changes nothing.
+- [x] 5.3 Add deletion with a confirmation that names the recipe (spec "Delete a recipe"). Verify with tests that confirming removes it from the list and schedules a sync, and that cancelling changes nothing.
 
 ## 6. Editor (`app`)
 

@@ -114,4 +114,39 @@
         <item quantity="other">%d need attention</item>
     </plurals>
     <string name="sync_status_title">Sync</string>
+
+    <!-- Recipe view -->
+    <string name="detail_edit">Edit</string>
+    <string name="detail_delete">Delete</string>
+    <string name="detail_servings_decrease">Fewer servings</string>
+    <string name="detail_servings_increase">More servings</string>
+    <plurals name="detail_servings">
+        <item quantity="one">%d serving</item>
+        <item quantity="other">%d servings</item>
+    </plurals>
+    <string name="detail_prep_time">Preparation: %1$s</string>
+    <string name="detail_cook_time">Cooking: %1$s</string>
+    <string name="detail_total_time">Total: %1$s</string>
+    <string name="detail_ingredients">Ingredients</string>
+    <string name="detail_steps">Steps</string>
+    <string name="detail_step_number">%1$d.</string>
+    <string name="detail_not_scaled">not scaled</string>
+    <string name="detail_source">Open original recipe</string>
+    <string name="duration_hours_minutes">%1$d hr %2$d min</string>
+    <string name="duration_hours">%1$d hr</string>
+    <string name="duration_minutes">%1$d min</string>
+    <string name="duration_under_minute">&lt; 1 min</string>
+    <string name="banner_pending">This change is not uploaded yet. Kombu uploads it at the next sync.</string>
+    <string name="banner_conflict_both">This recipe was changed in Kombu and in Nextcloud.</string>
+    <string name="banner_conflict_deleted_on_server">This recipe was changed in Kombu and deleted in Nextcloud.</string>
+    <string name="banner_conflict_deleted_here">This recipe was deleted in Kombu and changed in Nextcloud.</string>
+    <string name="banner_resolve">Resolve</string>
+    <string name="banner_refused_name_taken">Nextcloud refused this recipe: another recipe there already has this name.</string>
+    <string name="banner_refused_name_missing">Nextcloud refused this recipe because it has no name.</string>
+    <string name="banner_refused_other">Nextcloud refused this recipe.</string>
+    <string name="banner_edit_name">Edit name</string>
+    <string name="delete_confirm_title">Delete recipe?</string>
+    <string name="delete_confirm_text">Kombu deletes \"%1$s\" on this device now and in your Nextcloud at the next sync.</string>
+    <string name="delete_confirm">Delete</string>
+    <string name="delete_dismiss">Cancel</string>
 </resources>

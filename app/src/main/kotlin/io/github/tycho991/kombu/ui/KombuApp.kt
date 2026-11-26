@@ -25,6 +25,8 @@ import io.github.tycho991.kombu.ui.account.AccountScreen
 import io.github.tycho991.kombu.ui.login.LoginRoute
 import io.github.tycho991.kombu.ui.login.LoginViewModel
 import io.github.tycho991.kombu.ui.navigation.Route
+import io.github.tycho991.kombu.ui.recipes.detail.RecipeDetailRoute
+import io.github.tycho991.kombu.ui.recipes.detail.RecipeDetailViewModel
 import io.github.tycho991.kombu.ui.recipes.list.RecipeListRoute
 import io.github.tycho991.kombu.ui.recipes.list.RecipeListViewModel
 import io.github.tycho991.kombu.ui.start.StartActions
@@ -75,6 +77,7 @@ private fun SignedIn(current: MainUiState.SignedIn, main: MainViewModel, depende
         ),
         entryProvider = entryProvider {
             entry<Route.RecipeList> { RecipeListEntry(dependencies, backStack) }
+            entry<Route.RecipeDetail> { key -> RecipeDetailEntry(key, dependencies, backStack) }
             entry<Route.SyncStatus> { SyncStatusEntry(dependencies, backStack) }
             entry<Route.Account> {
                 AccountScreen(
@@ -126,8 +129,29 @@ private fun RecipeListEntry(dependencies: KombuDependencies, backStack: NavBackS
     )
     RecipeListRoute(
         viewModel = list,
+        onOpenRecipe = { backStack.add(Route.RecipeDetail(it)) },
         onOpenAccount = { backStack.add(Route.Account) },
         onOpenSyncStatus = { backStack.add(Route.SyncStatus) },
+    )
+}
+
+@Composable
+private fun RecipeDetailEntry(
+    key: Route.RecipeDetail,
+    dependencies: KombuDependencies,
+    backStack: NavBackStack<NavKey>,
+) {
+    val locale = LocalConfiguration.current.locales[0]
+    val detail = viewModel<RecipeDetailViewModel>(
+        factory = viewModelFactory {
+            initializer { RecipeDetailViewModel(key.localId, dependencies.recipes, createSavedStateHandle(), locale) }
+        },
+    )
+    RecipeDetailRoute(
+        viewModel = detail,
+        onBack = { backStack.removeLastOrNull() },
+        // The recipe was deleted or removed by a sync: leave its view (design D10).
+        onClose = { backStack.remove(key) },
     )
 }
 

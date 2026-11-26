@@ -112,4 +112,39 @@
         <item quantity="other">%d zu klären</item>
     </plurals>
     <string name="sync_status_title">Abgleich</string>
+
+    <!-- Rezeptansicht -->
+    <string name="detail_edit">Bearbeiten</string>
+    <string name="detail_delete">Löschen</string>
+    <string name="detail_servings_decrease">Weniger Portionen</string>
+    <string name="detail_servings_increase">Mehr Portionen</string>
+    <plurals name="detail_servings">
+        <item quantity="one">%d Portion</item>
+        <item quantity="other">%d Portionen</item>
+    </plurals>
+    <string name="detail_prep_time">Vorbereitung: %1$s</string>
+    <string name="detail_cook_time">Kochen: %1$s</string>
+    <string name="detail_total_time">Gesamt: %1$s</string>
+    <string name="detail_ingredients">Zutaten</string>
+    <string name="detail_steps">Zubereitung</string>
+    <string name="detail_step_number">%1$d.</string>
+    <string name="detail_not_scaled">nicht umgerechnet</string>
+    <string name="detail_source">Originalrezept öffnen</string>
+    <string name="duration_hours_minutes">%1$d Std. %2$d Min.</string>
+    <string name="duration_hours">%1$d Std.</string>
+    <string name="duration_minutes">%1$d Min.</string>
+    <string name="duration_under_minute">&lt; 1 Min.</string>
+    <string name="banner_pending">Diese Änderung ist noch nicht hochgeladen. Kombu lädt sie beim nächsten Abgleich hoch.</string>
+    <string name="banner_conflict_both">Dieses Rezept wurde in Kombu und in Nextcloud geändert.</string>
+    <string name="banner_conflict_deleted_on_server">Dieses Rezept wurde in Kombu geändert und in Nextcloud gelöscht.</string>
+    <string name="banner_conflict_deleted_here">Dieses Rezept wurde in Kombu gelöscht und in Nextcloud geändert.</string>
+    <string name="banner_resolve">Klären</string>
+    <string name="banner_refused_name_taken">Nextcloud hat dieses Rezept abgelehnt: Dort gibt es schon ein Rezept mit diesem Namen.</string>
+    <string name="banner_refused_name_missing">Nextcloud hat dieses Rezept abgelehnt, weil es keinen Namen hat.</string>
+    <string name="banner_refused_other">Nextcloud hat dieses Rezept abgelehnt.</string>
+    <string name="banner_edit_name">Namen ändern</string>
+    <string name="delete_confirm_title">Rezept löschen?</string>
+    <string name="delete_confirm_text">Kombu löscht „%1$s“ jetzt auf diesem Gerät und beim nächsten Abgleich in deiner Nextcloud.</string>
+    <string name="delete_confirm">Löschen</string>
+    <string name="delete_dismiss">Abbrechen</string>
 </resources>

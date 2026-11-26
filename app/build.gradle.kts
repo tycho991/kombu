@@ -7,6 +7,8 @@ plugins {
 dependencies {
     implementation(project(":sync"))
     implementation(project(":data"))
+    // The recipe view scales ingredient lines (spec recipe-browsing, "Scaled servings").
+    implementation(project(":ingredient-parser"))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.core.ktx)
